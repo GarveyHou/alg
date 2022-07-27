@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(val, left, right, parent) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+        this.parent = parent === undefined ? null : parent;
+      }
+    }
+    /* 后继节点是什么:是某个节点的中序遍历下的下一个节点，与前驱节点相对应 */
+    /* 找x的后继
+    第一种情况：x有右树，后继就是右树的最左节点
+    第二种情况：x没右树，则往上走，找第一个是父亲左孩子的节点就是后继；如果没找到是父亲左孩子的节点，那么后继就是null
+     */
+
+    function getSuccessorNode(x) {
+      if (x.right !== null) {
+        var node = x.right
+        while (node.left !== null) {
+          node = node.left
+        }
+        return node
+      }
+      while (x !== null && x.parent !== null) {
+        var node = x.parent
+        if (x === node.left) {
+          return node
+        }
+        x = x.parent
+      }
+      return null
+    }
+    var head = new Node(6);
+    head.parent = null;
+    head.left = new Node(3);
+    head.left.parent = head;
+    head.left.left = new Node(1);
+    head.left.left.parent = head.left;
+    head.left.left.right = new Node(2);
+    head.left.left.right.parent = head.left.left;
+    head.left.right = new Node(4);
+    head.left.right.parent = head.left;
+    head.left.right.right = new Node(5);
+    head.left.right.right.parent = head.left.right;
+    head.right = new Node(9);
+    head.right.parent = head;
+    head.right.left = new Node(8);
+    head.right.left.parent = head.right;
+    head.right.left.left = new Node(7);
+    head.right.left.left.parent = head.right.left;
+    head.right.right = new Node(10);
+    head.right.right.parent = head.right;
+
+    var test = head.left.left;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.left.left.right;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.left;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.left.right;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.left.right.right;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.right.left.left;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.right.left;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.right;
+    console.log(test.val + " next: " + getSuccessorNode(test).val);
+    test = head.right.right; // 10's next is null
+    console.log(test.val + " next: " + getSuccessorNode(test));
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 例1：会议问题，许多的开始结束时间表，用谁结束早选谁，贪心，可以得到最优解 */
+      class program {
+        constructor(start, end) {
+          this.start = start
+          this.end = end
+        }
+      }
+      // 计算最多可以安排的program的数量，
+      function bestArrange(arr, start) {
+        arr.sort((a, b) => {
+          return a.end - b.end
+        })
+        let result = 0
+        for (let i = 0; i < arr.length; i++) {
+          // 这个if就做到了，比较与当前时间是否可以安排，和那些不能安排的自动跳过的功能
+          if (arr[i].start > start) {
+            result++
+            start = arr[i].end
+          }
+        }
+        return result
+      }
+
+      /* 怎么知道什么时候用贪心算法呢？
+      贪心整一遍，暴力来一遍，一样就是对的
+      */
+
+      /* 字典序问题：几个单词，按某个顺序拼接，让他们拼接而成的字典序最小，*/
+
+      function lowestString(strs) {
+        if (strs == null || strs.length == 0) {
+          return ''
+        }
+        // 这里定义一个比较器，比较a+b和b+a，就是a在前和b在前哪个字典序小，哪个就放前面
+        strs.sort((a, b) => {
+          let c = a + b
+          let d = b + a
+          console.log(c, d)
+          if (c < d) {
+            return -1
+          } else if (c > d) {
+            return 1
+          }
+          // console.log(c  d)
+          // return c.charCodeAt() - d.charCodeAt()
+        })
+        let res = ''
+        for (let i = 0; i < strs.length; i++) {
+          res += strs[i]
+        }
+        return res
+      }
+      let strs = ['b', 'ba']
+      console.log(lowestString(strs))
+    </script>
+  </body>
+</html>

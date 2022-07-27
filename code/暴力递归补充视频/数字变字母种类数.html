@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 定1和A对应、2和B对应、3和C对应... 那么一个数字字符串比如"111"，就可以转化为"AAA"、"KA"和"AK"。
+    给定一个只有数字字符组成的字符串str，返回有多少种转化结果。 */
+    // str字符串，到i位置时的结果。0-i-1等于是已经定好了的
+    var process = function (str, i) {
+      // 之前的选择完毕了,已经到最后一个之外了,说明已经出现一种可取的情况,返回1
+      if (i == str.length) {
+        return 1
+      }
+      // 之前的决策让本次选择了0，则这一条线不会有结果，返回0
+      if (str[i] == '0') {
+        return 0
+      }
+
+      if (str[i] == '1') {
+        // res为当前选择"1"，不往后面连，本条线有的情况，就是后面的情况
+        let res = process(str, i + 1)
+        // 如果i+1还有字符的话，那就可以把i+1也加上成一种情况，然后再i+2开始选的情况
+        if (i + 1 < str.length) {
+          res += process(str, i + 2)
+        }
+        return res
+      }
+      // 如果此次是2，那结果就是选本次，如果下一个字符有且在0-6的话，那就可以选两个成一个结果。
+      if (str[i] == '2') {
+        // res为当前选择"1"，不往后面连，本条线有的情况，就是后面的情况
+        let res = process(str, i + 1)
+        // 如果i+1还有字符的话，那就可以把i+1也加上成一种情况，然后再i+2开始选的情况
+        if (i + 1 < str.length && str[i + 1] >= '0' && str[i + 1] <= '6') {
+          res += process(str, i + 2)
+        }
+
+        return res
+      }
+      // 当前位置的i是3-9，只能选自身，然后返回后面的情况
+      return process(str, i + 1)
+    }
+
+    console.log(process('111', 0))
+
+
+
+  </script>
+
+</body>
+
+</html>

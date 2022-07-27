@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    class Node {
+      constructor(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+    }
+    /* 折纸问题 ，典型的一个中序二叉树， 根节点为凹，每个树的左节点都是凹，有节点都是凸，折n次就是n层 */
+    function printAllFolds(n) {
+      printProcess(1, n, true)
+    }
+
+    function printProcess(i, n, isAo) {
+      if (i > n) {
+        return
+      }
+      printProcess(i + 1, n, true)
+      console.log(isAo ? '凹' : '凸')
+      printProcess(i + 1, n, false)
+    }
+    printAllFolds(4)
+
+
+    /* 我的写法，可以先构建一个层数为n的二叉树 */
+    function createTree(i, n, node) {
+      if (i == n) {
+        return
+      }
+      node.left = new Node(1)
+      createTree(i + 1, n, node.left)
+      node.right = new Node(0)
+      createTree(i + 1, n, node.right)
+      return node
+    }
+    var head = createTree(1, 4, new Node(1));
+    console.log(head)
+
+    function printByIn(head) {
+      if (head == null) {
+        return
+      }
+      printByIn(head.left)
+      console.log(head.val === 1 ? '凹' : '凸')
+      printByIn(head.right)
+    }
+    console.log('----------------------------------------------------------------')
+    printByIn(head)
+  </script>
+
+
+
+</body>
+
+</html>

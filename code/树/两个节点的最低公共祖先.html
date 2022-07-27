@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+    }
+    /* 主要思路，生成每个节点的father的对应map */
+
+    function lca(head, o1, o2) {
+      var map = new Map();
+      map.set(head, null)
+      process(head, map)
+        // console.log(map);
+      var arr1 = []
+      var arr2 = []
+      arr1.push(o1)
+      arr2.push(o2)
+      while (map.get(o1) !== null) {
+        arr1.push(map.get(o1))
+        o1 = map.get(o1)
+      }
+      while (map.get(o2) !== null) {
+        arr2.push(map.get(o2))
+        o2 = map.get(o2)
+      }
+
+      for (var i = 0; i < arr1.length; i++) {
+        if (arr2.indexOf(arr1[i]) !== -1) {
+          return arr1[i].val;
+        }
+      }
+
+      // console.log(arr1, arr2);
+    }
+
+
+    function process(head, map) {
+      if (head.left) {
+        map.set(head.left, head)
+        process(head.left, map)
+      }
+      if (head.right) {
+        map.set(head.right, head)
+        process(head.right, map)
+      }
+    }
+
+
+    /* 更牛逼的写法，经过别人的重重优化之后才有的结果 */
+    /* 两种情况：
+    1.o1 o2互为最低节点
+    2.他们要相互往上聚拢到一个节点 */
+    // 本质是一个往上冒的过程，如果某个树不包含o1或o2直接返回null
+    // 第一种2情况下会把有o1的树的返回值都变成o1；
+    // 第二种情况下会把o1和o2同时往上冒，知道遇到一个相同节点
+    function lowest(head, o1, o2) {
+      if (head == null || head == o1 || head == o2) {
+        return head
+      }
+      var leftData = lowest(head.left, o1, o2)
+      var rightData = lowest(head.right, o1, o2)
+
+      if (leftData !== null && rightData !== null) {
+        return head
+      }
+      return leftData !== null ? leftData : rightData
+    }
+
+
+    var head = new Node(10);
+    head.left = new Node(5);
+    head.right = new Node(13);
+    head.left.left = new Node(3);
+    head.left.right = new Node(6);
+    head.right.left = new Node(11);
+    head.right.right = new Node(14);
+    // console.log(lca(head, head.right.left, head.right));
+    console.log(lowest(head, head.right.left, head.right));
+  </script>
+
+</body>
+
+</html>

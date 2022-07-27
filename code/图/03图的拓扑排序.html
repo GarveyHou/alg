@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Graph {
+      constructor() {
+        // 两个都是键为数字，值为Node和Edge
+        this.nodes = new Map()
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(value) {
+        // value为值；
+        // in为入度；
+        // out为出度；
+        // nexts为指出去的点集合；为Node
+        // edges为属于我的边有哪些，也是指出去的边，为Edge
+        this.value = value
+        this.in = 0
+        this.out = 0
+        this.nexts = []
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(weight, from, to) {
+        // weight表示权重
+        // from表示从哪里来,为Node
+        // to表示去那里去，为Node
+        this.weight = weight
+        this.from = from
+        this.to = to
+      }
+    }
+    /* 找入度为0的点，输出，把他的点和出去的线都删了，然后再找下一个入度为0点，知道遍历完成 */
+    function tuopuSort(graph) {
+      // 结果数组，就是拓扑顺序的节点
+      var result = []
+        // map key：某一个node，value：剩余的入度
+      var inMap = new Map()
+        // 剩余入度为0的点就进入zeroInQueue
+      var zeroInQueue = []
+        // 遍历所有node，初始化inMap并设置第一个zeroInQueue的点
+      for (var node of graph.nodes.values()) {
+        map.set(node, node.in)
+        if (node.in == 0) {
+          zeroInQueue.push(node)
+        }
+      }
+      // 队列为空为结束条件
+      // 队列弹出一个，放入结果数组，并遍历该node的nexts节点，将他们的入度inMap -1，然后如果入度变成了0，进队列
+      while (zeroInQueue.length == 0) {
+        var cur = zeroInQueue.shift()
+        result.push(cur)
+        for (next of cur.nexts) {
+          inMap.set(next, inMap.get(next) - 1)
+          if (inMap.get(next) == 0) {
+            zeroInQueue.push(next)
+          }
+        }
+      }
+      return result
+    }
+  </script>
+
+</body>
+
+</html>

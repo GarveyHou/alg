@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Graph {
+      constructor() {
+        this.vertexes = []
+        this.adjList = new Map()
+      }
+
+      addVertex(v) {
+        this.vertexes.push(v)
+        this.adjList.set(v, [])
+      }
+
+      addEdge(v, w) {
+        this.adjList.get(v).push(w)
+        this.adjList.get(w).push(v)
+      }
+
+      toString() {
+        let str = ''
+        for (let i = 0; i < this.vertexes.length; i++) {
+          str += this.vertexes[i] + '->'
+          var adj = this.adjList.get(this.vertexes[i])
+          str += adj.join(' ') + '\n'
+        }
+        return str
+      }
+
+      init() {
+        let colors = []
+        for (let i = 0; i < this.vertexes.length; i++) {
+          colors[this.vertexes[i]] = 'white'
+        }
+        return colors
+      }
+
+      bfs(v, handler) {
+        let colors = this.init()
+        let queue = []
+        queue.push(v)
+
+        while (queue.length !== 0) {
+          var qv = queue.shift()
+          colors[qv] = 'black'
+          var qvs = this.adjList.get(qv)
+
+          for (var i = 0; i < qvs.length; i++) {
+            if (colors[qvs[i]] === 'white') {
+              queue.push(qvs[i])
+              colors[qvs[i]] = 'gray'
+            }
+          }
+
+          if (handler) {
+            handler(qv)
+          }
+        }
+      }
+
+      dfs(handler) {
+        let colors = this.init()
+        let stack = []
+
+
+      }
+
+
+
+    }
+
+    let graph = new Graph();
+
+    graph.addVertex(1)
+    graph.addVertex(2)
+    graph.addVertex(3)
+    graph.addVertex(4)
+    graph.addVertex(5)
+    graph.addEdge(1, 3)
+    graph.addEdge(1, 2)
+    graph.addEdge(2, 4)
+    graph.addEdge(2, 5)
+    graph.addEdge(3, 4)
+    graph.addEdge(4, 5)
+    graph.bfs(1, (key) => {
+      console.log(key);
+    })
+    console.log(graph);
+  </script>
+
+</body>
+
+</html>

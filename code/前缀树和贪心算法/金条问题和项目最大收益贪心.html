@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*一块金条切成两半，是需要花费和长度数值一样的铜板的。比如长度为20的金条，不管切成长度多大的两半，都要花费20个铜板。一群人想整分整块金条，怎么分最省铜板?
+      例如,给定数组{10,20,30}，代表一共三个人，整块金条长度为10+20+30=60。金条要分成10,20,30三个部分。 
+      如果先把长度60的金条分成10和50，花费60；再把长度50的金条分成20和30，花费50；一共花费110铜板。
+      但是如果先把长度60的金条分成30和30，花费60；再把长度30金条分成10和20，花费30；一共花费90铜板。输入一个数组，返回分割的最小代价。*/
+
+      // 经典哈夫曼编码，先写一个哈夫曼编码的代码
+
+      // 小根堆代码拿过来用
+      // 哈夫曼就是找两个最小的，合成一个树，树的头的数值为左孩子和右孩子相加，然后把头放入小根堆，继续操作直到小根堆剩一个
+      class Heap {
+        constructor(arr) {
+          this.arr = arr // 用数组实现堆
+          this.cmp = (a, b) => a < b //比较函数
+          this.heapify() // 初始化调整成堆的性质
+        }
+
+        // 堆的长度
+        size() {
+          return this.arr.length
+        }
+
+        // 返回堆顶元素
+        top() {
+          if (!this.size()) return null
+          return this.arr[0]
+        }
+
+        // 初始化调整
+        heapify() {
+          if (this.size() < 2) return
+          for (let i = 1; i < this.size(); i++) {
+            this.bubbleUp(i) // 遍历每一个元素向上调整
+          }
+        }
+
+        // 插入元素
+        push(val) {
+          this.arr.push(val) // 堆尾插入
+          this.bubbleUp(this.size() - 1) // 向上调整
+        }
+
+        // 弹出元素
+        pop() {
+          if (!this.size()) return null
+          if (this.size() === 1) return this.arr.pop()
+          var top = this.top()
+          this.arr[0] = this.arr.pop() // 堆尾元素与堆首交换
+          this.bubbleDown(0) // 向下调整
+          return top
+        }
+
+        // 向上调整
+        bubbleUp(index) {
+          while (index) {
+            const parentIndex = Math.floor((index - 1) / 2) // 当前元素的父元素
+            if (this.cmp(this.arr[index], this.arr[parentIndex])) {
+              //符合条件就交换
+              ;[this.arr[index], this.arr[parentIndex]] = [this.arr[parentIndex], this.arr[index]]
+              index = parentIndex
+            } else {
+              // 说明不需要交换已经在正确的位置跳出循环
+              break
+            }
+          }
+        }
+
+        // 向下调整
+        bubbleDown(index) {
+          const lastIndex = this.size() - 1 // 堆尾元素
+          while (index < lastIndex) {
+            let findIndex = index // 当前元素
+            let leftIndex = index * 2 + 1 // 左孩子
+            let rightIndex = index * 2 + 2 // 右孩子
+            // 与左孩子比较
+            if (leftIndex <= lastIndex && this.cmp(this.arr[leftIndex], this.arr[findIndex])) {
+              findIndex = leftIndex
+            }
+            // 与右孩子比较
+            if (rightIndex <= lastIndex && this.cmp(this.arr[rightIndex], this.arr[findIndex])) {
+              findIndex = rightIndex
+            }
+            // 如果已经找到需要交换的索引值
+            if (findIndex > index) {
+              // 交换元素
+              ;[this.arr[findIndex], this.arr[index]] = [this.arr[index], this.arr[findIndex]]
+              index = findIndex
+            } else {
+              // 说明不需要交换已经在正确的位置跳出循环
+              break
+            }
+          }
+        }
+      }
+      function hafuman(arr) {
+        const pQ = new Heap()
+        for (let item of arr) {
+          pQ.push(item)
+        }
+        let sum = 0
+        let cur = 0
+        while (pQ.size() > 1) {
+          cur = pQ.pop() + pQ.pop()
+          sum += cur
+          pQ.push(cur)
+        }
+        return sum
+      }
+
+      /* 输入：正数数组costs
+      正数数组profits
+      正数k
+      正数m
+      含义：costs[i]表示i号项目的花费
+      profits[i]表示i号项目在扣除花费之后还能挣到的钱(利润)
+      k表示你只能串行的最多做k个项目
+      m表示你初始的资金
+      说明：你每做完一个项目，马上获得的收益，可以支持你去做下一个项目。
+      输出：你最后获得的最大钱数 */
+
+      /* 思路：把costs和profits对应起来，用map
+      一个小根堆一个大根堆
+      先按costs从小到大，放到小根堆
+      然后循环k次，从小根堆中找出小于等于m的项目，拿出来放入大根堆，大根堆profit从大到小，然后拿出最大的加到w里，然后更新资金。循环往复 */
+      class Node {
+        constructor(c, p) {
+          this.c = c
+          this.p = p
+        }
+      }
+      class minHeap {
+        constructor() {
+          this.arr = []
+        }
+        push(value) {
+          this.arr.push(value)
+          this.arr.sort((a, b) => {
+            return a.c - b.c
+          })
+        }
+        pop() {
+          return this.arr.shift()
+        }
+      }
+      class maxHeap {
+        constructor() {
+          this.arr = []
+        }
+        push(value) {
+          this.arr.push(value)
+          this.arr.sort((a, b) => {
+            return b.p - a.p
+          })
+        }
+        pop() {
+          return this.arr.shift()
+        }
+      }
+
+      function fn(k, m, costs, profits) {
+        const arr = []
+        // 结果，现在的钱
+        let w = m
+        // 新建一些costs和profits合在一起的节点
+        for (let i = 0; i < costs.length; i++) {
+          arr.push(new Node(costs[i], profits[i]))
+        }
+        // 初始化大根堆，小根堆
+        const minheap = new minHeap()
+        const maxheap = new maxHeap()
+        // 加入小根堆
+        for (let item of arr) {
+          minheap.push(item)
+        }
+        // 遍历k个
+        for (let i = 0; i < k; i++) {
+          // 主要小根不是空，而且最小的那个比当前的钱小就可以弹出放到大根堆
+          while (minheap.arr.length !== 0 && minheap.arr[0].p <= w) {
+            maxheap.push(minheap.pop())
+          }
+          // 如果一个都没放过来，说明死局没的项目执行了，直接returnw
+          if (maxheap.arr.length == 0) {
+            return w
+          }
+          // 负责w+这个最大收益项目，并把这个项目弹出
+          w += maxheap.pop().p
+        }
+        return w
+      }
+      // let m = 3,
+      //   k = 2
+      const arr1 = [5, 4, 1, 2]
+      const arr2 = [3, 5, 3, 2]
+      console.log(fn(2, 3, arr1, arr2))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 这个主要是用两个堆，一个小根堆1，一个大根堆2
+    第一个数放2，进一个数跟2堆顶比，比堆顶大放1，比堆顶小放2
+    且每次放进入一个数，如果1和2的size差距大于1，也就是等于2了，多的那个堆顶弹出到另一个里面。
+    最终可以保证1和2存的分别是数据的前1/2个数和后1/2个数，中位数偶数个两个堆顶相加/2
+    奇数个就是其中一个呗，size大的那个的堆顶不就是中位数么 */
+      /* package class07;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+public class Code06_MadianQuick {
+
+	public static class MedianHolder {
+		private PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(new MaxHeapComparator());
+		private PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(new MinHeapComparator());
+
+		private void modifyTwoHeapsSize() {
+			if (this.maxHeap.size() == this.minHeap.size() + 2) {
+				this.minHeap.add(this.maxHeap.poll());
+			}
+			if (this.minHeap.size() == this.maxHeap.size() + 2) {
+				this.maxHeap.add(this.minHeap.poll());
+			}
+		}
+
+		public void addNumber(int num) {
+			if (maxHeap.isEmpty() || num <= maxHeap.peek()) {
+				maxHeap.add(num);
+			} else {
+				minHeap.add(num);
+			}
+			modifyTwoHeapsSize();
+		}
+
+		public Integer getMedian() {
+			int maxHeapSize = this.maxHeap.size();
+			int minHeapSize = this.minHeap.size();
+			if (maxHeapSize + minHeapSize == 0) {
+				return null;
+			}
+			Integer maxHeapHead = this.maxHeap.peek();
+			Integer minHeapHead = this.minHeap.peek();
+			if (((maxHeapSize + minHeapSize) & 1) == 0) {
+				return (maxHeapHead + minHeapHead) / 2;
+			}
+			return maxHeapSize > minHeapSize ? maxHeapHead : minHeapHead;
+		}
+
+	}
+
+	public static class MaxHeapComparator implements Comparator<Integer> {
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			if (o2 > o1) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+	}
+
+	public static class MinHeapComparator implements Comparator<Integer> {
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			if (o2 < o1) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+	}
+
+	// for test
+	public static int[] getRandomArray(int maxLen, int maxValue) {
+		int[] res = new int[(int) (Math.random() * maxLen) + 1];
+		for (int i = 0; i != res.length; i++) {
+			res[i] = (int) (Math.random() * maxValue);
+		}
+		return res;
+	}
+
+	// for test, this method is ineffective but absolutely right
+	public static int getMedianOfArray(int[] arr) {
+		int[] newArr = Arrays.copyOf(arr, arr.length);
+		Arrays.sort(newArr);
+		int mid = (newArr.length - 1) / 2;
+		if ((newArr.length & 1) == 0) {
+			return (newArr[mid] + newArr[mid + 1]) / 2;
+		} else {
+			return newArr[mid];
+		}
+	}
+
+	public static void printArray(int[] arr) {
+		for (int i = 0; i != arr.length; i++) {
+			System.out.print(arr[i] + " ");
+		}
+		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		boolean err = false;
+		int testTimes = 200000;
+		for (int i = 0; i != testTimes; i++) {
+			int len = 30;
+			int maxValue = 1000;
+			int[] arr = getRandomArray(len, maxValue);
+			MedianHolder medianHold = new MedianHolder();
+			for (int j = 0; j != arr.length; j++) {
+				medianHold.addNumber(arr[j]);
+			}
+			if (medianHold.getMedian() != getMedianOfArray(arr)) {
+				err = true;
+				printArray(arr);
+				break;
+			}
+		}
+		System.out.println(err ? "Oops..what a fuck!" : "today is a beautiful day^_^");
+
+	}
+
+}
+ */
+    </script>
+  </body>
+</html>

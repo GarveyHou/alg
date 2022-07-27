@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // leetcode940
+    // 打印一个字符串的全部子序列，包括空字符串
+    // abc的子序列可以使ac
+
+    /* 到每个节点要与不要，str为字符串，i为当前走到的位置，res为这次路之前的保存 */
+    let fn = function (str, i, res) {
+      if (i == str.length) {
+        console.log(res.toString())
+        return
+      }
+      fn(str, i + 1, res)
+      const arr = [...res, str[i]]
+      fn(str, i + 1, arr)
+    }
+
+    fn('abcd', 0, [])
+  </script>
+</body>
+
+</html>

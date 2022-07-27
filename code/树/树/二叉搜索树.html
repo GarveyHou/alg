@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class TreeNode {
+      constructor(key) {
+        this.key = key
+        this.left = null
+        this.right = null
+      }
+
+    }
+
+    class BinarySearchTree {
+
+      constructor() {
+        this.root = null;
+      }
+
+      insert(key) {
+        let node = new TreeNode(key)
+
+        if (this.root == null) {
+          this.root = node
+
+        } else {
+          this.insertNode(this.root, node)
+        }
+      }
+
+      insertNode(root, node) {
+        if (node.key < root.key) {
+          if (root.left === null) {
+            root.left = node
+          } else {
+            this.insertNode(root.left, node)
+          }
+        } else {
+          if (root.right === null) {
+            root.right = node
+          } else {
+            this.insertNode(root.right, node)
+          }
+        }
+      }
+      pretravel(node, handler) {
+        if (node !== null) {
+          handler(node.key)
+          this.pretravel(node.left, handler)
+          this.pretravel(node.right, handler)
+        }
+      }
+      midtravel(node, handler) {
+        if (node !== null) {
+          this.midtravel(node.left, handler)
+          handler(node.key)
+          this.midtravel(node.right, handler)
+        }
+      }
+      lasttravel(node, handler) {
+        if (node !== null) {
+
+          this.lasttravel(node.left, handler)
+          this.lasttravel(node.right, handler)
+          handler(node.key)
+        }
+      }
+      max(node) {
+        while (node.right !== null) {
+          node = node.right
+        }
+        return node.key
+      }
+      min(node) {
+        while (node.left !== null) {
+          node = node.left
+        }
+        return node.key
+      }
+      search(node, key) {
+        while (node !== null) {
+          if (node.key > key) {
+            node = node.left
+          } else if (node.key < key) {
+            node = node.right
+          } else {
+            return true;
+          }
+        }
+        return false
+      }
+    }
+
+
+    let tree = new BinarySearchTree()
+
+    tree.insert(1)
+    tree.insert(6)
+    tree.insert(8)
+    tree.insert(4)
+    tree.insert(9)
+    tree.insert(3)
+    tree.insert(10)
+    tree.insert(20)
+    console.log(tree.root);
+    // tree.lasttravel(tree.root, (val) => {
+    //   console.log(val)
+    // });
+    // console.log(tree.min(tree.root));
+    console.log(tree.search(tree.root, 20));
+  </script>
+
+</body>
+
+</html>

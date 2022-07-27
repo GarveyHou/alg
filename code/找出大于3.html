@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function fn(arr) {
+      var newArr = []
+      arr.filter((item) => {
+        if (item.a >= 2) {
+          newArr.push(true)
+        } else {
+          newArr.push(false)
+        }
+      })
+      console.log(newArr);
+    }
+
+    // var a = {
+    //   b: 1,
+    //   c: 1
+    // }
+    // console.log(obj);
+
+    fn([{
+      a: 1,
+      v: 4
+    }, {
+      a: 2,
+      s: 9
+    }, {
+      a: 3,
+      f: 8
+    }, {
+      a: 8,
+      h: 3
+    }])
+  </script>
+
+</body>
+
+</html>

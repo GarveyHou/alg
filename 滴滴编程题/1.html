@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 一个k一个r，找出1-r中能整数k次数最多的数的个数
+    function fn(k, r) {
+      // if (r < k) {
+      //   console.log(0)
+      //   return
+      // }
+      if (r == k) {
+        console.log(1)
+        return
+      }
+      var map = new Map()
+      var arr = []
+      for (var j = 1; j <= r; j++) {
+        arr[j] = j
+      }
+      // console.log(arr);
+      var flag = true
+      var cc = 1
+      while (flag) {
+        var bian = false
+        for (var i = 1; i <= r; i++) {
+          if (arr[i] % k == 0) {
+            map.set(i, cc)
+            arr[i] = arr[i] / k
+            bian = true
+          }
+          // if (map.size == 0) {
+          //   return 0
+          // }
+
+        }
+        if (!bian) {
+          flag = false
+          break
+        }
+        cc++
+        console.log(arr);
+        // console.log(map);
+      }
+
+      // console.log(arr);
+      console.log(map);
+      var max = Number.MIN_SAFE_INTEGER
+      for (var item of map.values()) {
+        if (item > max) {
+          max = item
+        }
+      }
+      // console.log(max);
+      var count = 0
+      for (var item of map.values()) {
+        if (item == max) {
+          count++
+        }
+      }
+      console.log(count)
+
+
+
+
+
+
+    }
+    fn(3, 2)
+  </script>
+
+</body>
+
+</html>

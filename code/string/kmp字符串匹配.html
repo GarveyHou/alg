@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* kmp非常神奇，主串中的i是一种往前走的，遍历主串一遍就可以得到结果 
+            核心思想：next数组，值是当前索引对应的patt字符串位置，如果这个位置匹配失败，子串应该从哪开始和主串比较
+            */
+    // function kmp(str, patt) {
+    //   // next数组，里面的值是这个字符匹配不成功是可以跳过的字符数
+    //   var next = buildnext(patt);
+    //   // 主串中的指针
+    //   var i = 0,
+    //     // 子串中的指针
+    //     j = 0
+
+    //   while (i < str.length) {
+    //     if (str[i] == patt[j]) {
+    //       i++;
+    //       j++;
+    //     } else if (j > 0) {
+    //       j = next[j - 1]
+    //     } else {
+    //       i++
+    //     }
+    //     if (j == patt.length) {
+    //       return i - j
+    //     }
+    //   }
+    // }
+
+    // function buildnext(patt) {
+    //   var next = new Array(patt.length).fill(0);
+    //   var pre_len = 0
+    //   var i = 1
+    //   while (i < patt.length) {
+    //     if (patt[pre_len] == patt[i]) {
+    //       pre_len++
+    //       next.push(pre_len)
+    //       i++
+    //     } else {
+    //       if (pre_len == 0) {
+    //         next.push(0)
+    //         i++
+    //       } else {
+    //         pre_len = next[pre_len - 1]
+    //       }
+    //     }
+    //   }
+    //   return next
+    // }
+
+      /* 链接：https://www.bilibili.com/video/BV1AY4y157yL?spm_id_from=333.337.search-card.all.click&vd_source=086479b6b636751bba58df6846170038 */
+    // leetcode28
+    var strStr = function(str, patt) {
+      var n = str.length,
+        m = patt.length;
+      if (m === 0) {
+        return 0;
+      }
+      var next = new Array(m).fill(0);
+      // i是patt串上的匹配到的位置，j是pre_len，前一个匹配的最长
+      for (var i = 1, j = 0; i < m; i++) {
+        while (j > 0 && patt[i] !== patt[j]) {
+          j = next[j - 1];
+        }
+        if (patt[i] == patt[j]) {
+          j++;
+        }
+        next[i] = j;
+      }
+      // i主串匹配到的位置，j是patt应该匹配的位置
+      for (var i = 0, j = 0; i < n; i++) {
+        while (j > 0 && str[i] != patt[j]) {
+          j = next[j - 1];
+        }
+        if (str[i] == patt[j]) {
+          j++;
+        }
+        if (j === m) {
+          return i - m + 1;
+        }
+      }
+      return -1;
+    };
+  </script>
+
+</body>
+
+</html>

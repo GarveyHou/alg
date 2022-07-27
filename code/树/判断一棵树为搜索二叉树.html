@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+      }
+    }
+
+
+    /* 判断搜索二叉树，可以使用中序遍历一下，如果是不降序的话就是二叉搜索树 */
+
+    /* 判断搜索二叉树的递归写法，递归判断每颗子树是不是搜索二叉树 */
+
+    // 前一个值的保存,递归过程中不断变化
+    var preValue = 0
+
+    function isBST(head) {
+      if (head == null) {
+        return true
+      }
+      if (!isBST(head.left)) {
+        return false
+      }
+      if (head.val < preValue) {
+        return false
+      } else {
+        preValue = head.val
+      }
+      return isBST(head.right)
+    }
+
+
+    /* 判断搜索二叉树的递归写法小白写法 */
+    function isBST2(head) {
+      var arr = [];
+      getResArr(head, arr)
+      for (var i = 0; i < arr.length - 1; i++) {
+        if (arr[i] >= arr[i + 1]) {
+          return false
+        }
+      }
+      return true
+
+
+    }
+
+    function getResArr(head, arr) {
+      if (head == null) {
+        return
+      }
+      getResArr(head.left)
+      arr.push(head.val)
+      getResArr(head.right)
+    }
+  </script>
+
+</body>
+
+
+</html>

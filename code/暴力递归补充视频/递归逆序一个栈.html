@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 递归逆序一个栈，不用额外的数据结构 */
+    // 一个f函数，表示把栈底元素拿出来返回，把其他元素给他原样盖回去
+    var f = function (stack) {
+      let result = stack.pop()
+      if (stack.length == 0) {
+        return result
+      } else {
+        // 很神奇的一个步骤，想要理解必须要画图一个接一个调用下去，比如用123栈模拟
+        let last = f(stack)
+        stack.push(result)
+        return last
+      }
+    }
+    // reverse函数：逆序栈
+    var reverse = function (stack) {
+      if (stack.length == 0) {
+        return
+      }
+      let i = f(stack)
+      reverse(stack)
+      stack.push(i)
+
+    }
+
+  </script>
+
+</body>
+
+</html>

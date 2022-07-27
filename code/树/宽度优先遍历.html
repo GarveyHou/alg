@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    class Node {
+      constructor(val) {
+        this.val = val;
+        this.left = null
+        this.right = null;
+      }
+    }
+    /* 宽度优先遍历：用队列，头先进，然后出一个，进它的左和右，如此往复 */
+    function kuandu(head) {
+      var queue = []
+
+      if (head !== null) {
+        queue.push(head)
+      }
+      while (queue.length !== 0) {
+        var node = queue.shift()
+        console.log(node.val)
+        if (node.left) {
+          queue.push(node.left)
+        }
+        if (node.right) {
+          queue.push(node.right)
+        }
+      }
+    }
+
+    /* 求最大宽度算法用map方法 */
+    function getMaxWid(head) {
+      var queue = []
+
+      if (head !== null) {
+        queue.push(head)
+      }
+      var levelMap = new Map()
+        // 设置map，<当前节点，所在层>
+      levelMap.set(head, 1)
+        // 当前所在层
+      let curLevel = 1
+        // 当前层节点数
+      let curLevelNodes = 0
+        // 最多节点层的节点
+      let max = 0
+
+      while (queue.length !== 0) {
+        var node = queue.shift()
+          // 获取当前遍历节点层
+        var curNodeLevel = levelMap.get(node)
+          // 如果当前遍历节点层等于全局节点层，节点层节点+1；
+          // 如果当前遍历节点层不等于全局节点层，说明到了下一层，直接计算max，全局节点层+1，全局当前层节点重置为1
+        if (curNodeLevel == curLevel) {
+          curLevelNodes++
+        } else {
+          max = Math.max(max, curLevelNodes)
+          curLevel++
+          curLevelNodes = 1
+        }
+        if (node.left) {
+          // 设置左右节点的层数为当前遍历节点层+1
+          levelMap.set(node.left, curNodeLevel + 1)
+          queue.push(node.left)
+        }
+        if (node.right) {
+          levelMap.set(node.right, curNodeLevel + 1)
+          queue.push(node.right)
+        }
+      }
+      console.log(max)
+      console.log(levelMap);
+    }
+
+    /* 求最大宽度算法，不用哈希表的方法 */
+    function getMaxWidNomap(head) {
+      // 本层最后一个节点
+      var nodeCurrent = head
+        // 下一层的最后一个节点
+      var nodeCurrentNext = null
+        // 当前层的节点数
+      var curLevelNodes = 0
+        // 最大宽度
+      var max = 0
+        // 一个队列
+      var queue = []
+      queue.push(head)
+
+      while (queue.length !== 0) {
+        var node = queue.shift()
+        if (node.left) {
+          queue.push(node.left)
+          nodeCurrentNext = node.left
+        }
+        if (node.right) {
+          queue.push(node.right)
+          nodeCurrentNext = node.right
+        }
+
+        if (node == nodeCurrent) {
+          curLevelNodes++
+          max = Math.max(max, curLevelNodes)
+          nodeCurrent = nodeCurrentNext
+          nodeCurrentNext = null
+          curLevelNodes = 0
+        } else {
+          curLevelNodes++
+        }
+      }
+      console.log(max);
+
+    }
+
+    var head = new Node(5);
+    head.left = new Node(3);
+    head.right = new Node(8);
+    head.left.left = new Node(2);
+    head.left.right = new Node(4);
+    head.left.left.left = new Node(1);
+    head.right.left = new Node(7);
+    head.right.left.left = new Node(6);
+    head.right.right = new Node(10);
+    head.right.right.left = new Node(9);
+    head.right.right.right = new Node(11);
+    // kuandu(head)
+
+    // getMaxWid(head)
+    getMaxWidNomap(head)
+  </script>
+
+</body>
+
+</html>

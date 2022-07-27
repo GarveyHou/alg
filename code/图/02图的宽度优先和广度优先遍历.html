@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      class Graph {
+        constructor() {
+          // 两个都是键为数字，值为Node和Edge
+          this.nodes = new Map()
+          this.edges = []
+        }
+      }
+      class Node {
+        constructor(value) {
+          // value为值；
+          // in为入度；
+          // out为出度；
+          // nexts为指出去的点集合；为Node
+          // edges为属于我的边有哪些，也是指出去的边，为Edge
+          this.value = value
+          this.in = 0
+          this.out = 0
+          this.nexts = []
+          this.edges = []
+        }
+      }
+      class Edge {
+        constructor(weight, from, to) {
+          // weight表示权重
+          // from表示从哪里来,为Node
+          // to表示去那里去，为Node
+          this.weight = weight
+          this.from = from
+          this.to = to
+        }
+      }
+      /* 图的宽度优先遍历，利用队列和集合
+    1.源节点进队列
+    2.队列出一个，输出，把没进过set的nexts都放入队列；
+    3.循环2直到队列为空
+   */
+      function bfs(node) {
+        if (node == null) {
+          return
+        }
+        var queue = []
+        var set = new Set()
+        set.add(node)
+        queue.push(node)
+
+        while (queue.length !== 0) {
+          var cur = queue.shift()
+          console.log(cur.value)
+          for (var item of cur.nexts) {
+            if (!set.has(item)) {
+              set.add(cur)
+              queue.push(cur)
+            }
+          }
+        }
+      }
+      /* 深度优先遍历
+        1，利用栈和集合实现（节点加入集合的时候，输出）
+        2，从源节点开始先把第一个节点放入栈，放入set集合，输出；
+        3. 栈顶弹出设为cur，遍历孩子它的nexts如果有没如果set的，cur进，这个nexts进继续循环3
+        4，直到栈变空
+    */
+      function dfs(node) {
+        /* 没什么好说的 */
+        if (node == null) {
+          return
+        }
+        var stack = []
+        var set = new Set()
+
+        stack.push(node)
+        set.add(node)
+        /* 进入的时候处理 */
+        console.log(node.value)
+
+        while (stack.length !== 0) {
+          var cur = stack.pop()
+          /* 弹出cur，判断cur的nexts有没有没进过set的，有的话就再把cur进栈，没进过set的也进栈，进set，打印，直接退出循环 */
+          for (var item of cur.nexts) {
+            if (!set.has(item)) {
+              stack.push(cur)
+              stack.push(item)
+              set.add(item)
+              console.log(item.value)
+              break
+            }
+          }
+        }
+      }
+
+      var graph = new Graph()
+      var node1 = new Node(1)
+      var node2 = new Node(2)
+      var node3 = new Node(3)
+      var node4 = new Node(4)
+      var node5 = new Node(5)
+      node1.nexts.push(node2)
+      node1.nexts.push(node3)
+      node1.nexts.push(node4)
+      node2.nexts.push(node5)
+      node3.nexts.push(node5)
+      node4.nexts.push(node5)
+
+      bfs(node1)
+    </script>
+  </body>
+</html>

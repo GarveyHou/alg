@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+    class Node {
+      constructor(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+
+    }
+    /* 完全二叉树，每层是满，如果不满，这一层一定都是叶子结点，而且是从左往右正在变满的状态 */
+
+
+    /* 判断方法：首先是肯定要层次遍历
+    1. 任一节点， 有右无左直接false
+    2. 在1不违反的情况下， 如果遇到了第一个左右子节点不双全的情况， 那么后面的所有节点都是叶子节点， 如果满足返回true */
+    function isCBT(head) {
+      if (head == null) {
+        return true
+      }
+      var queue = []
+        // flag表示是否是到了非双全节点，此时后面要全是叶子结点
+      var flag = false
+      queue.push(head)
+      while (queue.length !== 0) {
+        var node = queue.shift()
+          // 已经发现第一个非双全节点的情况下还有非叶子结点直接false；
+          // 没有左但是有右直接false
+        if ((flag && (node.left || node.right)) || (!node.left && node.right)) {
+          return false
+        }
+        if (node.left) {
+          queue.push(node.left)
+        }
+        if (node.right) {
+          queue.push(node.right)
+        }
+        if (!node.right || !node.right) {
+          flag = true
+        }
+      }
+      return true
+    }
+
+    var head = new Node(5);
+    head.left = new Node(3);
+    head.right = new Node(8);
+    head.left.left = new Node(2);
+    head.left.right = new Node(4);
+    head.left.left.left = new Node(1);
+    head.right.left = new Node(7);
+    head.right.left.left = new Node(6);
+    head.right.right = new Node(10);
+    head.right.right.left = new Node(9);
+    head.right.right.right = new Node(11);
+
+
+    var head2 = new Node(5);
+    head2.left = new Node(3);
+    head2.right = new Node(8);
+    head2.left.left = new Node(2);
+    head2.left.right = new Node(4);
+    head2.left.left.left = new Node(1);
+    head2.right.left = new Node(7);
+    head2.right.left.left = new Node(6);
+    head2.right.right = new Node(10);
+    // head2.right.right.left = new Node(9);
+    // head2.right.right.right = new Node(11);
+
+
+    console.log(isCBT(head2));
+  </script>
+
+
+</body>
+
+</html>

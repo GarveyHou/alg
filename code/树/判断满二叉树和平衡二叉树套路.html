@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+    }
+    /* 平衡二叉树套路：
+    列可能性：前提可以向左树要信息
+     1.左树和右树都是平衡的
+     2.左树和右树的高度差不能超过1
+    */
+    /* 要的信息就是，左树是否是平的，高度多少
+    右树是否是平的高度多少 */
+
+    // 定义返回值类型，一个对象，有两个属性，一个是是否平衡，高度是多少
+    class returnRes {
+      constructor(isB, hei) {
+        this.isB = isB
+        this.hei = hei
+      }
+    }
+
+    // 判断一个树的平衡与否，和高度多少,传入一个Node
+    function process(x) {
+      if (x == null) {
+        return new returnRes(true, 0)
+      }
+      var leftData = process(x.left)
+      var rightData = process(x.right)
+
+
+      var height = Math.max(leftData.height, rightData.height) + 1
+      var isBalanced = leftData.isBalanced && rightData.isBalanced && Math.abs(leftData.height - rightData.height) < 2
+
+      return new returnRes(isBalanced, height)
+    }
+
+
+    /* 判断搜索二叉树的递归套路解：
+    1.左树和右树都是搜索二叉树
+    2.左树的最大值小于我，右树的最小值大于我
+    3.12成立则是搜索二叉树
+    */
+    /* 要信息：是否是搜索二叉树，最大值 */
+
+    // return的信息：[isBFT,min,max]，求全集
+    function isBFT(x) {
+      // 没什么好说的，等于空返回null，因为没法返回min或者max值
+      if (x == null) {
+        return null
+      }
+      // 定义左边右边的黑盒，返回的可能null可能【】
+      var leftData = isBFT(x.left)
+      var rightData = isBFT(x.right)
+        // 定义本次遍历的返回【】，min，max，和isB
+      var min = x.val
+      var max = x.val
+        // 如果左边不是空，那么要把本次的min和max和左边最小值最大值pk
+      if (leftData !== null) {
+        min = Math.min(min, leftData[1])
+        max = Math.max(max, leftData[2])
+      }
+      // 如果右边不为空，那么要把本次的min和max和右边最大值最小值pk
+      if (rightData !== null) {
+        min = Math.min(min, rightData[1])
+        max = Math.max(max, rightData[2])
+      }
+      // isB先true，去找悖论
+      var isB = true
+      if (leftData !== null && (!leftData[0] || x.val <= leftData[2])) {
+        isB = false
+      }
+      if (rightData != null && (!rightData[0] || x.val >= rightData[1])) {
+        isB = false
+      }
+      return [isB, min, max]
+    }
+
+
+
+
+
+    /* 用此套路判断满二叉树：
+    成立规则：1.高度，个数，2的height次方等于个数就是满二叉树
+     */
+    /* 信息体定义：【以该节点为根的树的节点个数，当前树的高度】 */
+    function isF(x) {
+      if (x == null) {
+        return [0, 0]
+      }
+      var leftData = isF(x.left)
+      var rightData = isF(x.right)
+      console.log(leftData, rightData);
+
+      var count = leftData[0] + rightData[0] + 1
+      var height = Math.max(leftData[1] + 1, rightData[1] + 1)
+
+      return [count, height]
+    }
+
+
+
+    var head = new Node(10);
+    head.left = new Node(5);
+    head.right = new Node(13);
+    head.left.left = new Node(3);
+    head.left.right = new Node(6);
+    head.right.left = new Node(11);
+    head.right.right = new Node(14);
+    console.log(isBFT(head));
+    console.log(isF(head))
+  </script>
+
+</body>
+
+</html>

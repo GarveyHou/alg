@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* https://www.bilibili.com/video/BV13g41157hK?p=10&vd_source=086479b6b636751bba58df68461700382:25:01 */
+      /* N皇后问题是指在N*N的棋盘上要摆N个皇后，要求任何两个皇后不同行、不同列，也不在同一条斜线上。
+      给定一个整数n，返回n皇后的摆法有多少种。
+      n=1，返回1。
+      n=2或3，2皇后和3皇后问题无论怎么摆都不行，返回0。
+      n=8，返回92 */
+
+      /* 先说思路吧，这其实是一个深度优先暴力递归的的题
+      N*N的棋盘，外层循环n次，表示找每一行应该放的位置 */
+      function main(n) {
+        if (n < 1) {
+          return
+        }
+        // record[1]表示第1行皇后应该放的位置，值为0-7
+        const record = []
+        // 传三个参数，第一个表示到达了第几层
+        return nQueens(0, record, n)
+      }
+      function nQueens(i, record, n) {
+        if (i == n) {
+          return 1
+        }
+        // 保存最终结果
+        let res = 0
+        // j就表示在i层可以放的位置
+        for (let j = 0; j < n; j++) {
+          if (isValid(record, i, j)) {
+            // 如果满足题目要求的条件，那第i层就放j这里
+            record[i] = j
+            // 这里很神奇，比如i等于0，第0行，所有位置都能放，直接开辟了8个nQueens；开辟第一个record[0]=0，搜到底
+            res += nQueens(i + 1, record, n)
+          }
+        }
+        return res
+      }
+      // 验证合法性的函数
+      function isValid(record, i, j) {
+        // 遍历0-（i-1），每一行的数都和j不冲突
+        for (let k = 0; k < i; k++) {
+          // 验证不同列，和不是斜线，不等腰
+          if (j == record[k] || Math.abs(record[k] - j) == Math.abs(i - k)) {
+            return false
+          }
+        }
+        return true
+      }
+
+      console.log(main(4))
+    </script>
+  </body>
+</html>

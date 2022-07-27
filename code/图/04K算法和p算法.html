@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 首先说明，这两个算法都是针对于无向图的算法
+    /* 最小生成树算法 */
+    /* k克鲁斯卡尔算法，以边最小为标准，从最小的边开始找第二小的边，如果加上没有环就加上，如果有环就不加，遍历完所有的边就是最后的最小生成树
+    怎么判断有没有环呢？
+      这里采用的是一种集合，刚开始每个点都是一个集合，找一条最小边，就把from和to集合并在一起成一个集合，如果往复从小到大找边，
+      每次找边如果发现from和to在一个集合里面，那就有环不要 */
+    class Graph {
+      constructor() {
+        // 两个都是键为数字，值为Node和Edge
+        this.nodes = new Map()
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(value) {
+        // value为值；
+        // in为入度；
+        // out为出度；
+        // nexts为指出去的点集合；为Node
+        // edges为属于我的边有哪些，也是指出去的边，为Edge
+        this.value = value
+        this.in = 0
+        this.out = 0
+        this.nexts = []
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(weight, from, to) {
+        // weight表示权重
+        // from表示从哪里来,为Node
+        // to表示去那里去，为Node
+        this.weight = weight
+        this.from = from
+        this.to = to
+      }
+    }
+
+    // 先实现一个简单的并查集结构
+    class MySets {
+      // setMap key：node value：这个node所在的集合
+      setMap = new Map()
+      constructor(nodes) {
+        // 遍历所有node，都各自开辟一个set集合，将自己放进去，并且设置setMap
+        for (var cur of nodes) {
+          var set = []
+          set.push(cur)
+          this.setMap.set(cur, set)
+        }
+      }
+
+      // 最重要的方式就是判断两个node是不是属于同一个集合,直接取出集合然后判断内存地址即可
+      isSameSet(from, to) {
+          var fromSet = this.setMap.get(from)
+          var toSet = this.setMap.get(to)
+          return fromSet === toSet
+        }
+        //更不用说，把to的set里所有node放到from里面去，然后设置所有to的集合的node对应的集合变成fromset
+      union(from, to) {
+        var fromSet = this.setMap.get(from)
+        var toSet = this.setMap.get(to)
+        for (var toNode of toSet) {
+          fromSet.push(toNode)
+          this.setMap.set(toNode, fromSet)
+        }
+      }
+    }
+
+    // 真正的克鲁斯卡尔算法实现
+    function kruskalMST(graph) {
+      var mySet = new MySets(graph.nodes.values())
+      var edges = graph.edges
+        // 将边从小到大排个序
+      edges.sort((a, b) => {
+          return a.weight - b.weight
+        })
+        // 保存结果，存着需要留下的边
+      var result = new Set()
+        // 遍历边，判断是否from和to是同一个集合，不是就合并，并且把这个边放入result里面
+      while (edges.length !== 0) {
+        var edge = edges.shift()
+        if (!mySet.isSameSet(edge.from, edge.to)) {
+          result.add(edge)
+          mySet.union(edge.from, edge.to)
+        }
+      }
+      return result
+    }
+    /* prim算法 */
+    /* 从点的角度来选择，从A点开始解锁边，找最小边，解锁下一个点和它连出去的边，循环往复，如果找到的边两个点都在集合中就跳过 */
+
+    /* 实现：
+    一个从小到大排好序的边的队列，java里叫小根堆
+    两个集合，一个是已经要的点的集合
+    一个是已经要的边的集合，这个集合也就是result了，因为有边就有图了
+    随便挑一个点为起始点，判断是否在set里，如果不在，就加到set里面，并且把他的边解锁也就是放到那个队列里面，然后主要队列不是空，就从队列中拿出一个最小的边，去判断这个边是否有用，即to是不是在点的集合里面，如果不在的话，就点加入集合，也加入result，并且解锁新的边 */
+
+    /* js实现一各java中的小根堆 */
+    class Heap {
+      constructor() {
+        this.arr = []
+      }
+      push(edge) {
+        this.arr.push(edge)
+        this.arr.sort((a, b) => {
+          return a.weight - b.weight
+        })
+      }
+      shift() {
+        return this.arr.shift()
+      }
+      isEmpty() {
+        return this.arr.length == 0
+      }
+    }
+
+    function primMST(graph) {
+      // 整一个自己定义的小根堆
+      var heap = new Heap()
+        // set存放已经要的点的集合
+      var set = new Set()
+        // result存放已经要的边的集合
+      var result = new Set()
+        // 这个for循环其实在连通图中不需要，只是怕有森林情况所有for所有节点
+      var node = graph.nodes.get(1)
+        // console.log(node);
+        // for (var node of graph.nodes.values()) {
+      if (!set.has(node)) {
+        set.add(node)
+        for (var edge of node.edges) {
+          console.log(edge);
+          heap.push(edge)
+        }
+      }
+      // console.log(set);
+      // console.log(heap);
+      if (!heap.isEmpty()) {
+        var edge = heap.shift()
+        var toNode = edge.to
+        if (!set.has(toNode)) {
+          set.add(toNode)
+          result.add(edge)
+          for (var nextEdge of toNode.edges) {
+            heap.push(nextEdge)
+          }
+        }
+      }
+      // }
+      return result
+    }
+
+
+    /* 迪杰特斯拉算法，使用前提：没有权值为负的边（在深入理解可以说是没有累加和为负数的环，因为有环又有个负数哪一只转肯定越来越小）  */
+    /*必须有一个出发点，比如一共ABCDE以A为出发点
+      首先设置到A为0，到BCDE为正无穷，然后找A伸出去的边，到A的长度加上伸出去的长度就是到其他点的距离，如果比当前表中的值小，更新。把A的做完之后，A就不用看了，因为到A已经最小了。
+      然后再从其他的距离找最小距离的点，循环往复，最后表中每个点的值就是A到这个点的最短距离
+     */
+
+    function dijkstra(node) {
+      //  存放node到每个点的最短距离的点，如果没有节点的key默认正无穷
+      var distanceMap = new Map();
+      // 设置A到自己的距离是0
+      distanceMap.set(node, 0)
+        // 存放已经不能再动的node
+      var selectedNodes = new Set();
+      // 取出distanceMap中最小距离的点且不在selectedNodes
+      var minNode = getMinNode(distanceMap, selectedNodes)
+
+      while (minNode !== null) {
+        // 当前找到最小距离的点的距离，为找其他点然后加而准备
+        var distance = distanceMap.get(minNode)
+        for (var edge of minNode.edges) {
+          // 找到这点的边去的地方
+          var toNode = edge.to
+            // 如果在distanceMap里面找不到这个点的key说明是正无穷，直接更新
+          if (!distanceMap.get(toNode)) {
+            distanceMap.set(toNode, distance + edge.weight)
+          } else {
+            // 找到了这个key，那么就比较当前key对应的距离和当前节点的举例+这个edge的举例是不是小于这个原先的value
+            distanceMap.set(toNode, Math.min(distanceMap.get(toNode), distance + edge.weight))
+          }
+        }
+        // 没什么好说的，当前点要封死了，然后取下一个minNode
+        selectedNodes.add(minNode)
+        minNode = getMinNode(distanceMap, selectedNodes)
+      }
+      return distanceMap
+    }
+
+    function getMinNode(distanceMap, touchedNodes) {
+      var minNode = null;
+      var minDistance = Number.MAX_VALUE;
+      for (var entry of distanceMap.entries()) {
+        var node = entry[0]
+        var distance = entry[1]
+        if (!touchedNodes.has(node) && distance < minDistance) {
+          minNode = node
+          minDistance = distance
+        }
+      }
+      return minNode
+    }
+
+
+    var node1 = new Node(1)
+    var node2 = new Node(2)
+    var node3 = new Node(3)
+    var edge1 = new Edge(1, node1, node2)
+    var edge2 = new Edge(2, node2, node3)
+    var edge3 = new Edge(3, node1, node3)
+    node1.edges.push(edge3)
+    node1.edges.push(edge1)
+
+    node2.edges.push(edge1)
+    node2.edges.push(edge2)
+    node3.edges.push(edge3)
+    node3.edges.push(edge2)
+    var graph = new Graph()
+    graph.nodes.set(1, node1)
+    graph.nodes.set(2, node2)
+    graph.nodes.set(3, node3)
+    graph.edges.push(edge1)
+    graph.edges.push(edge2)
+    graph.edges.push(edge3)
+      // console.log(kruskalMST(graph));
+    console.log(primMST(graph));
+
+    // var map = new Map();
+    // map.set(1, 2)
+    // map.set(2, 3)
+    // for (var entry of map.entries()) {
+    //   console.log(entry[0]);
+    // }
+
+
+
+    // var myset1 = new MySets(nodes)
+
+    // console.log(myset1.isSameSet(node1, node2));
+    // myset1.union(node1, node2)
+    // console.log(myset1.isSameSet(node1, node2));
+    // console.log(myset1.isSameSet(node1, node3));
+    // myset1.union(node1, node3)
+    // console.log(myset1.isSameSet(node1, node3));
+    // console.log(myset1.isSameSet(node1, node2));
+
+
+
+    // console.log(myset1);
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+    class Node {
+      constructor(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+    }
+
+    /* 能不能把一棵树的结构和值变成一个字符串 */
+
+    /* 先实现序列化，利用先序遍历，#_为空，1_表示节点1 */
+
+    function serialByPre(head) {
+      if (head == null) {
+        return '#_'
+      }
+      var res = head.val + '_'
+      res += serialByPre(head.left)
+      res += serialByPre(head.right)
+      return res
+    }
+    // 反序列化，根据字符串变成树
+    function reconByPre(preStr) {
+      var values = preStr.split('_')
+      var queue = []
+      for (var i = 0; i < values.length; i++) {
+        queue.push(values[i])
+      }
+      return reconPreOrder(queue)
+    }
+    // 没什么好说的，分割出前序的串，放入队列
+    function reconPreOrder(queue) {
+      var value = queue.shift()
+      if (value === '#') {
+        return null
+      }
+      var head = new Node(value)
+      head.left = reconPreOrder(queue)
+      head.right = reconPreOrder(queue)
+      return head
+    }
+
+
+
+
+    /* 中序序列化：自己写的 */
+    function serialByIn(head) {
+      if (head == null) {
+        return '#_'
+      }
+      var res = serialByIn(head.left)
+      res += head.val + '_'
+      res += serialByIn(head.right) + ''
+      return res
+    }
+
+    function reconByIn(preStr) {
+      var values = preStr.split('_')
+      var queue = []
+      for (var i = 0; i < values.length; i++) {
+        queue.push(values[i])
+      }
+      return reconInOrder(queue)
+    }
+    // 没什么好说的，分割出前序的串，放入队列
+    function reconInOrder(queue) {
+      var value = queue.shift()
+      if (value === '#') {
+        return null
+      }
+      head.left = reconInOrder(queue)
+      var head = new Node(value)
+      head.right = reconInOrder(queue)
+      return head
+    }
+
+
+
+    var head = new Node(1)
+    head.left = new Node(1)
+    head.left.right = new Node(1)
+    head.right = new Node(1)
+
+    console.log(serialByPre(head));
+    console.log(reconByPre(serialByPre(head)))
+    console.log(serialByIn(head));
+    console.log(reconByIn(serialByIn(head)));
+  </script>
+
+</body>
+
+</html>
