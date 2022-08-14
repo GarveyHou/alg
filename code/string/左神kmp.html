@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 左神kmp算法：
+  str1，str2，查找str1中是不是有str2，如果存在返回位置;匹配不到返回-1
+   -->
+  <script>
+    var kmp = function (s, m) {
+      if (s == null || m == null || s.length < 1 || m.length < 1) {
+        return -1
+      }
+      // 分割成数组先
+      const str1 = s.split('')
+      const str2 = m.split('')
+      // 求出next数组
+      const next = getNextArr(str2)
+      // i为str1匹配到的位置，j为str2匹配到的位置
+      let i = 0, j = 0
+
+      while (i < str1.length && j < str2.length) {
+        // 如果i和j位置匹配上了，都++
+        if (str1[i] == str2[j]) {
+          i++
+          j++
+        } else if (j == 0) {
+          //这一句的意思是上次循环中j已经走过next[j]==0让此轮的j==0,也就是从0开始比，但是j==0也没有和i匹配上（因为上一个if没中）；让str1往下动一个吧
+          i++
+        } else {
+          // 让j移到next【j】的位置和i重新比
+          j = next[j]
+        }
+      }
+      // 只有是因为j越界跳出while循环才是匹配成功，返回i-j
+      return i2 = str2.length ? i - j : -1
+    }
+
+    // next数组，next【1】==0，next【0】=-1，
+    // 比如就ab，当前在b，那next【1】=0，下次去a
+    // 比如就ab，当前在a，那next【0】=-1，下次寄，让另一个串往下移去吧
+    /* 非01位置的next怎么算：
+    比如当前要求i位置的next，
+    比较next[i-1]和i-1这两个位置的值，如果相等，i位置的next就是next[i-1]+1；如果这两个位置的值不相等，那就继续i-1位置的值和next[next[i-1]]的值比，相等就等于next[next[i-1]]+1；如此往复，如果一直不相等直到让比的那个成0了，直接返回-1 */
+    var getNextArr = function (str2) {
+      if (str2.length == 1) {
+        return [-1]
+      }
+      const next = new Array(str2.length)
+      // 01初始化
+      next[0] = -1
+      next[1] = 0
+      // 从2开始算
+      let i = 2
+      // 用cn位置的字符和i-1位置的字符比,当i=2的时候，cn是0
+      let cn = 0
+      // 遍历计算next
+      while (i < next.length) {
+        // 说明匹配上了
+        if (str2[i - 1] == str2[cn]) {
+          /* 其实就是:
+          cn++
+          next[i]=cn
+          i++ 
+          让next【i】等于cn+1，
+          直接计算下一个i，
+          并且cn+1操作也包含在里面，因为下一次i，次轮又匹配上了，cn+1继续和下一个i 的i-1比*/
+          next[i++] = ++cn
+        } else if (next[cn] > 0) {
+          // 没匹配上，一直next【cn】，直到匹配上或者没的匹配了，next【cn】=-1，cn=0，直接返回0
+          cn = next[cn]
+        } else {
+          // cn=0都没匹配上，哪一个都没有
+          next[cn] = 0
+        }
+      }
+      return next
+    }
+
+  </script>
+</body>
+
+</html>
