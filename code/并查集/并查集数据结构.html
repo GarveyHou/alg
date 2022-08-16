@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    // 代表元素:就是某个node的往上不能往上那个节点
+    class Element {
+      // 经典包一层，表示一个圈
+      constructor(value) {
+        this.value = value
+      }
+    }
+    class UnionFindSet {
+      constructor(values) {
+        // <V,Element>,key为当前数字，value是当前数字对应的元素node，（这个node就是value包了一层而已，不是代表元素）
+        this.elementMap = new Map()
+        // <Element,Element>,key是当前node，value是父元素node
+        this.fatherMap = new Map()
+        // <Element,Number>,key是代表元素node，Number是代表元素这一块的元素个数
+        this.sizeMap = new Map()
+
+        for (let value of values) {
+          // 初始化并查集三个map，根据对应的含义
+          var element = new Element(value)
+          elementMap.set(value, element)
+          fatherMap.set(element, element)
+          sizeMap.set(element, 1)
+        }
+      }
+
+
+      // 返回element这个node的往上不能在往上的代表元素
+      findHead(element) {
+        // stack存放路径上的element，然后最后要直接连到代表元素上
+        var stack = []
+        while (element !== this.elementMap.get(element)) {
+          element = this.fatherMap.get(element)
+          stack.push(element)
+        }
+        while (stack.length !== 0) {
+          fatherMap.set(stack.pop(), element)
+        }
+        return element
+      }
+
+      // ab都是Number，外界是碰不到elemnt的
+      /* 思路：很简单，判断这两个元素有没有被封装过，没封装过直接fasle
+      如果都封装过，返回他们的代表元素看是不是同一个 */
+      isSameSet(a, b) {
+        if (this.elementMap.get(a) && this.elementMap.get(b)) {
+          return findHead(this.elementMap.get(a)) == findHead(this.elementMap.get(b))
+        }
+        return false
+      }
+      // union操作：先判断是不是两个number都有封装过，然后拿到他们的代表元素，判断相等，如果不等才要合并。
+      // 合并：找到sizemap中代表元素对应的size，小的和大的，然后把小的fatherMap设置为大的;并把大的的sizeMap值增大；然后再sizeMap中把小的key删掉，因为small已经不存在了
+      // a,b都是number
+
+      union(a, b) {
+        if (this.elementMap.get(a) && this.elementMap.get(b)) {
+          var aF = findHead(this.elementMap.get(a))
+          var bF = findHead(this.elementMap.get(b))
+          if (aF != bF) {
+            var big = sizeMap.get(aF) >= sizeMap.get(bF) ? aF : bF;
+            var small = big == aF ? bF : aF;
+            fatherMap.set(small, big);
+            sizekMap.set(big, sizeMap.get(aF) + sizeMap.get(bF));
+            sizeMap.remove(small);
+
+          }
+        }
+      }
+
+
+
+
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>
