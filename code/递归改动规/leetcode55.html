@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*  给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。数组中的每个元素代表你在该位置可以跳跃的最大长度。判断你是否能够到达最后一个下标。*/
+    const nums = [2, 3, 1, 1, 4]
+    var process = function (nums, target, i) {
+      if (i == target) {
+        return true
+      }
+      if (i > target) {
+        return false
+      }
+      let ways = nums[i]
+      for (let j = 1; j <= ways; j++) {
+        if (process(nums, target, i + j)) {
+          return true
+        }
+      }
+      return false
+    }
+    console.log(process(nums, nums.length - 1, 0))
+
+
+    var process2 = function (nums, target, i, dp) {
+      if (dp[i]) {
+        return dp[i]
+      }
+      if (i == target) {
+        dp[i] = true
+      } else if (i > target) {
+        dp[i] = false
+      } else {
+
+        let ways = nums[i]
+        for (let j = 1; j <= ways; j++) {
+          if (process(nums, target, i + j, dp)) {
+            dp[i] = true
+          }
+        }
+      }
+      return dp[i]
+    }
+    console.log(process(nums, nums.length - 1, 0, dp))
+  </script>
+
+</body>
+
+</html>

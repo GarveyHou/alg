@@ -11,17 +11,51 @@
 <body>
   <script>
     /* 给定一个数组，求出每个数字左右两边比自己大的最近的数，如果没有则返回无；
-
     // 无重复值
     一个栈，遍历数组，栈要时刻保持底>顶
     遍历当前数组：如果比顶还小直接放入；
     如果比顶大，当前的顶a弹出返回结果，左边比a大的最近的是a往下那个（也就是顶弹出后的顶），如果下面没了，无；右边就是当前遍历的使得它弹出的数；
     最后遍历完了，把栈每一个弹出，清算，左边就是下面，右边无； 下面都没了，那都没有
     
-    
     // 有重复值
     下标压一起，其他都不变，就是栈里放的是数组，如果相等，【1,2】 4，比如放入的和栈顶都是4，把下标放一起作为栈的一个数据；当要结算的时候，这两个一起结算（只是左边的是下面压的最后一个位置的那个数）
     */
+    const arr = [5, 4, 3, 6, 1, 2, 0, 7]
+    var fn = function () {
+      const stack = []
+      const map = new Map()
+      arr.forEach(item => {
+        if (stack.length == 0) {
+          stack.push(item)
+        } else if (stack[stack.length - 1] > item) {
+          stack.push(item)
+        } else {
+          while (stack.length !== 0 && stack[stack.length - 1] < item) {
+            var cur = stack.pop()
+            if (stack.length == 0) {
+              var left = null
+              map.set(cur, [left, item])
+            } else {
+              var left = stack[stack.length - 1]
+              map.set(cur, [left, item])
+            }
+          }
+          stack.push(item)
+        }
+      })
+      return map
+    }
+    console.log(fn())
+
+
+
+
+
+    /* 单调栈题型：
+     */
+    /* 数组中累计和与最小值的乘积，叫指标A
+    给定一个数组，请返回子数组中，指标A最大的值 */
+    /* 上题是一个单调栈，遍历数组每个数字，假设他是所在子数组的最小值，用单调栈找到他是最小值的子数组最大范围，然后最终得到解 */
   </script>
 
 
