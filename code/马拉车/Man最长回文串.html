@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 回文半径，直径。（C,R）使得扩出来的有边界变得更大，的中心点，和右边界 -->
+  <script>
+    /* 这个函数只要是要把原来的串塞#进去，然后返回，就这么简单 
+    eg:abcd --> #a#b#c#d#*/
+    var manncherString = function (s) {
+      const arr = s.split('')
+      const str = new Array(s.length * 2 + 1)
+      let index = 0
+      for (let i = 0; i < str.length; i++) {
+        // 填充，奇数#，偶数原串
+        str[i] = (i & 1) == 0 ? '#' : arr[index++]
+      }
+      return str
+    }
+
+    //返回的res就是每个点为中心点的最长回文半径，再-1就是原串的回文串直径 
+    /* 两个大方向，C，R两个变量，表示当前扩的过程中，扩的最远的位置R，是由C扩来的
+    一、i>R：不用多说，暴力扩
+    二、i<R：
+        C的范围【】，i和i'的范围（)
+        1.如果 i关于c的对称点，i'会回文直径都在当前C扩出来的返回内，则res[i]=res[i']
+        [L (  i'  ) C (  i  )  R] 
+        2.如果i'扩出来的部分已经出L了，则res[i]=R-i
+        ( [L  i'   ) C (   i   R)]
+        3.如果i'扩出来的边界刚好压在L上,则i扩出来的边界至少是R-i，能否更大，害的看k和l是不是一样，如果一样则更大，直到不一样
+        [(L   i'      )  C  L（    i   R]）k
+        */
+    var manncher = function (s) {
+      const str = manncherString(s)
+      // 保存每个位置的回文半径
+      const res = new Array(s.length * 2 + 1)
+      // 表示现在能扩到最远的那个点C和最远位置R
+      let C = -1,
+        R = -1 //跟上面写的解释有点偏差，R表示的是C扩出来的有边界的下一个位置
+      for (let i = 0; i < res.length; i++) {
+        // 这就很神奇了，先把当前至少不用去试的回文半径长度存一下,2*C-1是由 (i+i')/2 = c换过来的
+        res[i] = i < R ? Math.min(2 * C - i, R - i) : 1
+        // 神奇的地方出现了，因为res【i】保存的是当前至少不用扩的，所以只需再判断能不能左右扩，就可以覆盖上面的四种情况，二1，,2都是不能扩的直接break，只有一和二3才会扩下去
+        // 判断有效,且i+res【i]表示的就是下一个要扩的地方了
+        while (i + res[i] < str.length && i - res[i] > -1) {
+          if (str[i + res[i]] == str[i - res[i]]) {
+            res[i]++
+          } else {
+            break
+          }
+        }
+        // 每个点的res求出来，更新一下CR
+        if (i + res[i] > R) {
+          R = i + res[i]
+          C = i
+        }
+      }
+      // 求数组最大值-1
+      return Math.max(...res) - 1
+    }
+    let s = 'aba'
+    console.log(manncher(s))
+  </script>
+
+</body>
+
+</html>
