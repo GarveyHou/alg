@@ -10,12 +10,42 @@
 
 <body>
   <script>
+    /* 就是那个窗口滑滑滑，把当前窗口内最大值放入数组，且复杂度要O(n） */
     /* 一个双端队列其实就是js的数组
     一个数组‘3,5,4,6,4,7,2’
     刚开始LR两个指针在最左边
     R往右一次，则进来一个，把数组头比当前进来值小的和相等的的pop，然后把当前进来值push
     L往右一次，则出去一个，如果出去的和当前数组尾那个相等，则尾出去shift，否则不用动 */
     /* 任何时候尾部那个都是维持一个最大值 */
+    let arr = [5, 4, 3, 7, 2, 3, 0, 1]
+    let x = 3
+    var fn = function () {
+      let l = -1,
+        r = l + x
+      const queue = []
+      const res = []
+      for (let i = 0; i < r; i++) {
+        while (queue.length !== 0 && queue[queue.length - 1] < arr[i]) {
+          queue.pop()
+        }
+        queue.push(arr[i])
+      }
+      res.push(queue[0])
+      for (let i = 0; i < arr.length - x; i++) {
+        r++
+        while (queue.length !== 0 && queue[queue.length - 1] <= arr[r]) {
+          queue.pop()
+        }
+        queue.push(arr[r])
+        l++
+        if (arr[l] == queue[0]) {
+          queue.shift()
+        }
+        res.push(queue[0])
+      }
+      return res
+    }
+    console.log(fn())
   </script>
 
 </body>
