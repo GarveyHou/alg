@@ -12,6 +12,7 @@
   <script>
     /*  给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。数组中的每个元素代表你在该位置可以跳跃的最大长度。判断你是否能够到达最后一个下标。*/
     const nums = [2, 3, 1, 1, 4]
+    let target = nums.length - 1
     var process = function (nums, target, i) {
       if (i == target) {
         return true
@@ -29,7 +30,7 @@
     }
     console.log(process(nums, nums.length - 1, 0))
 
-
+    // const dp = new Array(nums.length)
     var process2 = function (nums, target, i, dp) {
       if (dp[i]) {
         return dp[i]
@@ -39,7 +40,6 @@
       } else if (i > target) {
         dp[i] = false
       } else {
-
         let ways = nums[i]
         for (let j = 1; j <= ways; j++) {
           if (process(nums, target, i + j, dp)) {
@@ -49,7 +49,27 @@
       }
       return dp[i]
     }
-    console.log(process(nums, nums.length - 1, 0, dp))
+    // console.log(process(nums, nums.length - 1, 0, dp))
+
+
+    const dp = new Array(nums.length)
+    var n = nums.length - 1
+    var process3 = function (i) {
+      dp[n] = true
+      for (let i = n - 1; i >= 0; i--) {
+        let ways = nums[i]
+        for (let j = 1; j <= ways; j++) {
+          if (dp[i + j] == true) {
+            dp[i] = true
+            break;
+          }
+        }
+        dp[i] = false
+      }
+      return dp[0]
+
+
+    }
   </script>
 
 </body>
