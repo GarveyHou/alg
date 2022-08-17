@@ -18,54 +18,53 @@
     /* 直接写的就是优化过空间的写法，str承载了到i时之前选择的串，i为当前决策的位置，res为全排列字符串结果数组 */
 
     /* 本轮的fn可以把i到最后所有的都放在i位置，开辟一个情况，然后递归，最后还要把str还原一下，进行下一轮for循环的开辟 */
-    let fn = function (str, i, res) {
-      if (i == str.length) {
-        res.push(str.join(""))
-        return
-      }
-      /* 用一个visit数组来判断这个字母试过没试过 */
-      const visit = new Array(26).fill(null)
-      for (let j = i; i < str.length; i++) {
-        // 没试过我才试
-        if (!visit[str[j] - 'a']) {
-          str = swap(str, i, j)
-          fn(str, i + 1, res)
-          str = swap(str, i, j)
-          // 说明这个已经填过i这个位置了
-          visit[str[j] - 'a'] = 1
-        }
-      }
-      return res
-    }
+    // let fn = function (str, i, res) {
+    //   if (i == str.length) {
+    //     res.push(str.join(""))
+    //     return
+    //   }
+    //   /* 用一个visit数组来判断这个字母试过没试过 */
+    //   const visit = new Array(26).fill(null)
+    //   for (let j = i; i < str.length; i++) {
+    //     // 没试过我才试
+    //     if (!visit[str[j] - 'a']) {
+    //       str = swap(str, i, j)
+    //       fn(str, i + 1, res)
+    //       str = swap(str, i, j)
+    //       // 说明这个已经填过i这个位置了
+    //       visit[str[j] - 'a'] = 1
+    //     }
+    //   }
+    //   return res
+    // }
 
-    function swap(str, i, j) {
-      let temp = str[j]
-      str[j] = str[i]
-      str[i] = temp
-      return str
-    }
-    console.log(fn(["a", "a", "a"], 0, []))
+    // function swap(str, i, j) {
+    //   let temp = str[j]
+    //   str[j] = str[i]
+    //   str[i] = temp
+    //   return str
+    // }
+    // console.log(fn([10, 2], 0, []))
 
     /* leetcode版本 */
     var permutation = function (s) {
       let str = s.split('')
       return process(str, 0, [])
     };
-    var process = function (str, i, res) {
+    var res = []
+    var process = function (str, i, cur) {
       if (i == str.length) {
-        res.push(str.join(''))
-        return
+        res.push(cur)
       }
       var set = new Set()
       for (let j = i; j < str.length; j++) {
         if (!set.has(str[j])) {
           swap(str, i, j)
-          process(str, i + 1, res)
+          process(str, i + 1, cur + str[i])
           swap(str, i, j)
           set.add(str[j])
         }
       }
-      return res
     }
     var swap = function (arr, x, y) {
       let temp = arr[y]
@@ -73,6 +72,9 @@
       arr[x] = temp
       return arr.join('')
     }
+    let str = [10, 2]
+    process(str, 0, '')
+    console.log(res)
   </script>
 
 </body>

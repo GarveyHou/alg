@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Info {
+      constructor(maxDistance, height) {
+        this.maxDistance = maxDistance;
+        this.height = height;
+      }
+    }
+    var process = function (root) {
+      if (x == null) {
+        return new Info(0, 0)
+      }
+      var leftInfo = process(x.left)
+      var rightInfo = process(x.right)
+
+      var p1 = leftInfo.maxDistance
+      var p2 = rightInfo.maxDistance
+      var p3 = leftInfo.height + 1 + rightInfo.height
+      var maxDistance = Math.max(p3, Math.max(p1, p2))
+      var height = Math.max(leftInfo.height + 1 + rightInfo.height)
+      return new Info(maxDistance, height)
+
+    }
+  </script>
+
+</body>
+
+</html>
