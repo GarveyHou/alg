@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Employee {
+      // 员工有个快乐值，list是这个员工的直接下级，宴会员工来，它的直接下级就不能来。求宴会最大快乐值
+      constructor(happy, list) {
+        this.happy = happy
+        this.list = list
+      }
+    }
+    // 递归返回
+    class Info {
+      constructor(laiMaxHappy, buMaxHappy) {
+        // 某个节点来最大快乐值和不来最大快乐值
+        this.laiMaxHappy = laiMaxHappy
+        this.buMaxHappy = buMaxHappy
+      }
+    }
+    // 主函数
+    var main = function (root) {
+      return Math.max(process(root).laiMaxHappy, process(root).buMaxHappy)
+    }
+
+    // 传进去的 是一个根节点的Info对象
+    var process = function (root) {
+      if (!root.list) {
+        return new Info(root.happy, 0)
+      }
+
+      let lai = root.happy,
+        bu = 0
+      for (let item of root.list) {
+        let nextInfo = process(item)
+        lai += nextInfo.buMaxHappy
+        bu += Math.max(nextInfo.laiMaxHappy, nextInfo.buMaxHappy)
+      }
+      return new Info(lai, bu)
+    }
+
+    /* 题意， */
+  </script>
+
+</body>
+
+</html>

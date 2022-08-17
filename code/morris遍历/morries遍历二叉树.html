@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 13集36分钟 */
+    // 另一种说法，线索二叉树
+
+    class Node {
+      constructor(val) {
+        this.val = val
+        this.left = null
+        this.right = null
+      }
+    }
+
+
+    // 原生的morris算法
+    var morris = function (root) {
+      if (root == null) {
+        return
+      }
+      var cur = root
+      var mostRight = null
+      while (cur !== null) {
+        console.log(cur.val)
+        mostRight = cur.left
+        if (mostRight !== null) {
+          while (mostRight.right !== null && mostRight.right !== cur) {
+            mostRight = mostRight.right
+          }
+          if (mostRight.right == null) {
+            mostRight.right = cur
+            cur = cur.left
+
+            continue
+          } else {
+            mostRight.right = null
+          }
+        }
+        cur = cur.right
+      }
+    }
+    // 输出的是线索二叉树，就是深度遍历的轨迹
+    morris(head)
+
+
+    // morris变成先序遍历,只一次与直接输出；有两次，只第一次到cur的时候才输出。没左子树肯定是只一次直接输出
+    var morrisPre = function (root) {
+      if (root == null) {
+        return
+      }
+      var cur = root
+      var mostRight = null
+      while (cur !== null) {
+        mostRight = cur.left
+        if (mostRight !== null) {
+          while (mostRight.right !== null && mostRight.right !== cur) {
+            mostRight = mostRight.right
+          }
+          // 第一次到这个输出一次
+          if (mostRight.right == null) {
+            console.log(cur.val)
+            mostRight.right = cur
+            cur = cur.left
+            continue
+          } else {//第二次到
+            mostRight.right = null
+          }
+        } else {//没有左子树啊，那肯定是第一次，直接输出
+          console.log(cur.val)
+        }
+        cur = cur.right
+      }
+    }
+
+
+
+    // morris改中序遍历，只一次直接输出；有两次的第二次输出；
+    var morrisMid = function (root) {
+      if (root == null) {
+        return
+      }
+      var cur = root
+      var mostRight = null
+      while (cur !== null) {
+        mostRight = cur.left
+        if (mostRight !== null) {
+          while (mostRight.right !== null && mostRight.right !== cur) {
+            mostRight = mostRight.right
+          }
+          // 第一次到这个输出一次
+          if (mostRight.right == null) {
+            mostRight.right = cur
+            cur = cur.left
+            continue
+          } else {//第二次到
+            mostRight.right = null
+          }
+        }
+        //没有左子树啊，那肯定是第一次，直接输出；也包含了上面的第二次到的else，也会走这一步；
+        console.log(cur.val)
+        cur = cur.right
+      }
+    }
+
+
+
+    // morris改后序遍历
+
+
+
+    var head = new Node(5)
+    head.left = new Node(3)
+    head.right = new Node(8)
+    head.left.left = new Node(2)
+    head.left.right = new Node(4)
+    head.left.left.left = new Node(1)
+    head.right.left = new Node(7)
+    head.right.left.left = new Node(6)
+    head.right.right = new Node(10)
+    head.right.right.left = new Node(9)
+    head.right.right.right = new Node(11)
+    // morrisPre(head)
+    morrisMid(head)
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
