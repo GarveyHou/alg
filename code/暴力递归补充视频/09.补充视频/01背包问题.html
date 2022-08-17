@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /* 01背包问题，weights，values数组表示重量和价值，传入一个n，表示背包最大容量，求最大价值 */
+    /* 
+    fn:到i-1位置的最大价值
+    weight：到i之前已经有的重量
+    weight:当前已经到的重量
+    value:当前已经到的价值
+    i：当前决策位置 */
+    let process = function(weights,values,bag,weight,value,i){
+      if(weight>bag){
+        return 0
+      }
+      // 当前已经到最后位置了，没货了，价值是0
+      if(i==weights.length){
+        return value
+      }
+      return Math.max(process(weights,values,bag,weight,value,i+1),process(weights,values,bag,weight+weights[i],value+values[i],i+1))
+    }
+
+    const weights = [1,2,3,4]
+    const values = [2,4,4,5]
+    console.log(process(weights,values,5,0,0,0))
+
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /* n皇后问题：
+    i:到i位置之后可能的有多少种情况 */
+    let process = function(i,record,n){
+      const record = new Array(n)
+      let res = 0
+      if(i == n){
+        return 1
+      }
+      for(let j=0;j<n;j++){
+        if(isValid(record,i,j)){
+          record[i] = j
+          res+=process(i+1,record,n)
+        }
+      }
+      return res
+    }
+    let isValid = function(record,i,j){
+      for(let k=0;k<i;k++){
+        if(record[k]==j||Math.abs(j-record[k])==Math.abs(i-k)){
+          return false
+        }
+      }
+      return true
+    }
+
+
+  </script>
+  
+</body>
+</html>
