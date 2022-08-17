@@ -17,9 +17,6 @@
     // 打印字符串全排列
     /* 直接写的就是优化过空间的写法，str承载了到i时之前选择的串，i为当前决策的位置，res为全排列字符串结果数组 */
 
-
-
-
     /* 本轮的fn可以把i到最后所有的都放在i位置，开辟一个情况，然后递归，最后还要把str还原一下，进行下一轮for循环的开辟 */
     let fn = function (str, i, res) {
       if (i == str.length) {
@@ -48,6 +45,34 @@
       return str
     }
     console.log(fn(["a", "a", "a"], 0, []))
+
+    /* leetcode版本 */
+    var permutation = function (s) {
+      let str = s.split('')
+      return process(str, 0, [])
+    };
+    var process = function (str, i, res) {
+      if (i == str.length) {
+        res.push(str.join(''))
+        return
+      }
+      var set = new Set()
+      for (let j = i; j < str.length; j++) {
+        if (!set.has(str[j])) {
+          swap(str, i, j)
+          process(str, i + 1, res)
+          swap(str, i, j)
+          set.add(str[j])
+        }
+      }
+      return res
+    }
+    var swap = function (arr, x, y) {
+      let temp = arr[y]
+      arr[y] = arr[x]
+      arr[x] = temp
+      return arr.join('')
+    }
   </script>
 
 </body>
