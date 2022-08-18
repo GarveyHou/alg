@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(val, next) {
+        this.val = val
+        this.next = next
+      }
+    }
+
+    var fn = function (head) {
+      var pre = null
+      var cur = head
+      while (cur !== null) {
+        var next = cur.next
+        cur.next = pre
+        pre = cur
+        cur = next
+      }
+      return pre
+    }
+  </script>
+
+</body>
+
+</html>

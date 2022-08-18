@@ -13,6 +13,7 @@
     /* 13集36分钟 */
     // 另一种说法，线索二叉树
 
+    // 需要第三次的强整合，树形dp递归套路最优解；不用强整合就morris最优解
     class Node {
       constructor(val) {
         this.val = val
@@ -20,7 +21,6 @@
         this.right = null
       }
     }
-
 
     // 原生的morris算法
     var morris = function (root) {
@@ -71,10 +71,10 @@
             mostRight.right = cur
             cur = cur.left
             continue
-          } else {//第二次到
+          } else { //第二次到
             mostRight.right = null
           }
-        } else {//没有左子树啊，那肯定是第一次，直接输出
+        } else { //没有左子树啊，那肯定是第一次，直接输出
           console.log(cur.val)
         }
         cur = cur.right
@@ -82,7 +82,7 @@
     }
 
 
-
+    // 可以用中序遍历来判断是不是搜索二叉树，如果中序遍历是升序的话;注释的就是判断是否搜索二叉树
     // morris改中序遍历，只一次直接输出；有两次的第二次输出；
     var morrisMid = function (root) {
       if (root == null) {
@@ -90,6 +90,7 @@
       }
       var cur = root
       var mostRight = null
+      // var preValue = Number.MIN_VALUE
       while (cur !== null) {
         mostRight = cur.left
         if (mostRight !== null) {
@@ -101,19 +102,78 @@
             mostRight.right = cur
             cur = cur.left
             continue
-          } else {//第二次到
+          } else { //第二次到
             mostRight.right = null
           }
         }
+
+        // if(preValue>cur.value){
+        //   return false
+        // }
+        // preValue = cur.value
+
         //没有左子树啊，那肯定是第一次，直接输出；也包含了上面的第二次到的else，也会走这一步；
         console.log(cur.val)
         cur = cur.right
       }
+      return true
+    }
+
+
+    // morris改后序遍历
+    // 打印时机只在能回到两次的节点上操作，第二次回到的时候逆序打印自己左树的右边界；最后逆序打印整树的右边界；就是后序遍历
+    var morrisPos = function (root) {
+      if (root == null) {
+        return
+      }
+      var cur = root
+      var mostRight = null
+      while (cur !== null) {
+        mostRight = cur.left
+        if (mostRight !== null) {
+          while (mostRight.right !== null && mostRight.right !== cur) {
+            mostRight = mostRight.right
+          }
+          if (mostRight.right == null) {
+            mostRight.right = cur
+            cur = cur.left
+            continue
+          } else { //第二次来的时候，逆序打印cur左树右边界
+            mostRight.right = null
+            printEdge(cur.left)
+          }
+        }
+        cur = cur.right
+      }
+      // 完了之后逆序打印整树的右边界
+      printEdge(root)
+    }
+    // 逆序打印node右边界
+    var printEdge = function (node) {
+      // tail就是右树最有节点
+      var tail = reverseR(node)
+      var tail2 = tail
+      while (tail2 !== null) {
+        console.log(tail2.val)
+        tail2 = tail2.right
+      }
+      reverseR(tail)
+    }
+    //  翻转链表
+    var reverseR = function (node) {
+      var pre = null
+      var cur = node
+      while (cur !== null) {
+        var right = cur.right
+        cur.right = pre
+        pre = cur
+        cur = right
+      }
+      return pre
     }
 
 
 
-    // morris改后序遍历
 
 
 
@@ -129,12 +189,8 @@
     head.right.right.left = new Node(9)
     head.right.right.right = new Node(11)
     // morrisPre(head)
-    morrisMid(head)
-
-
-
-
-
+    // morrisMid(head)
+    morrisPos(head)
   </script>
 
 </body>
