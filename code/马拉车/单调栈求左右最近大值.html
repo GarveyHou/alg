@@ -113,7 +113,7 @@
             var cur = stack.pop()
             cur.forEach((pos) => {
               if (stack.length == 0) {
-                var left = null
+                var left = index
                 map.set(pos, [left, index])
               } else {
                 var left = stack[stack.length - 1][stack[stack.length - 1].length - 1]
@@ -129,9 +129,9 @@
         var cur = stack.pop()
         cur.forEach(res => {
           if (stack.length == 0) {
-            map.set(res, [null, null])
+            map.set(res, [index, index])
           } else {
-            map.set(res, [stack[stack.length - 1][stack[stack.length - 1].length - 1], null])
+            map.set(res, [stack[stack.length - 1][stack[stack.length - 1].length - 1], index])
           }
         })
       }
