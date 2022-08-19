@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [7, 1, 5, 3, 6, 4]
+
+    var maxProfit = function (prices) {
+      let max = 0
+      for (let i = 0; i < prices.length; i++) {
+        var profit = process(prices, i)
+        if (profit > max) {
+          max = profit
+        }
+      }
+      return max
+    }
+    var process = function (arr, i) {
+      if (i == arr.length - 1) {
+        return -arr[i]
+      }
+      var max = arr[i + 1]
+
+      for (let j = i + 2; j < arr.length; j++) {
+        if (arr[j] > max) {
+          max = arr[j]
+        }
+      }
+      return max - arr[i]
+    }
+    console.log(maxProfit(arr))
+  </script>
+</body>
+
+</html>
