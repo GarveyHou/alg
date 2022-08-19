@@ -18,30 +18,26 @@
     let m = 3,
       n = 2,
       k = 1
-    // ij是当前到决策位置
+
+
     var touch = new Array(m)
     for (let i = 0; i < touch.length; i++) {
       touch[i] = new Array(n).fill(0)
     }
-    var process = function (i, j) {
-      // 越界，这种情况不可能
-      if (i > m - 1 || j > n - 1) {
-        return 0
-      }
-      // 进入到一个不可能的情况直接返回
-      if (!isAccess(i, j, k)) {
-        return 0
-      }
-      if (touch[i][j] == 0) {
-        touch[i][j] = 1
-        return 1 + Math.max(process(i + 1, j), process(i, j + 1), process(i - 1, j), process(i, j - 1))
-      } else {
-        return Math.max(process(i + 1, j), process(i, j + 1), process(i - 1, j), process(i, j - 1))
-      }
 
-      // }
-      // }
+    var queue = []
+
+    queue.push([0, 0])
+    while (queue.length !== 0) {
+      var cur = queue.shift()
+      if (isAccess(touch[cur[0] + 1, cur[1]])) {
+        touch[cur[0] + 1, cur[1]]
+
+      }
     }
+
+
+
 
     var isAccess = function (i, j, k) {
       return getSum(i) + getSum(j) <= k
