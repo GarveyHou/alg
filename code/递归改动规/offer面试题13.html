@@ -15,6 +15,7 @@
     也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，
     因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
     */
+<<<<<<< HEAD
     let m = 3,
       n = 2,
       k = 1
@@ -43,6 +44,17 @@
       return getSum(i) + getSum(j) <= k
     }
 
+=======
+    // class Node {
+    //   constructor(x, y) {
+    //     this.x = x
+    //     this.y = y
+    //   }
+    // }
+    let m = 4,
+      n = 6,
+      k = 15
+>>>>>>> a4ada87f6856b134541f79a9a736689c65c9273f
     var getSum = function (num) {
       var sum = 0
       while (num !== 0) {
@@ -52,7 +64,36 @@
       }
       return sum
     }
-    console.log(process(0, 0))
+    var isAccess = function (i, j) {
+      return getSum(i) + getSum(j) <= k
+    }
+
+    // ij是当前到决策位置
+    var pos = new Array(m)
+    for (let i = 0; i < pos.length; i++) {
+      pos[i] = new Array(n).fill(0)
+    }
+
+    var queue = []
+    var count = 1
+    queue.push([0, 0])
+    pos[0][0] = 1
+    while (queue.length !== 0) {
+      var cur = queue.shift()
+      var x = cur[0],
+        y = cur[1]
+      if (x + 1 < m && isAccess(x + 1, y) && pos[x + 1][y] == 0) {
+        queue.push([x + 1, y])
+        pos[x + 1][y] == 1
+        count++
+      }
+      if (y + 1 < n && isAccess(x, y + 1) && pos[x][y + 1] == 0) {
+        queue.push([x, y + 1])
+        pos[x][y + 1] == 1
+        count++
+      }
+    }
+    console.log(count)
   </script>
 
 </body>
