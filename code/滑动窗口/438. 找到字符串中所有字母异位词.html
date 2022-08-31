@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // var s = "cbaebabacd", p = "abc"
+    // var findAnagrams = function (s, p) {
+    //   const arr1 = s.split(''),
+    //     n = arr1.length,
+    //     arr2 = p.split(''),
+    //     m = arr2.length
+    //   const pCount = new Array(26).fill(0),
+    //     sCount = new Array(26).fill(0),
+    //     res = []
+    //   for (let i = 0; i < arr2.length; i++) {
+    //     ++pCount[arr1[i].charCodeAt() - 'a'.charCodeAt()]
+    //     ++sCount[arr2[i].charCodeAt() - 'a'.charCodeAt()]
+    //   }
+    //   if (pCount.toString() == sCount.toString()) {
+    //     res.push(0)
+    //   }
+    //   for (let i = m; i < n; i++) {
+    //     ++pCount[arr1[i].charCodeAt() - 'a'.charCodeAt()]
+    //     --pCount[arr1[i - m].charCodeAt() - 'a'.charCodeAt()]
+
+    //     if (pCount.toString() == sCount.toString()) {
+    //       res.push(i - m + 1)
+    //     }
+    //   }
+    //   return res
+    // };
+    // console.log(findAnagrams(s, p))
+
+
+    /* 30.串联所有单词的子串 */
+    const s = "barfoothefoobarman", words = ["foo", "bar"]
+    var findSubstring = function (s, words) {
+      const arr1 = s.split(''),
+        n = arr1.length,
+        m = words.length,
+        len = words[0].length,
+        length = m * len
+      const map = new Map(),
+        res = []
+      // console.log(len, length)
+
+      for (let i = 0; i < words.length; i++) {
+        let word = s.substring(i * len, i * len + len)
+        // console.log(word)
+        map.set(word, map.has(word) ? map.get(word) + 1 : 1)
+      }
+
+      for (let word of words) {
+        map.set(word, map.has(word) ? map.get(word) - 1 : -1)
+        if (map.get(word) == 0) {
+          map.delete(word)
+        }
+      }
+      if (map.size == 0) {
+        res.push(0)
+      }
+      // let word = s.substring(length, length + len)
+      // map.set(word, map.has(word) ? map.get(word) + 1 : 1)
+      // let preword = s.substring(0, len)
+      // map.set(preword, map.has(preword) ? map.get(preword) - 1 : -1)
+
+
+      for (let i = length; i <= n; i += len) {
+        let word = s.substring(i, i + len)
+        // console.log(word)
+        map.set(word, map.has(word) ? map.get(word) + 1 : 1)
+        let preword = s.substring(i - length, i - length + len)
+        if (map.get(word) == 0) {
+          map.delete(word)
+        }
+        map.set(preword, map.has(preword) ? map.get(preword) - 1 : -1)
+        if (map.get(preword) == 0) {
+          map.delete(preword)
+        }
+
+        if (map.size == 0) {
+          res.push(i - len)
+        }
+        console.log(map)
+      }
+      // console.log(map)
+      return res
+
+
+    };
+    console.log(findSubstring(s, words))
+
+
+
+
+  </script>
+
+</body>
+
+</html>

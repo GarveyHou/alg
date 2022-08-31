@@ -1,66 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <script>
-      /* 先说荷兰国旗问题：3563452690，让小于5的左边，等于5的中间，大于5的右边
-      办法：左边界右边界外两个指针，一个-1，一个nums.length，遍历nums
-      1）[i]<5,跟左边界指针下一个指针交换，左边界++,本指针++
-      2）[i]>5,跟有边界前一个指针交换，有边界--，本指针不动
-      3）[i]==5，本指针++
-      4）有边界和本指针撞上的时候，过程停止
-      注：为什么[i]>5本指针不动，因为这个操作是左边往右边看，右边的是新换过来的，要看这个数才行；[i]<5，本指针++，是因为左边已经排过了，换过来也是实现的 */
 
-      /* 快排1.0版本，以最后一个数为划分值，最后把划分值换到中间去，然后左边进递归，右边进递归就完事；2.0就是变成荷兰国旗问题呗，中间等于划分值；*/
-      /* 3.0就是划分值变成随机的一个数 */
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
 
-      // 快排coding
-      function quickSort(arr, l, r) {
-        // console.log(arr)
-        if (l < r) {
-          // 生成l-r上的一个随机数,并且和最后一个值交换
-          let random = Math.floor(Math.random() * (r + 1 - l) + l)
-          swap(arr, random, r)
-          let p = partition(arr, l, r)
-          quickSort(arr, l, p[0] - 1)
-          quickSort(arr, p[1] + 1, r)
+<body>
+  <script>
+    /* 先说荷兰国旗问题：3563452690，让小于5的左边，等于5的中间，大于5的右边
+    办法：左边界右边界外两个指针，一个-1，一个nums.length，遍历nums
+    1）[i]<5,跟左边界指针下一个指针交换，左边界++,本指针++
+    2）[i]>5,跟有边界前一个指针交换，有边界--，本指针不动
+    3）[i]==5，本指针++
+    4）有边界和本指针撞上的时候，过程停止
+    注：为什么[i]>5本指针不动，因为这个操作是左边往右边看，右边的是新换过来的，要看这个数才行；[i]<5，本指针++，是因为左边已经排过了，换过来也是实现的 */
+
+    /* 快排1.0版本，以最后一个数为划分值，最后把划分值换到中间去，然后左边进递归，右边进递归就完事；2.0就是变成荷兰国旗问题呗，中间等于划分值；*/
+    /* 3.0就是划分值变成随机的一个数 */
+
+    // 快排coding
+    function quickSort(arr, l, r) {
+      // console.log(arr)
+      if (l < r) {
+        // 生成l-r上的一个随机数,并且和最后一个值交换
+        let random = Math.floor(Math.random() * (r + 1 - l) + l)
+        swap(arr, random, r)
+        let p = partition(arr, l, r)
+        quickSort(arr, l, p[0] - 1)
+        quickSort(arr, p[1] + 1, r)
+      }
+    }
+    // 交换arr上l和r位置的数
+    function swap(arr, l, r) {
+      let temp = arr[l]
+      arr[l] = arr[r]
+      arr[r] = temp
+    }
+
+    function partition(arr, l, r) {
+      // 左边界外
+      let less = l - 1
+      // 这里为什么r就可以，是因为最后一个数是划分值，不用理
+      // 右边界外
+      let more = r
+
+      while (l < more) {
+        if (arr[l] < arr[r]) {
+          less++
+          swap(arr, less, l)
+          l++
+        } else if (arr[l] > arr[r]) {
+          more--
+          swap(arr, more, l)
+        } else {
+          l++
         }
       }
-      // 交换arr上l和r位置的数
-      function swap(arr, l, r) {
-        let temp = arr[l]
-        arr[l] = arr[r]
-        arr[r] = temp
-      }
+      swap(arr, more, r)
+      return [less + 1, more]
+    }
 
-      function partition(arr, l, r) {
-        // 左边界外
-        let less = l - 1
-        // 这里为什么r就可以，是因为最后一个数是划分值，不用理
-        // 右边界外
-        let more = r
+    let arr = [3, 5, 6, 3, 4, 5, 2, 6, 9, 0]
+    quickSort(arr, 0, 9)
+    console.log(arr)
+  </script>
+</body>
 
-        while (l < more) {
-          if (arr[l] < arr[r]) {
-            swap(arr, ++less, l++)
-          } else if (arr[l] > arr[r]) {
-            swap(arr, --more, l)
-          } else {
-            l++
-          }
-        }
-        swap(arr, more, r)
-        return [less + 1, more]
-      }
-
-      let arr = [3, 5, 6, 3, 4, 5, 2, 6, 9, 0]
-      quickSort(arr, 0, 9)
-      console.log(arr)
-    </script>
-  </body>
 </html>
