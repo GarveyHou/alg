@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var s = "ADOBECODEBANC",
+      t = "ABC"
+    var minWindow = function (s, t) {
+      var min = Number.MAX_SAFE_INTEGER
+      var minIndex = 0
+      var arr1 = s.split('')
+      var arr2 = t.split('')
+      const win = []
+      for (let i = 0; i < arr1.length; i++) {
+        win.push(arr1[i])
+        if (isContain(win, arr2)) {
+          while (isAlsoContain(win, arr2)) {
+            win.shift()
+          }
+          if (win.length < min) {
+            min = win.length
+            minIndex = i - min + 1
+          }
+          win.shift()
+        }
+        // console.log(win)
+      }
+      return s.substring(minIndex, minIndex + min)
+      // return [min, minIndex]
+
+
+
+    };
+
+    console.log(minWindow(s, t))
+    function isContain(arr1, arr2) {
+      for (let i = 0; i < arr2.length; i++) {
+        if (arr1.indexOf(arr2[i]) == -1) {
+          return false
+        }
+      }
+      return true
+    }
+    function isAlsoContain(arr1, arr2) {
+      const arr = arr1.slice(1)
+      return isContain(arr, arr2)
+    }
+  </script>
+
+</body>
+
+</html>

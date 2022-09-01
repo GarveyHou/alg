@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    // 我自己写的结合全排列去对比
+    const s = "barfoothefoobarman", words = ["foo", "bar", '123', 'ooo']
+    var swap = function (arr, x, y) {
+      let temp = arr[y]
+      arr[y] = arr[x]
+      arr[x] = temp
+      return arr.join('')
+    }
+    const res = []
+    var process = function (arr, i, cur) {
+      if (i == arr.length) {
+        res.push(cur)
+      }
+      var set = new Set()
+      for (let j = i; j < arr.length; j++) {
+        if (!set.has(arr[j])) {
+          swap(arr, i, j)
+          process(arr, i + 1, cur + arr[i])
+          swap(arr, i, j)
+          set.add(arr[j])
+        }
+      }
+    }
+    process(words, 0, '')
+    console.log(res)
+    // var findSubstring = function (s, words) {
+    //   var wordlen = words[0].length
+    //   var length = wordlen * words.length
+
+
+
+    // };
+    var isStr = function (str, arr) {
+
+
+
+
+    }
+
+
+    // leetcode上的滑动窗口+map方法
+    var findSubstring = function (s, words) {
+      var arr1 = s.split(''),
+        length = arr1.length,
+        wordlen = words[0].length,
+        wordsnum = words.length,
+        wordslen = wordlen * wordsnum
+
+
+      for (let i = 0; i < arr1.length; i++) {
+        if (i + wordslen > len) {
+          break
+        }
+        
+
+
+      }
+
+
+
+
+
+    }
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
