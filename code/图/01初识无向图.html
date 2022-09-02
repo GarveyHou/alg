@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    class Graph {
+      constructor() {
+        this.nodes = new Map()
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(value) {
+        this.value = value
+        this.connectCount = 0
+        this.nexts = [] 
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(from,to,weight) {
+        this.from = from
+        this.to = to
+        this.weight = weight
+      }
+    }
+
+    const graphArr = [[0,2,-1,6,-1],
+                      [2,0,1,4,-1],
+                      [-1,1,0,5,7],
+                      [6,4,5,0,-1],
+                      [-1,-1,7,-1,0]]
+    function createGraph1(arr){
+      const graph = new Graph()
+      for(let i=0;i<arr.length;i++){
+        for(let j=i+1;j<arr[0].length;j++){
+          if(arr[i][j]==-1){
+            continue
+          }
+          let from = i,
+                to = j,
+                weight = arr[i][j]
+          if(!graph.nodes.has(from)){
+            graph.nodes.set(from,new Node(from))
+          }
+          if(!graph.nodes.has(to)){
+            graph.nodes.set(to,new Node(to))
+          }
+          let fromNode = graph.nodes.get(from),
+            toNode = graph.nodes.get(to)
+          fromNode.nexts.push(toNode)
+          toNode.nexts.push(fromNode)
+          fromNode.connectCount++
+          toNode.connectCount++
+          let curEdge = new Edge(fromNode,toNode,weight)
+          graph.edges.push(curEdge)
+          fromNode.edges.push(curEdge)
+          toNode.edges.push(curEdge)
+        }
+      }
+      return graph
+    }
+
+
+    
+    console.log(createGraph1(graphArr))
+    
+
+
+
+  </script>
+  
+</body>
+</html>

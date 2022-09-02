@@ -10,53 +10,58 @@
 
 <body>
   <script>
-    arr = [14, 4, 18, 1, 15], a = 3, b = 15, x = 9
-    // arr = [1, 6, 2, 14, 5, 17, 4], a = 16, b = 9, x = 7
-    // arr = [8, 3, 16, 6, 12, 20], a = 15, b = 13, x = 11
+//     [162,118,178,152,167,100,40,74,199,186,26,73,200,127,30,124,193,84,184,36,103,149,153,9,54,154,133,95,45,198,79,157,64,122,59,71,48,177,82,35,14,176,16,108,111,6,168,31,134,164,136,72,98]
+// 29
+// 98
+// 80
+    const arr = [162,118,178,152,167,100,40,74,199,186,26,73,200,127,30,124,193,84,184,36,103,149,153,9,54,154,133,95,45,198,79,157,64,122,59,71,48,177,82,35,14,176,16,108,111,6,168,31,134,164,136,72,98]
+    let a = 29, b = 98, x = 80
+    // let arr = [1, 6, 2, 14, 5, 17, 4], a = 16, b = 9, x = 7
+    // let arr = [8, 3, 16, 6, 12, 20], a = 15, b = 13, x = 11
+    // const set = new Set()
     // -1表示此次跳跃失败，flag = 0往右跳,1表示往左跳
-    var process = function (i, flag, set) {
-      if (i < 0) {
-        return -1
-      }
-      if (i > 100) {
-        return -1
-      }
-      arr.forEach((item) => {
-        if (i == item) {
-          return -1
-        }
-      })
 
-      if (set.has(i)) {
+    // const dp = new Array(6001)
+    // for(let i=0;i < dp.length;i++){
+    //   dp[i] = new Array(2).fill(0)
+    // }
+    var set = new Set()
+    var process = function (i, flag) {
+      if (i < 0||i>6000||arr.indexOf(i)!==-1) {
         return -1
-      } else {
+      }
+      if(set.has(i)){
+        return -1
+      }else{
         set.add(i)
       }
       if (i == x) {
         return 0
       }
       // 只能往右
+      var p1 = process(i+a, 0)
+      var p2 = process(i-b, 1)
       if (flag == 1) {
-        if (process(i + a, 0, set) == -1) {
+        if (p1 == -1) {
           return -1
         } else {
-          return 1 + process(i + a, 0, set)
+          return 1 + p1
         }
       } else { //可以往左也可以往右
-        if (process(i + a, 0, set) == -1 && process(i - b, 1, set) == -1) {
+        if (p1 == -1 && p2 == -1) {
           return -1
         } else {
-          if (process(i + a, 0, set) == -1) {
-            return 1 + process(i - b, 1, set)
+          if (p1 == -1) {
+            return 1+p2
           }
-          if (process(i - b, 1, set) == -1) {
-            return 1 + process(i + a, 0, set)
+          if (p2 == -1) {
+            return 1+p1
           }
-          return Math.min(1 + process(i + a, 0, set), 1 + process(i - b, 1, set))
+          return Math.min(1+p1,1+p2)
         }
       }
     }
-    console.log(process(0, 0, new Set()))
+    console.log(process(0, 0))
   </script>
 
 </body>

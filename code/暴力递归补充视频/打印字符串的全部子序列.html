@@ -21,11 +21,13 @@
         return
       }
       fn(str, i + 1, res)
-      const arr = [...res, str[i]]
-      fn(str, i + 1, arr)
+      // const arr = [...res, str[i]]
+      res.push(str[i])
+      fn(str, i + 1, res)
+      res.pop()
     }
 
-    fn('abcd', 0, [])
+    fn('abc', 0, [])
   </script>
 </body>
 
