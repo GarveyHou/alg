@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    function addchar(s){
+      const arr = new Array(2*s.length+1)
+      let index = 0
+      for(let i=0;i<arr.length;i++){
+        if(i%2==0){
+          arr[i]= '#'
+        }else{
+          arr[i] = s[index++]
+        }
+      }
+      return arr
+    }
+    const s = 'aacabdkacaa'
+    // console.log(addchar(s).join(''))
+
+    function manacher(s){
+      const arr = addchar(s)
+      const res = new Array(arr.length)
+      let C = -1, R = -1
+
+      for(let i=0;i<res.length;i++){
+        res[i] = i >= R ? 1: Math.min( R-i, res[ 2 * C - i])
+
+        while(i + res[i] < arr.length && i-res[i] > -1){
+          if(arr[i+res[i]] == arr[i-res[i]]){
+            res[i]++
+          }else {
+            break
+          }
+        }
+        if(i+res[i]>R){
+          R = i+res[i] 
+          C = i
+        }
+      }
+      // return res
+      console.log(res)
+      let max = 0,
+        pos = 0
+      res.forEach((item, index) => {
+        if (item > max) {
+          max = item
+          pos = index
+        }
+      })
+      console.log(pos, max)
+      // 求数组最大值-1
+      return Math.max(...res) - 1
+
+    }
+    console.log(manacher(s))
+  </script>
+  
+</body>
+</html>

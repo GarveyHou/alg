@@ -63,10 +63,10 @@
 
       // 最重要的方式就是判断两个node是不是属于同一个集合,直接取出集合然后判断内存地址即可
       isSameSet(from, to) {
-          var fromSet = this.setMap.get(from)
-          var toSet = this.setMap.get(to)
-          return fromSet === toSet
-        }
+        var fromSet = this.setMap.get(from)
+        var toSet = this.setMap.get(to)
+        return fromSet === toSet
+      }
         //更不用说，把to的set里所有node放到from里面去，然后设置所有to的集合的node对应的集合变成fromset
       union(from, to) {
         var fromSet = this.setMap.get(from)

@@ -100,6 +100,30 @@
       }
     }
 
+    // function dfs1(node) {
+    //   if(node == null) {
+    //     return
+    //   }
+
+    //   var stack = []
+    //   var set = new Set()
+    //   stack.push(node)
+    //   set.add(node)
+    //   console.log(node.value)
+
+    //   while(stack.length !==0){
+    //     var cur = stack.pop()
+    //     for(var item of cur.nexts) {
+    //       if(!set.has(item)) {
+    //         stack.push(cur)
+    //         stack.push(item)
+    //         set.add(item)
+    //         console.log(item)
+    //         break
+    //       }
+    //     }
+    //   }
+    // }
     var graph = new Graph()
     var node1 = new Node(1)
     var node2 = new Node(2)
@@ -112,8 +136,12 @@
     node2.nexts.push(node5)
     node3.nexts.push(node5)
     node4.nexts.push(node5)
-
+    console.log(456);
     bfs(node1)
+    console.log(12123)
+    // dfs(node1)
+    // dfs1(node1)
+
   </script>
 </body>
 
