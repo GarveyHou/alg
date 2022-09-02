@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    var line1 = readline()
+    var arr1 = line1.split('|')
+    var arr = arr1.map(item => {
+      return item.split(' ')
+    })
+
+    var map = new Map()
+    arr.forEach(item => {
+      if (map.has(item[0])) {
+        const juli = map.get(item[0])
+        juli.push(item.slice(1))
+        map.set(item[0], juli)
+      } else {
+        const juli = []
+        juli.push(item.slice(1))
+        map.set(item[0], juli)
+      }
+    })
+
+    let min = Number.MAX_SAFE_INTEGER
+    for (let key of map.keys()) {
+      let value = process(key)
+      if (value < min) {
+        min = value
+        res = key
+      }
+    }
+    console.log(res)
+    function process(node) {
+      var set = new Set()
+      var queue = []
+      let price = 0
+      let paths = map.get(node)
+      set.add(node)
+      queue.push(node)
+      while (queue.length !== 0) {
+        var cur = queue.shift()
+        const nexts = map.get(cur)
+        nexts.forEach(item => {
+          if (!set.has(item[0])) {
+            price += parseInt(item[1])
+            set.add(item[0])
+            queue.push(item[0])
+          }
+        })
+      }
+      return price
+    }
+  </script>
+
+</body>
+
+</html>
