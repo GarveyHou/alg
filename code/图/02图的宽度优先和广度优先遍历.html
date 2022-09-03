@@ -25,8 +25,8 @@
         // nexts为指出去的点集合；为Node
         // edges为属于我的边有哪些，也是指出去的边，为Edge
         this.value = value
-        this.in = 0
-        this.out = 0
+        this.connectCount = 0
+        // this.out = 0
         this.nexts = []
         this.edges = []
       }
@@ -46,6 +46,49 @@
   2.队列出一个，输出，把没进过set的nexts都放入队列；
   3.循环2直到队列为空
  */
+
+    const graphArr = [[0, 2, -1, 6, -1],
+    [2, 0, 1, 4, -1],
+    [-1, 1, 0, 5, 7],
+    [6, 4, 5, 0, -1],
+    [-1, -1, 7, -1, 0]]
+    function createGraph1(arr) {
+      const graph = new Graph()
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr[0].length; j++) {
+          // if (i == j) {
+          //   continue
+          // }
+          if (arr[i][j] == -1) {
+            continue
+          }
+          let from = i,
+            to = j,
+            weight = arr[i][j]
+          if (!graph.nodes.has(from)) {
+            graph.nodes.set(from, new Node(from))
+          }
+          if (!graph.nodes.has(to)) {
+            graph.nodes.set(to, new Node(to))
+          }
+          let fromNode = graph.nodes.get(from),
+            toNode = graph.nodes.get(to)
+          fromNode.nexts.push(toNode)
+          toNode.nexts.push(fromNode)
+          fromNode.connectCount++
+          toNode.connectCount++
+          let curEdge = new Edge(fromNode, toNode, weight)
+          graph.edges.push(curEdge)
+          fromNode.edges.push(curEdge)
+          toNode.edges.push(curEdge)
+        }
+      }
+      return graph
+    }
+    const graph = createGraph1(graphArr)
+    console.log(graph.nodes.get(0))
+
+
     function bfs(node) {
       if (node == null) {
         return
@@ -59,13 +102,16 @@
         var cur = queue.shift()
         console.log(cur.value)
         for (var item of cur.nexts) {
+          // console.log(1);
           if (!set.has(item)) {
-            set.add(cur)
-            queue.push(cur)
+            set.add(item)
+            queue.push(item)
           }
         }
       }
     }
+
+    // bfs(graph.nodes.get(0))
     /* 深度优先遍历
       1，利用栈和集合实现（节点加入集合的时候，输出）
       2，从源节点开始先把第一个节点放入栈，放入set集合，输出；
@@ -99,6 +145,7 @@
         }
       }
     }
+    dfs(graph.nodes.get(0))
 
     // function dfs1(node) {
     //   if(node == null) {
@@ -124,21 +171,21 @@
     //     }
     //   }
     // }
-    var graph = new Graph()
-    var node1 = new Node(1)
-    var node2 = new Node(2)
-    var node3 = new Node(3)
-    var node4 = new Node(4)
-    var node5 = new Node(5)
-    node1.nexts.push(node2)
-    node1.nexts.push(node3)
-    node1.nexts.push(node4)
-    node2.nexts.push(node5)
-    node3.nexts.push(node5)
-    node4.nexts.push(node5)
-    console.log(456);
-    bfs(node1)
-    console.log(12123)
+    // var graph = new Graph()
+    // var node1 = new Node(1)
+    // var node2 = new Node(2)
+    // var node3 = new Node(3)
+    // var node4 = new Node(4)
+    // var node5 = new Node(5)
+    // node1.nexts.push(node2)
+    // node1.nexts.push(node3)
+    // node1.nexts.push(node4)
+    // node2.nexts.push(node5)
+    // node3.nexts.push(node5)
+    // node4.nexts.push(node5)
+    // console.log(456);
+    // bfs(node1)
+    // console.log(12123)
     // dfs(node1)
     // dfs1(node1)
 

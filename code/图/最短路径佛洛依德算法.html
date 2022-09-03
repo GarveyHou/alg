@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 用每个点都试一下作为中转点，让i-j的距离更短就更新
+    const arr = [[0, 2, 65535, 6, 65535],
+    [2, 0, 1, 4, 65535],
+    [65535, 1, 0, 5, 7],
+    [6, 4, 5, 0, 65535],
+    [65535, 65535, 7, 65535, 0]]
+    let n = arr.length
+    const p = arr
+    // 尝试每个点作为中转点
+    for (let v = 0; v < n; v++) {
+      // 从i-j的距离
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+          // 如果更短就更新，这一句就已经包含了，v！=i，v！=j，且i！==j的才去做更新
+          p[i][j] = Math.min(p[i][v] + p[v][j], p[i][j])
+          // if (v == i || v == j || i == j) {
+          //   continue
+          // }
+          // if (p[i][j] == -1) {
+          //   p[i][j] = p[i][v] + p[v][j]
+          // } else {
+          //   p[i][j] = Math.min(p[i][v] + p[v][j], p[i][j])
+          // }
+        }
+      }
+    }
+    console.log(p)
+    console.log(arr)
+
+
+    // const arr = [[0, 2, -1, 6, -1],
+    // [2, 0, 1, 4, -1],
+    // [-1, 1, 0, 5, 7],
+    // [6, 4, 5, 0, -1],
+    // [-1,-1, 7, -1, 0]]
+    // let n = arr.length
+    // const p = arr
+    // for (let v = 0; v < n; v++) {
+    //   for (let i = 0; i < n; i++) {
+    //     for (let j = 0; j < n; j++) {
+    //       p[i][j] = Math.min(p[i][v] + p[v][j], p[i][j])
+    //       // if (v == i || v == j || i == j) {
+    //       //   continue
+    //       // }
+    //       // if (p[i][j] == -1) {
+    //       //   p[i][j] = p[i][v] + p[v][j]
+    //       // } else {
+    //       //   p[i][j] = Math.min(p[i][v] + p[v][j], p[i][j])
+    //       // }
+    //     }
+    //   }
+    // }
+    // console.log(p)
+    // console.log(arr)
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 这两个算法都是最小生成树算法，就是连接所有点，且距离之和最小的方案；
+    /* prim的无向图版本，就是转化成图也是无向的 */
+    class Graph {
+      constructor() {
+        this.nodes = new Map()
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(value) {
+        this.value = value
+        this.connectCount = 0
+        this.nexts = []
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(from, to, weight) {
+        this.from = from
+        this.to = to
+        this.weight = weight
+      }
+    }
+
+    const graphArr = [[0, 2, -1, 6, -1],
+    [2, 0, 1, 4, -1],
+    [-1, 1, 0, 5, 7],
+    [6, 4, 5, 0, -1],
+    [-1, -1, 7, -1, 0]]
+    function createGraph1(arr) {
+      const graph = new Graph()
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr[0].length; j++) {
+          // if (i == j) {
+          //   continue
+          // }
+          if (arr[i][j] == -1) {
+            continue
+          }
+          let from = i,
+            to = j,
+            weight = arr[i][j]
+          if (!graph.nodes.has(from)) {
+            graph.nodes.set(from, new Node(from))
+          }
+          if (!graph.nodes.has(to)) {
+            graph.nodes.set(to, new Node(to))
+          }
+          let fromNode = graph.nodes.get(from),
+            toNode = graph.nodes.get(to)
+          fromNode.nexts.push(toNode)
+          toNode.nexts.push(fromNode)
+          fromNode.connectCount++
+          toNode.connectCount++
+          let curEdge = new Edge(fromNode, toNode, weight)
+          graph.edges.push(curEdge)
+          fromNode.edges.push(curEdge)
+          toNode.edges.push(curEdge)
+        }
+      }
+      return graph
+    }
+    const graph = createGraph1(graphArr)
+    console.log(graph)
+
+    class Heap {
+      constructor() {
+        this.arr = []
+      }
+      push(edge) {
+        this.arr.push(edge)
+        this.arr.sort((a, b) => {
+          return a.weight - b.weight
+        })
+      }
+      shift() {
+        return this.arr.shift()
+      }
+      isEmpty() {
+        return this.arr.length == 0
+      }
+    }
+    // prim从哪个点出发得到的都是一样的，无所谓
+    function primMST(graph) {
+      // 整一个自己定义的小根堆
+      var heap = new Heap()
+      // set存放已经要的点的集合
+      var set = new Set()
+      // result存放已经要的边的集合
+      var result = new Set()
+
+      var node = graph.nodes.get(1)
+      // 下面这个for循环和if其实在连通图中不需要，只是怕有森林情况所有for所有节点
+      // for (var node of graph.nodes.values()) {
+      //   if (!set.has(node)) {
+      set.add(node)
+      for (var edge of node.edges) {
+        heap.push(edge)
+      }
+      while (!heap.isEmpty()) {
+        var edge = heap.shift()
+        var toNode = edge.to
+        var fromNode = edge.from
+        if (!set.has(toNode)) {
+          set.add(toNode)
+          result.add(edge)
+          for (var nextEdge of toNode.edges) {
+            heap.push(nextEdge)
+          }
+        }
+        if (!set.has(fromNode)) {
+          set.add(fromNode)
+          result.add(edge)
+          for (var nextEdge of fromNode.edges) {
+            heap.push(nextEdge)
+          }
+        }
+      }
+      //   }
+      // }
+      return result
+    }
+
+
+    class MySets {
+      // setMap key：node value：这个node所在的集合
+      setMap = new Map()
+      constructor(nodes) {
+        // 遍历所有node，都各自开辟一个set集合，将自己放进去，并且设置setMap
+        for (var cur of nodes) {
+          var set = []
+          set.push(cur)
+          this.setMap.set(cur, set)
+        }
+      }
+
+      // 最重要的方式就是判断两个node是不是属于同一个集合,直接取出集合然后判断内存地址即可
+      isSameSet(from, to) {
+        var fromSet = this.setMap.get(from)
+        var toSet = this.setMap.get(to)
+        return fromSet === toSet
+      }
+      //更不用说，把to的set里所有node放到from里面去，然后设置所有to的集合的node对应的集合变成fromset
+      // 这里为什么set直接用了一个数组呢，而不用set呢，因为用union之前会判断是不是同一个集合的
+      union(from, to) {
+        var fromSet = this.setMap.get(from)
+        var toSet = this.setMap.get(to)
+        for (var toNode of toSet) {
+          fromSet.push(toNode)
+          this.setMap.set(toNode, fromSet)
+        }
+      }
+    }
+    function kruskalMST(graph) {
+      var mySet = new MySets(graph.nodes.values())
+      var edges = graph.edges
+      // 将边从小到大排个序
+      edges.sort((a, b) => {
+        return a.weight - b.weight
+      })
+      // 保存结果，存着需要留下的边
+      var result = new Set()
+      // 遍历边，判断是否from和to是同一个集合，不是就合并，并且把这个边放入result里面
+      while (edges.length !== 0) {
+        var edge = edges.shift()
+        if (!mySet.isSameSet(edge.from, edge.to)) {
+          result.add(edge)
+          mySet.union(edge.from, edge.to)
+        }
+      }
+      return result
+    }
+    console.log(primMST(graph))
+    console.log(kruskalMST(graph))
+
+
+
+  </script>
+
+</body>
+
+</html>

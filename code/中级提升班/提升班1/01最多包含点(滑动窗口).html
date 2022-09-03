@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    /* 一个数组arr，每个值表示数轴上的点，一个正数L的绳子，返回这个绳子最多包含arr的多少个点 */
+
+    /*每次都把绳子压在一个点上，看有多少个在里面  */
+    const arr = [2, 4, 8, 9, 12, 17],
+      len = 5
+    // function main(arr, len) {
+    //   let n = arr.length
+    //   let res = 0
+    //   for (let i = 0; i < n; i++) {
+    //     let pos = findLeftest(arr, arr[i] - len)
+    //     res = Math.max(i - pos + 1, res)
+    //   }
+    //   return res
+    // }
+    // // 这个函数就是找一下arr数组中第一个比num大的位置，返回index
+    // function findLeftest(arr, num) {
+    //   for (let i = 0; i < arr.length; i++) {
+    //     if (arr[i] >= num) {
+    //       return i
+    //     }
+    //   }
+    // }
+    // console.log(main(arr, len))
+
+
+
+
+    // 滑动窗口法，就是lr不回退的方法
+    function main2(arr, len) {
+      let l = 0, r = 0
+      let res = 0
+      while (l < arr.length) {
+        while (arr[r + 1] <= arr[l] + len) {
+          r++
+        }
+        console.log(r - l + 1)
+        res = Math.max(res, r - l + 1)
+        l++
+      }
+      return res
+    }
+    console.log(main2(arr, len))
+
+
+
+  </script>
+
+</body>
+
+</html>

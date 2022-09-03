@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 迪杰特斯拉算法，使用前提：没有权值为负的边（在深入理解可以说是没有累加和为负数的环，因为有环又有个负数哪一只转肯定越来越小）  */
+    /*必须有一个出发点，比如一共ABCDE以A为出发点
+      首先设置到A为0，到BCDE为正无穷，然后找A伸出去的边，到A的长度加上伸出去的长度就是到其他点的距离，如果比当前表中的值小，更新。把A的做完之后，A就不用看了，因为到A已经最小了。
+      然后再从其他的距离找最小距离的点，循环往复，最后表中每个点的值就是A到这个点的最短距离
+     */
+
+    function dijkstra(node) {
+      //  存放node到每个点的最短距离的点，如果没有节点的key默认正无穷
+      var distanceMap = new Map();
+      // 设置A到自己的距离是0
+      distanceMap.set(node, 0)
+      // 存放已经不能再动的node
+      var selectedNodes = new Set();
+      // 取出distanceMap中最小距离的点且不在selectedNodes
+      var minNode = getMinNode(distanceMap, selectedNodes)
+
+      while (minNode !== null) {
+        // 当前找到最小距离的点的距离，为找其他点然后加而准备
+        var distance = distanceMap.get(minNode)
+        for (var edge of minNode.edges) {
+          // 找到这点的边去的地方
+          var toNode = edge.to
+          // 如果在distanceMap里面找不到这个点的key说明是正无穷，直接更新
+          if (!distanceMap.get(toNode)) {
+            distanceMap.set(toNode, distance + edge.weight)
+          } else {
+            // 找到了这个key，那么就比较当前key对应的距离和当前节点的举例+这个edge的举例是不是小于这个原先的value
+            distanceMap.set(toNode, Math.min(distanceMap.get(toNode), distance + edge.weight))
+          }
+        }
+        // 没什么好说的，当前点要封死了，然后取下一个minNode
+        selectedNodes.add(minNode)
+        minNode = getMinNode(distanceMap, selectedNodes)
+      }
+      return distanceMap
+    }
+
+    function getMinNode(distanceMap, touchedNodes) {
+      var minNode = null;
+      var minDistance = Number.MAX_VALUE;
+      for (var entry of distanceMap.entries()) {
+        var node = entry[0]
+        var distance = entry[1]
+        if (!touchedNodes.has(node) && distance < minDistance) {
+          minNode = node
+          minDistance = distance
+        }
+      }
+      return minNode
+    }
+
+
+    var map = new Map();
+    map.set(1, 2)
+    map.set(3, 4)
+    for (var entry of map.entries()) {
+      console.log(entry[0])
+      console.log(entry[1])
+    }
+  </script>
+
+</body>
+
+</html>

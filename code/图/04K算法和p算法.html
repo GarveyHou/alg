@@ -67,7 +67,8 @@
         var toSet = this.setMap.get(to)
         return fromSet === toSet
       }
-        //更不用说，把to的set里所有node放到from里面去，然后设置所有to的集合的node对应的集合变成fromset
+      //更不用说，把to的set里所有node放到from里面去，然后设置所有to的集合的node对应的集合变成fromset
+      // 这里为什么set直接用了一个数组呢，而不用set呢，因为用union之前会判断是不是同一个集合的
       union(from, to) {
         var fromSet = this.setMap.get(from)
         var toSet = this.setMap.get(to)
@@ -82,13 +83,13 @@
     function kruskalMST(graph) {
       var mySet = new MySets(graph.nodes.values())
       var edges = graph.edges
-        // 将边从小到大排个序
+      // 将边从小到大排个序
       edges.sort((a, b) => {
-          return a.weight - b.weight
-        })
-        // 保存结果，存着需要留下的边
+        return a.weight - b.weight
+      })
+      // 保存结果，存着需要留下的边
       var result = new Set()
-        // 遍历边，判断是否from和to是同一个集合，不是就合并，并且把这个边放入result里面
+      // 遍历边，判断是否from和to是同一个集合，不是就合并，并且把这个边放入result里面
       while (edges.length !== 0) {
         var edge = edges.shift()
         if (!mySet.isSameSet(edge.from, edge.to)) {
@@ -129,24 +130,22 @@
     function primMST(graph) {
       // 整一个自己定义的小根堆
       var heap = new Heap()
-        // set存放已经要的点的集合
+      // set存放已经要的点的集合
       var set = new Set()
-        // result存放已经要的边的集合
+      // result存放已经要的边的集合
       var result = new Set()
-        // 这个for循环其实在连通图中不需要，只是怕有森林情况所有for所有节点
+      // 这个for循环其实在连通图中不需要，只是怕有森林情况所有for所有节点
       var node = graph.nodes.get(1)
-        // console.log(node);
-        // for (var node of graph.nodes.values()) {
-      if (!set.has(node)) {
-        set.add(node)
-        for (var edge of node.edges) {
-          console.log(edge);
-          heap.push(edge)
-        }
+      // console.log(node);
+      // for (var node of graph.nodes.values()) {
+      set.add(node)
+      for (var edge of node.edges) {
+        // console.log(edge);
+        heap.push(edge)
       }
       // console.log(set);
       // console.log(heap);
-      if (!heap.isEmpty()) {
+      while (!heap.isEmpty()) {
         var edge = heap.shift()
         var toNode = edge.to
         if (!set.has(toNode)) {
@@ -173,7 +172,7 @@
       var distanceMap = new Map();
       // 设置A到自己的距离是0
       distanceMap.set(node, 0)
-        // 存放已经不能再动的node
+      // 存放已经不能再动的node
       var selectedNodes = new Set();
       // 取出distanceMap中最小距离的点且不在selectedNodes
       var minNode = getMinNode(distanceMap, selectedNodes)
@@ -184,7 +183,7 @@
         for (var edge of minNode.edges) {
           // 找到这点的边去的地方
           var toNode = edge.to
-            // 如果在distanceMap里面找不到这个点的key说明是正无穷，直接更新
+          // 如果在distanceMap里面找不到这个点的key说明是正无穷，直接更新
           if (!distanceMap.get(toNode)) {
             distanceMap.set(toNode, distance + edge.weight)
           } else {
@@ -234,7 +233,7 @@
     graph.edges.push(edge1)
     graph.edges.push(edge2)
     graph.edges.push(edge3)
-      // console.log(kruskalMST(graph));
+    // console.log(kruskalMST(graph));
     console.log(primMST(graph));
 
     // var map = new Map();
