@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 给定一个非负整数n，代表二叉树的节点个数。返回能形成多少种不同的二叉树结构 */
+    /* 思路很简单，假设左树没有，中间一个根，右边f（n-1），左树i个右树n-i-1，f（n） = f(i)+f(n-i-1) */
+    function fn(n) {
+      let sum = 0
+      if (n == 0) {
+        return 1
+      }
+      for (let i = 0; i < n; i++) {
+        sum += fn(i) * fn(n - i - 1)
+      }
+      return sum
+    }
+    for (let i = 0; i < 6; i++) {
+      console.log(fn(i))
+    }
+
+
+    // 然后可以动规一下
+    function fn1(n) {
+      const dp = new Array(n + 1).fill(0)
+      dp[0] = 1
+      for (let i = 1; i <= n; i++) {//这一层就是直接求dp【i】
+        for (let j = 0; j < i; j++) {//这是每个n内部的循环等价于上面那函数的for循环
+          dp[i] += dp[j] * dp[i - j - 1]
+        }
+      }
+      console.log(dp)
+    }
+    fn1(5)
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    /* 小虎去附近的商店买苹果，奸诈的商贩使用了捆绑交易，只提供6个每袋和8个
+    每袋的包装包装不可拆分。可是小虎现在只想购买恰好n个苹果，小虎想购买尽
+    量少的袋数方便携带。如果不能购买恰好n个苹果，小虎将不会购买。输入一个
+    整数n，表示小虎想购买的个苹果，返回最小使用多少袋子。如果无论如何都不
+    能正好装下，返回-1 */
+
+
+    /* 第一种解法，暴力，先把8个的袋子从最大到0尝试一遍，每次就是当前8的袋子树+剩余苹果被6装的袋子数，如果装不下，8的袋子递减 */
+
+    function process(n) {
+      if (n % 2 !== 0) {
+        return -1
+      }
+      let start = Math.floor(n / 8)
+      for (let i = start; i >= 0; i--) {
+        let rest = n - start * 8
+        if (rest % 6 == 0) {
+          return i + rest / 6
+        }
+      }
+      return -1
+    }
+    // console.log(process(25));
+
+    // console.log('------------');
+    /* 第二种解法，可以中途停止，就是如果当前rest已经大于8和6的公倍数24，则之后不用再试了不会有结果的。
+    如n=107，rest分别是3,11,19,27,35，43，51,59 ；此时，3,11,19不行，27=24+3，那不还是3么；再如51=24*2+3，那不还是3么*/
+
+    function process1(n) {
+      if (n % 2 !== 0) {
+        return -1
+      }
+      let temp = 1
+      while ((temp * 8) % 6 !== 0) {
+        temp++
+      }
+      let gongbeishu = temp * 8
+      let start = Math.floor(n / 8)
+      for (let i = start; i >= 0; i--) {
+        let rest = n - i * 8
+        // 优化
+        if (rest > gongbeishu) {
+          return -1
+        }
+        if (rest % 6 == 0) {
+          return i + rest / 6
+        }
+      }
+      return -1
+    }
+    for (let i = 0; i < 100; i++) {
+      console.log(process1(i));
+
+    }
+
+
+
+    /* 第三种解法，打表法，输入一个整树，输出一个整数，先傻逼法，然后一堆输入，看输出规律 */
+
+
+
+  </script>
+
+</body>
+
+</html>

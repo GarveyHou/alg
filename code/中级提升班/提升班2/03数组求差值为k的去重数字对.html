@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 给定一个数组arr，求差值为k的去重数字对 */
+
+    function fn(arr, k) {
+      const set = new Set()
+      const res = []
+      arr.forEach(item => {
+        set.add(item)
+      })
+      for (let num of set) {
+        if (set.has(num + k)) {
+          res.push([num, num + k])
+        }
+      }
+      return res
+    }
+    console.log(fn([3, 2, 5, 7, 0, 0], 2))
+
+  </script>
+
+</body>
+
+</html>

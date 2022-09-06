@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 给一个二维数组，里面只有0和1，找到边框全是1的正方形的最大边长 */
+    /* 遍历一个二维数组所有的正方形 */
+    const arr = [
+      [0, 1, 1, 1, 1],
+      [0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1],
+      [0, 1, 1, 1, 1],
+      [0, 1, 0, 1, 1]]
+
+
+    // 预处理阶段，两个数组都是从右往左，从下往上这样来填充数据
+    // 两个二维数组和arr一样大，一个里面每个点表示这个点右边连续的1包括自己有多少个；另一个数组一个里面每个点表示这个点下面连续的1包括自己有多少个
+    const right = [], down = []
+    function process(arr) {
+      const n = arr.length, m = arr[0].length
+
+      for (let row = 0; row < n; row++) {
+        for (let column = 0; column < m; column++) {
+          // 遍历边长，它能到多少是看行先越界还是列先越界
+          for (let border = 1; border <= Math.min(n - row, m - column); border++) {
+            // 此时就是一个左上角row，column，边长border的正方形
+            // 需要验证这个正方形边界全1
+            // 此时运用上面的两个预处理矩阵right和down，主要看【row，column】右边和下面是不是大于等于3，和【row+3-1，column】下面是不是大于等于3；再看【row，column+3-1】右边是不是大于等于3，如果满足则这个border=3成立
+
+          }
+        }
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

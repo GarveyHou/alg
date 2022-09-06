@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function f() { }
+    /* 给定一个函数f，可以1～5的数字等概率返回一个。请加工出1～7的数字等概率
+    返回一个的函数g。
+    给定一个函数f，可以a～b的数字等概率返回一个。请加工出c～d的数字等概率
+    返回一个的函数g。
+    给定一个函数f，以p概率返回0，以1-p概率返回1。请加工出等概率返回0和1的
+    函数g
+    */
+
+    // 第一个，给定一个函数f，可以1～5的数字等概率返回一个。请加工出1～7的数字等概率返回一个的函数g。
+    // 思路，就是把f里面的情况分成0和1，然后取拼1-7
+    // 先定义一个01随机发生器
+    function zeroone() {
+      let res
+      do {
+        res = f()
+      } while (res == 5)//因为1-5,12返回0,34返回1,5不行重新f（）
+      return res < 3 ? 0 : 1
+    }
+    // 1-7就是0-6呗最后+1,0-6需要二进制三位
+    function process() {
+      let res
+      do {
+        res = (zeroone() << 2) + (zeroone() << 1) + zeroone()
+      } while (res == 7)
+      return res + 1
+    }
+
+    // 第二个，一样的，比如a-b，1-5，变成20-38。一共29个数，需要5位，0-31
+    function zeroone1() {
+      let res
+      do {
+        res = f()
+      } while (res == 5)//因为1-5,12返回0,34返回1,5不行重新f（）
+      return res < 3 ? 0 : 1
+    }
+    // 1-7就是0-6呗最后+1,0-6需要二进制三位
+    function process1() {
+      let res
+      do {
+        res = (zeroone() << 4) + (zeroone() << 3) + (zeroone() << 2) + (zeroone() << 1) + zeroone()
+      } while (res > 28)
+      return res + 20
+    }
+
+
+    // 第三种，更简单，把01和10当做0和1。其他统统重做，因为01和10都是p*(1-p)相等的
+    function zeroone2() {
+      let res
+      do {
+        res = (f() << 1) + f()
+      } while (res == 0 || res == 3)//把11和00排除
+      return res == 0 ? 0 : 1
+    }
+
+  </script>
+
+</body>
+
+</html>
