@@ -22,7 +22,6 @@
       if (str[i] == '0') {
         return 0
       }
-
       if (str[i] == '1') {
         // res为当前选择"1"，不往后面连，本条线有的情况，就是后面的情况
         let res = process(str, i + 1)
@@ -40,13 +39,64 @@
         if (i + 1 < str.length && str[i + 1] >= '0' && str[i + 1] <= '6') {
           res += process(str, i + 2)
         }
-
         return res
       }
       // 当前位置的i是3-9，只能选自身，然后返回后面的情况
       return process(str, i + 1)
     }
-    console.log(process('111', 0))
+    console.log(process('111111', 0))
+
+
+    function processDp(str) {
+      const dp = new Array(str.length + 1)
+      dp[str.length] = 1
+      for (let i = str.length - 1; i >= 0; i--) {
+        let char = str[i]
+        if (char == '1') {
+          // res为当前选择"1"，不往后面连，本条线有的情况，就是后面的情况
+          dp[i] = dp[i + 1]
+          // 如果i+1还有字符的话，那就可以把i+1也加上成一种情况，然后再i+2开始选的情况
+          if (i + 1 < str.length) {
+            dp[i] += dp[i + 2]
+          }
+        } else if (char == '2') {// 如果此次是2，那结果就是选本次，如果下一个字符有且在0-6的话，那就可以选两个成一个结果
+          // res为当前选择"1"，不往后面连，本条线有的情况，就是后面的情况
+          dp[i] = dp[i + 1]
+          // 如果i+1还有字符的话，那就可以把i+1也加上成一种情况，然后再i+2开始选的情况
+          if (i + 1 < str.length && str[i + 1] >= '0' && str[i + 1] <= '6') {
+            dp[i] += dp[i + 2]
+          }
+        } else {
+          dp[i] = dp[i + 1]
+        }
+      }
+      return dp[0]
+    }
+    console.log(processDp('111111'))
+
+
+    function process1(str, i) {
+      const arr = str.split('')
+      let res = 0
+      if (i == str.length) {
+        return 1
+      }
+      if (arr[i] == '1') {
+        res += process1(str, i + 1)
+        if (i + 2 <= str.length) {
+          res += process1(str, i + 2)
+        }
+      } else if (arr[i] == '2') {
+        res += process1(str, i + 1)
+        if (arr[i + 1] <= '6' && arr[i + 1] >= '1' && i + 2 <= str.length) {
+          res += process(str, i + 2)
+        }
+      } else {
+        res += process1(str, i + 1)
+      }
+      return res
+    }
+    console.log(process1('111111', 0))
 
   </script>
 

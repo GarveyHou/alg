@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 题意：一个数组，求至少移动几轮能让每个树都相等；每次只能相邻移动一个，且每轮每个都可以移一次算一轮； */
+    /* 思路奇特；
+    1.如果所有树的综合求出个数不等于0，直接返回-1，不可能
+    2.假设有个点a，计算左边应该有多少个数，和现在的左边的差距；右边也如此；
+    如果左边右边都缺也就是负，则左边+左边
+    如果左边右边都多，左边右边的绝对值最大值
+    如果左边右边一边缺一边多，也是左边右边的绝对值的最大值；
+    3.最后求出每个点的2过程结果，最大的就是瓶颈也就是结果
+     */
+    const arr = [1, 0, 5]
+    function process(arr) {
+      const n = arr.length
+      const dp = new Array(n)
+      let sum = arr.reduce((pre, next) => {
+        return pre + next
+      }, 0)
+      if (sum % n !== 0) {
+        return -1
+      }
+      let avg = sum / n
+      let presum = 0, nextsum = avg * (n - 1)
+      let prevalue = 0, nextvalue = 0
+      for (let i = 1; i < n; i++) {
+        nextvalue += arr[i]
+      }
+      for (let i = 0; i < n; i++) {
+        let precha = prevalue - presum
+        let nextcha = nextvalue - nextsum
+        if (precha < 0 && nextcha < 0) {
+          dp[i] = Math.abs(precha) + Math.abs(nextcha)
+        } else {
+          dp[i] = Math.max(Math.abs(precha), Math.abs(nextcha))
+        }
+        presum += avg
+        nextsum -= avg
+        prevalue += arr[i]
+        nextvalue -= arr[i + 1]
+      }
+      return Math.max(...dp)
+    }
+    console.log(process(arr))
+
+
+
+  </script>
+
+</body>
+
+</html>

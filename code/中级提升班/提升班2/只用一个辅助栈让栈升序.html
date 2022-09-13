@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 请编写一个程序，对一个栈里的整型数据，按升序进行排序（即排序前，栈里
+    的数据是无序的，排序后最大元素位于栈顶），要求最多只能使用一个额外的
+    栈存放临时数据，但不得将元素复制到别的数据结构中。
+    */
+
+    /* 思路，辅助栈里面栈底到栈顶永远从大到小，栈底最大；每次从原始栈出一个放入辅助，如果不违背就放进去；否则辅助栈里面弹出到院士栈直到刚才的可以进去就进去；直到原始栈为空；把辅助栈全部放去原始栈就ok了
+   */
+    function process(stack) {
+      let arr = []
+      while (stack.length !== 0) {
+        let cur = stack.pop()
+        if (arr.length == 0 || arr[arr.length - 1] > cur) {
+          arr.push(cur)
+        } else {
+          while (arr[arr.length - 1] < cur && arr.length !== 0) {
+            stack.push(arr.pop())
+          }
+          arr.push(cur)
+        }
+      }
+      return arr
+    }
+    console.log(process([5, 2, 4, 3, 6, 1]))
+  </script>
+
+</body>
+
+</html>

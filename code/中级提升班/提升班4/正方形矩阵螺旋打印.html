@@ -1,0 +1,133 @@
+<!DOCTYPE htarrl>
+<htarrl lang="en">
+
+  <head>
+    <arreta charset="UTF-8">
+      <arreta http-equiv="X-UA-Coarrpatible" content="IE=edge">
+        <arreta naarre="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Docuarrent</title>
+  </head>
+
+  <body>
+    <script>
+
+      /* 一个正方形矩阵数组，要求螺旋打印
+      如 下矩阵，需要打印1 2 3 4 8 12 16 15 14 13 9 5 6 7 11 10*/
+      const arr =
+        [[1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]]
+
+      /* 思路：很简单，我们把这个矩阵分成外层框和里层框来处理，比如[0,0][3,3]的框和[1,1][2,2]两个框，写个函数传左上角和右下角，把这个框打印出来；然后左上角右下移，右下角左上移，直到移完两个点错开，也就是左上角行>右下角行或左上角列大于右下角列
+      */
+
+      function main(arr) {
+        const n = arr.length, m = arr[0].length
+        // 定义初始左上角点和右下角点的坐标[a,b][c,d]
+        let a = 0, b = 0, c = n - 1, d = m - 1
+        while (a <= c && b <= d) {
+          process(a++, b++, c--, d--)
+        }
+      }
+      function process(a, b, c, d) {
+        // 同行
+        if (a == c) {
+          for (let i = b; i <= d; i++) {
+            console.log(arr[a][i])
+          }
+        } else if (b == d) {
+          // 同列
+          for (let i = a; i <= c; i++) {
+            console.log(arr[i][b])
+          }
+        } else {
+          //顺时针打印圈 
+          for (let i = b; i <= d; i++) {
+            console.log(arr[a][i])
+          }
+          for (let i = a + 1; i <= c; i++) {
+            console.log(arr[i][d])
+          }
+          for (let i = d - 1; i >= b; i--) {
+            console.log(arr[c][i])
+          }
+          for (let i = c - 1; i >= a + 1; i--) {
+            console.log(arr[i][b])
+          }
+        }
+      }
+      main(arr)
+
+      /* 升级版，只用有限几个变量，把矩阵顺时针旋转90度
+       思路：也是一圈一圈看，每一圈中，4个一组，每组就是调换位置，比如a,b,c,d   变成d,a,b,c*/
+      /* 分组:一共可以分arr.length-1组
+      i从0~arr.length-1
+      然后每组的4个分别是arr[a][b+i],arr[a+i][b],arr[c][d-i],arr[c-i][b] */
+
+      const arr1 =
+        [[1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]]
+      function main1(arr) {
+        const n = arr.length, m = arr[0].length
+        // 定义初始左上角点和右下角点的坐标[a,b][c,d]
+        let a = 0, b = 0, c = n - 1, d = m - 1
+        while (a <= c && b <= d) {
+          process1(a++, b++, c--, d--)
+        }
+      }
+      function process1(a, b, c, d) {
+        // 遍历组数
+        for (let i = 0; i < d - b; i++) {
+          let temp = arr1[a][b + i];
+          arr1[a][b + i] = arr1[c - i][b];
+          arr1[c - i][b] = arr1[c][d - i];
+          arr1[c][d - i] = arr1[a + i][d];
+          arr1[a + i][d] = temp;
+        }
+      }
+      main1(arr1)
+      console.log(arr1)
+
+
+      /* 第三种，zigzag打印，只要是矩形就行的；按斜线打印如上面的矩阵，打印.1 2 5 9 6 3 4 7 11 13 14 11 8 12 5 16 */
+
+      /* 两个点开始都在A:[0,0]B:[0,0]如果共斜线然后打印A到B，而且每次都换一个方法；第一次A-B，第二次B-A；然后A往右，不能往右了往下；B往下，不能往下了往右;直到AB在次碰上 */
+      const arr2 =
+        [[1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]]
+      function main2(arr) {
+        const n = arr2.length, m = arr2[0].length
+        let a = 0, b = 0, c = 0, d = 0
+        let flag = true//1从A-b
+        while (b !== m) {
+          process2(flag, a, b, c, d)
+          flag = !flag
+          // 非常要注意的点，需要用到a的先放到前面，否则会因为a的改变而使结果不对
+          b = a == n - 1 ? b + 1 : b
+          a = a == n - 1 ? a : a + 1
+          c = d == m - 1 ? c + 1 : c
+          d = d == m - 1 ? d : d + 1
+        }
+      }
+      function process2(flag, a, b, c, d) {
+        if (!flag) {
+          while (c !== a + 1) {
+            console.log(arr2[c++][d--])
+          }
+        } else {
+          while (a !== c - 1) {
+            console.log(arr2[a--][b++]);
+          }
+        }
+      }
+      main2(arr2)
+    </script>
+
+  </body>
+
+</htarrl>

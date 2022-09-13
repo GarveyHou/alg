@@ -19,6 +19,59 @@
     平均值不变（因为集合元素不会重复），b的平均值可能会改变（因为x被取出
     了）
     问最多可以进行多少次magic操作 */
+
+
+    /* 思路：这个需要先分析各种情况；即三种
+    avg（a）>avg(b) 只能从a到b，且avg(b)<x<avg(a),且x在b中不存在；还要搬的是最小的x
+    相等：没法移动
+    avg(a)<avg(b)和第一种相反，只能从b到a，且avg(a)<x<avg(b),且x在a中不存在；还要搬的是最小的x */
+
+    const a = [], b = []
+    function process(a, b) {
+      let sum1 = 0, sum2 = 0
+
+      for (let i = 0; i < a.length; i++) {
+        sum1 += a[i]
+      }
+      for (let i = 0; i < b.length; i++) {
+        sum2 += b[i]
+      }
+      let smallarr = null, bigarr = null
+      let bigsum = 0, smallsum = 0
+      let avga = avg(sum1, a.length), avgb = avg(sum2, b.length)
+      if (avga == avgb) {
+        return 0
+      }
+      if (avga > avgb) {
+        smallarr = b
+        smallsum = sum2
+        bigarr = a
+        bigsum = sum1
+      } else {
+        smallarr = a
+        smallsum = sum1
+        bigarr = b
+        bigsum = sum2
+      }
+      let pos = 0
+      let smalllength = smallarr.length,
+        biglength = bigarr.length
+      bigarr.sort()
+      bigarr.forEach(item => {
+        if (item > avg(smallsum, smalllength) && item < avg(bigsum, biglength) && smallarr.indexOf(item) == -1) {
+          res++
+          bigsum -= item
+          biglength--
+          smalllength++
+          smallarr.push(item)
+        }
+      })
+      return res
+    }
+    function avg(sum, size) {
+      return sum / size
+    }
+
   </script>
 
 </body>
