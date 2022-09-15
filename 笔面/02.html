@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let n = 6, m = 3
+    let str = 'aaaaaa'
+    let arr1 = [4, 2]
+    let arr2 = ['aaaa', 'aa']
+    let sum = 0
+    var process = function (rest, arr, index) {
+      if (rest == 0) {
+        console.log([...arr, str.substring(index)])
+        if (judge([...arr, str.substring(index)])) {
+          sum++
+        }
+        return
+      }
+
+      for (let i = index; i < n - rest; i++) {
+        const arrx = [...arr, str.substring(index, i - index + 1)]
+        process(rest - 1, arrx, i + 1)
+      }
+    }
+    var judge = function (arr) {
+      // console.log(arr.sort(), arr2.sort())
+      const arrSort = arr.sort()
+      const arr2Sort = arr2.sort()
+      for (let i = 0; i < arrSort.length; i++) {
+        if (arrSort[i] !== arr2Sort[i]) {
+          return false
+        }
+      }
+      return true
+    }
+    process(m - 1, [], 0)
+    console.log(sum)
+  </script>
+
+</body>
+
+</html>

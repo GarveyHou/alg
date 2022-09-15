@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const arr = [36, 37]
+    // let count = 2
+    // let res = []
+    // function getArr(num) {
+    //   for (let i = 0; i <= Math.floor(num / 2); i++) {
+    //     if (num % i == 0) {
+    //       if (i * i > num) {
+    //         res.push(i)
+    //         return
+    //       }
+    //     }
+    //   }
+    //   res.push(num)
+    // }
+    // for (let i = 0; i < count; i++) {
+    //   getArr(arr[i])
+    // }
+    // console.log(res)
+
+    function getNums(num) {
+      const res = []
+      for (let i = 2; i < num; i++) {
+        if (num % i == 0) {
+          res.push(i)
+        }
+      }
+      return res
+    }
+    // console.log(getNums(4))
+    function process1(num) {
+      if (num == 1) {
+        return 0
+      }
+      const arr5 = getNums(num)
+      let min = 1 + process1(num - 1)
+      for (let i = 0; i < arr5.length; i++) {
+        min = Math.min(min, 1 + process1(arr5[i]) + process1(num / arr5[i]))
+      }
+      return min
+    }
+    const want = []
+    for (let i = 0; i < 30; i++) {
+      console.log(process1(30))
+    }
+    console.log(want)
+
+    // const dp = new Array(6)
+    // let res = 0
+    // for (let i = 0; i < arr.length; i++) {
+    //   res += process(6)
+    // }
+    // console.log(res)
+    // function process(num) {
+    //   if (dp[num]) {
+    //     return dp[num]
+    //   }
+    //   if (num == 1) {
+    //     dp[num] = 0
+    //     return dp[num]
+    //   }
+    //   const arr = getNums(num)
+    //   let min = 1 + process(num - 1)
+    //   for (let i = 0; i < arr.length; i++) {
+    //     let curres = 1 + process(arr[i]) + process(num / arr[i])
+    //     min = Math.min(curres, min)
+    //   }
+    //   dp[num] = min
+    //   return dp[num]
+    // }
+
+    // const count = 2
+    // const arr = [2, 6]
+    function process(num) {
+      const dp = new Array(num).fill(65535)
+      dp[1] = 0
+      dp[0] = 0
+      for (let i = 2; i <= num; i++) {
+        let min = 1 + dp[i - 1]
+        let arr5 = getNums(i)
+        for (let j = 0; j < arr5.length; j++) {
+          min = Math.min(min, 1 + dp[arr5[j]] + dp[i / arr5[j]])
+        }
+        dp[i] = min
+      }
+      return dp
+    }
+    console.log(process(30))
+
+
+
+
+
+
+    // if (num == 1) {
+    //     return 0
+    //   }
+    //   const arr = getNums(num)
+    //   let min = 1 + process(num - 1)
+    //   for (let i = 0; i < arr.length; i++) {
+    //     let curres = 1 + process(arr[i]) + process(num / arr[i])
+    //     min = Math.min(curres, min)
+    //   }
+    //   return min
+
+
+    // if (dp[num]) {
+    //   return dp[num]
+    // }
+    // if (num == 1) {
+    //   dp[num] = 0
+    //   return dp[num]
+    // }
+    // const arr = getNums(num)
+    // let min = 1 + process(num - 1)
+    // for (let i = 0; i < arr.length; i++) {
+    //   let curres = 1 + process(arr[i]) + process(num / arr[i])
+    //   min = Math.min(curres, min)
+    // }
+    // dp[num] = min
+    // return dp[num]
+
+    // const count = parseInt(readline())
+    // const line = readline().split(' ')
+    // const arr = line.map(item => {
+    //   return parseInt(item)
+    // })
+    // function getNums(num) {
+    //   const res = []
+    //   for (let i = 2; i < num; i++) {
+    //     if (num % i == 0) {
+    //       res.push(i)
+    //     }
+    //   }
+    //   return res
+    // }
+    // function process(num) {
+    //   const dp = new Array(num).fill(65535)
+    //   dp[1] = 0
+    //   dp[0] = 0
+    //   for (let i = 2; i <= num; i++) {
+    //     let min = 1 + dp[i - 1]
+    //     const arr5 = getNums(num)
+    //     for (let j = 0; j < arr5.length; j++) {
+    //       min = Math.min(min, 1 + dp[arr5[j]] + dp[num / arr5[j]])
+    //     }
+    //     dp[i] = min
+    //   }
+    //   return dp
+    // }
+    // const maxNum = Math.max(...arr)
+    // const res = process(maxNum)
+    // let result = 0
+    // for (let i = 0; i < arr.length; i++) {
+    //   let number = arr[i]
+    //   result += res[number]
+    // }
+    // console.log(result)
+
+
+
+
+  </script>
+
+</body>
+
+</html>

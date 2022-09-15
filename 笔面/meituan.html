@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let n = 7, m = 3
+    let str1 = 'abcaacc'
+    let str2 = 'a*c'
+
+    const res = []
+    for (let i = 0; i < n - m + 1; i++) {
+      let j = 0
+      while (j < m) {
+        if (str2[j] == '*') {
+          j++
+          continue
+        }
+        if (str1[i + j] !== str2[j]) {
+          break
+        }
+        j++
+      }
+      if (j == m) {
+        res.push(i)
+      }
+    }
+    console.log(res)
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>

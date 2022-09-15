@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const n = 3
+    // const arr = [[5, 3, 3, 3], [5, 3, 3, 2], [5, 3, 3, 4]]
+    const p = [2, 3, 4, 5], w = [2, 5, 2, 4]
+    let maxp = Math.max(...p)
+    let map = new Map()
+    for (let i = 0; i < p.length; i++) {
+      if (map.has(p[i])) {
+        map.set(p[i], map.get(p[i]) + w[i])
+      } else {
+        map.set(p[i], w[i])
+      }
+    }
+    // 暴力递归
+    // function process(i) {
+    //   if (i > maxp) {
+    //     return 0
+    //   }
+    //   let cur = 0
+    //   if (map.get(i)) {
+    //     cur += map.get(i) + Math.max(process(2 * i), process(2 * i + 1))
+    //   } else {
+    //     cur += Math.max(process(2 * i), process(2 * i + 1))
+    //   }
+    //   return cur
+    // }
+    // console.log(process(1))
+
+    const dp = new Array(maxp + 1).fill(0)
+    function process1(i) {
+      for (let i = maxp; i >= 1; i--) {
+        let cur = 0
+        if (map.has(i)) {
+          cur += map.get(i)
+        }
+        if (2 * i <= maxp && 2 * i + 1 <= maxp) {
+          cur += Math.max(dp[2 * i + 1], dp[2 * i])
+        } else if (2 * i <= maxp) {
+          cur += dp[2 * i]
+        }
+        dp[i] = cur
+      }
+    }
+    process1(1)
+    console.log(dp[1])
+
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 第二题
+    const n = 17, k = 2
+    const s = 'imihoyoiiimihoyoimihayou'
+    console.log(hasK('mihoyomihoyo'))
+    function hasK(s) {
+      let count = 0
+      let index = s.indexOf('mihoyo')
+      while (index !== -1) {
+        count++
+        index = s.indexOf('mihoyo', index + 1)
+      }
+      // console.log(count)
+      if (count >= k) {
+        return true
+      } else {
+        return false
+      }
+    }
+    // hasK('mihoyoyomihoyomimihoy')
+    if (!hasK(s)) {
+      console.log(-1)
+    } else {
+      let i = 0, j = n
+      // console.log(s.substring(i, i + j))
+      // console.log(hasK(s.substring(0, j - 1)))
+      while (hasK(s.substring(0, j - 1))) {
+        // console.log(s.substring(0, j - 1))
+        j--
+      }
+      // console.log(j)
+      while (hasK(s.substring(i + 1, j))) {
+        i++
+      }
+      // console.log(i)
+      console.log([i, j - 1])
+
+    }
+
+
+
+    // 第一题
+    // const n = 5
+    // const arr = [161, 180, 171, 173, 185]
+
+    // function judge(a, b) {
+    //   let avg = (a + b) / 2
+    //   if (avg % 1 == 0) {
+    //     return true
+    //   } else {
+    //     return false
+    //   }
+    // }
+    // const res = []
+    // function swap(arr, x, y) {
+    //   let temp = arr[x]
+    //   arr[x] = arr[y]
+    //   arr[y] = temp
+    // }
+    // function process(arr, i, cur) {
+    //   if (i == arr.length) {
+    //     res.push(cur)
+    //   }
+    //   var set = new Set()
+    //   for (let j = i; j < arr.length; j++) {
+    //     if (!set.has(arr[j])) {
+    //       swap(arr, i, j)
+    //       process(arr, i + 1, [...arr])
+    //       swap(arr, i, j)
+    //       set.add(arr[j])
+    //     }
+    //   }
+    // }
+    // process(arr, 0, [])
+    // function getValue(arr) {
+    //   let happy = 0
+    //   for (let i = 0; i < arr.length - 1; i++) {
+    //     if (!judge(arr[i], arr[i + 1])) {
+    //       happy++
+    //     }
+    //   }
+    //   return happy
+    // }
+    // let max = 0
+    // let result = []
+    // res.forEach(item => {
+    //   if (getValue(item) > max) {
+    //     max = getValue(item)
+    //     result = item
+    //   }
+    // })
+    // console.log(result)
+    // console.log(max)
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    // function Fn(n) {
+    //   this.n = n
+    // }
+    // Fn.rr = '王德发'
+    // Fn.prototype.name = '侯嘉伟'
+    // console.log(Fn.rr)
+    // var obj = new Fn(2)
+    // console.log(obj.name)
+    // console.log(typeof Fn)
+    // let a = Function.prototype
+    // // console.log(a)
+    // console.log(typeof Object)
+    // console.log(Array instanceof Object)
+    // const a = [1, 2, 3, 4, 5, 6]
+    // const b = a.reduce((pre, cur) => {
+    //   return pre + cur
+    // }, 0)
+    // console.log(b)
+    // const arr = [1, 2, 3, 4]
+    // console.log(Object.prototype.toString.call(arr))
+    // const obj = {
+    //   a: 2
+    // }
+    // console.log(obj.toString());
+    // console.log(Object.prototype.toString.call(obj))
+
+    // 1.定义了一个生成器函数
+    // function* foo(name1) {
+    //   console.log("00001", name1)
+    //   console.log("00002", name1)
+    //   const name2 = yield "aaaaa"
+    //   console.log("00003", name2)
+    //   console.log("00004", name2)
+    //   const name3 = yield "bbbbb"
+    //   console.log("00005", name3)
+    //   console.log("00006", name3)
+    // }
+
+    // // 生成器返回一个生成器
+    // const generator = foo("name1")
+    // // 第一次传递参数是通过函数传递
+    // console.log(generator.next("name1"))
+    // console.log('--------------------------------')
+    // // 第二次及后面开始传递参数, 是通过yield
+    // console.log(generator.next("name888"))
+    // console.log('--------------------------------')
+    // console.log(generator.next("name9999"))
+
+
+    function a() {
+      var name = 'dov'
+      return function () {
+        return name
+      }
+    }
+    var b = a()
+    console.log(b())
+
+
+
+  </script>
+
+</body>
+
+</html>

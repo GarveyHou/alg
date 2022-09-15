@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    /* 思路：两个队列，push的时候就直接push到第一个队列里；
+    pop的时候，把一个队列shift到另一个队列，只有一个元素的时候，返回这个元素；然后把第二个队列的全部放到第一个队列里去 */
+    class Stack {
+      constructor() {
+        this.queue1 = []
+        this.queue2 = []
+      }
+      push(val) {
+        this.queue1.push(val)
+      }
+      pop() {
+        while (this.queue1.length !== 1) {
+          this.queue2.push(this.queue1.shift())
+        }
+        let val = this.queue1.shift()
+        while (this.queue2.length !== 0) {
+          this.queue1.push(this.queue2.shift())
+        }
+        return val
+      }
+      isEmpty() {
+        return this.queue1.length == 0
+      }
+    }
+    const stack = new Stack()
+    stack.push(1)
+    stack.push(2)
+    stack.push(3)
+    stack.push(4)
+    stack.push(5)
+    console.log(stack.pop())
+    console.log(stack.pop())
+    console.log(stack.pop())
+    console.log(stack.pop())
+    console.log(stack.pop())
+
+  </script>
+
+</body>
+
+</html>

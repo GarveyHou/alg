@@ -10,28 +10,6 @@
 
 <body>
   <script>
-    // leetcode486
-    /* 给定一个数组arr，代表数值不同的纸牌排成一条线。玩家A和玩家B依次拿走每张纸牌，规定A先拿，B后拿，每个玩家只能拿走最左或最后的纸牌，A和B都绝顶聪明，返回最后获胜者的分数。 */
-
-    /*有两个函数，一个是先手函数，一个后手函数，他们互相调用  */
-    // 先手函数
-    let f = function (arr, l, r) {
-      if (l == r) {
-        return arr[l]
-      }
-      return Math.max(arr[l] + s(arr, l + 1, r), arr[r] + s(arr, l, r - 1))
-    }
-    // 后手函数
-    let s = function (arr, l, r) {
-      if (l == r) {
-        return 0
-      }
-      // 被选了某个之后
-      return Math.min(f(arr, l + 1, r), f(arr, l, r - 1))
-    }
-    let arr = [4, 2, 1, 5]
-    // 如果先开始，就调用先手函数
-    console.log(Math.max(f(arr, 0, 3), s(arr, 0, 3)))
 
     // 广联达消消乐，每次可以消两个相同的，谁没法消没输
     // const str = 'aab'

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 定一个数组arr长度为N，你可以把任意长度大于0且小于N的前缀作为左部分，剩下的
+    作为右部分。但是每种划分下都有左部分的最大值和右部分的最大值，请返回最大的，
+    左部分最大值减去右部分最大值的绝对值。 */
+
+
+    /* 思路，及其牛逼。不管怎么切，肯定会把全局最大值max切到左边或右边；
+    假设max切到左边，那么右边最小的最大值是多少呢？就是arr[n-1],因为如果max右边有比arr【n-1】更大的，那么arr[n-1]就是他们中的小值；如果max右边有比arr[n-1]小的，那么arr[n-1]就是他们没法取得理由，因为arr【n-1]一定会在右边的
+    假设max切到左边，同理 */
+    const arr = []
+    function main(arr) {
+      return Math.max(...arr) - Math.min(arr[0], arr[arr.length - 1])
+    }
+
+  </script>
+
+</body>
+
+</html>

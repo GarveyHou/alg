@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<!-- Parameter 'arr' implicitly has an 'any' type, but a better type may be inferred from usage. -->
+
+<body>
+  <script>
+    const n = 6
+    const line2 = [1, 2, 2, 3, 3]
+    const arr = []
+    line2.forEach((item, index) => {
+      arr.push([item, index + 2])
+    })
+    var process = function (num, arr) {
+      if (arr.length == 0) {
+        return num
+      }
+      let count = 0
+      for (let i = 0; i < arr.length; i++) {
+        let newarr = []
+        arr.forEach(a => {
+          if (a.indexOf(arr[i][0]) == -1 && a.indexOf(arr[i][1]) == -1) {
+            newarr.push(a)
+          }
+        })
+        count = Math.max(process(num + 1, newarr), count)
+      }
+      return count
+    }
+    console.log(process(0, arr))
+
+  </script>
+
+</body>
+
+</html>

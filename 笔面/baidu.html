@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .tran {
+      width: 0px;
+      height: 0px;
+      border: 50px solid transparent;
+      border-right: 50px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tran"></div>
+  <script>
+    // function jieliu(fn, delay) {
+    //   let timer = null
+    //   return function () {
+    //     if (!timer) {
+    //       timer = settimeout(() => {
+    //         fn.apply(this, ...arguments)
+    //         timer = null
+    //       }, delay)
+    //     }
+    //   }
+    // }
+    // function quickSort(arr, l, r) {
+    //   if (l < r) {
+    //     let flag = Math.floor(Math.random() * (r - l + 1) + l)
+    //     swap(arr, flag, r)
+    //     let q = partition(arr, l, r)
+    //     quickSort(arr, l, q[0] - 1)
+    //     quickSort(arr, q[1] + 1, r)
+    //   }
+    //   return arr
+    // }
+    // function swap(arr, l, r) {
+    //   let temp = arr[l]
+    //   arr[l] = arr[r]
+    //   arr[r] = temp
+    // }
+
+    // function partition(arr, l, r) {
+    //   let less = l - 1, more = r
+    //   while (l < more) {
+    //     if (arr[l] < arr[r]) {
+    //       swap(arr, ++less, l++)
+    //     } else if (arr[l] > arr[r]) {
+    //       swap(arr, --more, l)
+    //     } else {
+    //       l++
+    //     }
+    //   }
+    //   swap(arr, l, r)
+    //   return [l + 1, more]
+    // }
+    // const arr = [3, 1, 4, 6, 5, 7, 2]
+    // console.log(quickSort(arr, 0, arr.length - 1))
+    // // console.log(arr)
+
+
+
+
+    var s = "abcacdabcdefa"
+    const arr = s.split('')
+    let max = 0
+    var map = new Map()
+    for (let i = 0; i < arr.length; i++) {
+      let curMax = 0
+      var set = new Set()
+      for (let j = i; j < arr.length; j++) {
+        if (!set.has(arr[j])) {
+          set.add(arr[j])
+          curMax++
+        } else {
+          break
+        }
+      }
+      max = Math.max(max, curMax)
+      map.set(i, curMax)
+    }
+    console.log(max)
+    const res = []
+    for (let i = 0; i < arr.length; i++) {
+      if (map.get(i) === max) {
+        let str = s.substring(i, i + max)
+        console.log(str)
+      }
+    }
+    console.log(map)
+    console.log(res)
+
+
+
+    // 地图优化，单点登陆
+    // 滑动窗口写法
+    // var s = "abcacdabcdefa"
+    // const arr = s.split('')
+    // const win = []
+
+    // for (let i = 0; i < arr.length; i++) {
+    //   if (!hasNum(win, arr[i]) && !hasSame(win)) {
+    //     win.push(arr[i])
+    //   } else {
+    //     win.push(arr[i])
+    //     win.shift()
+    //   }
+    //   // console.log(win)
+    // }
+    // console.log(win.length)
+
+
+
+    // function hasNum(arr, num) {
+    //   let flag = 0
+    //   arr.forEach(item => {
+    //     if (item == num) {
+    //       flag = 1
+    //     }
+    //   })
+    //   // console.log(num)
+    //   // console.log(arr[0] == 'a')
+    //   return flag == 0 ? false : true
+    // }
+    // // console.log(hasNum(['a', 'b', 'c'], 'a'))
+    // function hasSame(arr) {
+    //   let flag = 0
+    //   var set = new Set()
+    //   arr.forEach(item => {
+    //     if (set.has(item)) {
+    //       flag = 1
+    //     } else {
+    //       set.add(item)
+    //     }
+    //   })
+    //   return flag == 0 ? false : true
+    // }
+    // // console.log(hasSame(['a', 'b', 'c', 'a']))
+
+
+    // function hasNum(arr, num) {
+    //   arr.forEach(item => {
+    //     if (item == num) {
+    //       return true
+    //     }
+    //   })
+    //   return false
+    // }
+    // console.log(hasNum(['a', 'b', 'c', 'a'], 'a'))
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

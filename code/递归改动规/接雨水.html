@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 经典接雨水 */
+    const arr = [3, 1, 2, 5, 2, 4]
+    //i点可以接的水等于，左侧和右侧包括自己的最大值较小的那个减去自身高度
+    function main(arr) {
+      const n = arr.length
+      const leftMax = new Array(n)
+      const rightMax = new Array(n)
+      // 预处理左侧和右侧的最大值
+      leftMax[0] = arr[0]
+      rightMax[n - 1] = arr[n - 1]
+      for (let i = 1; i < n; i++) {
+        leftMax[i] = Math.max(leftMax[i - 1], arr[i])
+      }
+      for (let i = n - 2; i >= 0; i--) {
+        rightMax[i] = Math.max(rightMax[i + 1], arr[i])
+      }
+      // console.log(leftMax, rightMax)
+
+      let res = 0
+      for (let i = 0; i < n; i++) {
+        res += Math.min(leftMax[i], rightMax[i]) - arr[i]
+      }
+      return res
+    }
+    console.log(main(arr))
+
+    // 这个时候就要请出超级无敌双指针了，res
+    /* 思路：lr两个指针，刚开始指向1，n-2（因为0和n-1是不会接到水的）；一个leftmax，rightmax指向arr[0]和arr[n-1]
+    1.如果rightmax<leftmax,那么对于r位置,右边的是确定的最大值就是rightmax，而左边不确定，但是已经有一个leftmax比rightmax大了，那么瓶颈肯定就是右边的rightmax，res+=rightmax-arr[r](结果小于0直接返回0，大于0才加)；然后rightmax和arr[r]看看能不能更新,然后r--
+    2.如果rightmax>leftmax,那么对于l位置,左边的是确定的最大值就是leftmax，而右边不确定，但是已经有一个rightmax比leftmax大了，那么瓶颈肯定就是左边的leftmax，res+=leftmax-arr[l](结果小于0直接返回0，大于0才加)；然后leftmax和arr[l]看看能不能更新,然后l++
+    3.如果rightmax==leftmax，那么左右一样，lr都可以先做，假设我们先做左边；
+    */
+    // 完美通过leetcode
+    function main1(arr) {
+      let n = arr.length
+      // 初始要算的位置
+      let l = 1, r = n - 2
+      // 初始的左右最大值
+      let leftMax = arr[0], rightMax = arr[n - 1]
+      let res = 0
+      while (l <= r) {
+        // 瓶颈肯定是右边
+        if (rightMax < leftMax) {
+          res += rightMax - arr[r] > 0 ? rightMax - arr[r] : 0
+          rightMax = Math.max(rightMax, arr[r])
+          r--
+        } else {//其他两种情况就都算一种把他瓶颈设为左边
+          res += leftMax - arr[l] > 0 ? leftMax - arr[l] : 0
+          leftMax = Math.max(leftMax, arr[l])
+          l++
+        }
+      }
+      return res
+
+    }
+    console.log(main1(arr))
+
+
+  </script>
+
+</body>
+
+</html>

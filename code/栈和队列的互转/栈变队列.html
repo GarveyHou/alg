@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+
+    /* 思路：两个栈一个push栈一个pop栈；
+    push的时候，push到pushstack中，然后检查popstack是不是空，如果是空，把pushstack全都pop到popstack中去；
+    如果不是空，那就什么都不操作；
+    
+    pop的时候，popstack栈中pop一个，然后看push能不能倒简历*/
+    class Queue {
+      constructor() {
+        this.pushStack = []
+        this.popStack = []
+      }
+      push(val) {
+        this.pushStack.push(val)
+        this.dao()
+      }
+      shift() {
+        let val = this.popStack.pop()
+        this.dao()
+        return val
+      }
+      dao() {
+        if (this.popStack.length == 0) {
+          while (this.pushStack.length !== 0) {
+            this.popStack.push(this.pushStack.pop())
+          }
+        }
+      }
+      isEmpty() {
+        return this.popStack.length + this.pushStack.length == 0
+      }
+    }
+    const queue = new Queue()
+    queue.push(1)
+    queue.push(2)
+    queue.push(3)
+    queue.push(4)
+    queue.push(5)
+    console.log(queue.shift())
+    console.log(queue.shift())
+    console.log(queue.shift())
+    console.log(queue.shift())
+    console.log(queue.shift())
+
+
+  </script>
+
+</body>
+
+</html>
