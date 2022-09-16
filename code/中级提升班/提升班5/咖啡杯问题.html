@@ -17,8 +17,83 @@
     b：不洗，让一个杯子挥发干净需要的时间
     求：n个人喝完咖啡杯子都干净至少需要多少时间？ */
     /* 感受：什么叼题？ */
-    
-    
+
+    /* 思路：
+    先求每个人的咖啡冲完的时间：贪心用一个数组a表示
+    数组times表示每个人咖啡冲完的时间；对于冲咖啡这个步骤；和会议时间那个题的贪心一样；把每台咖啡机封装成一个<start,spend>，然后每次冲选择的咖啡机就是start+spend也就是结束时间最小的那个；拿出来冲，当前times数组中填充当前选的咖啡机的结束时间；然后结束时间变成这个咖啡机的start放进去排序，循环往复，直接数组填满。 */
+    const arr = [3, 2, 7]//三台机器，每台冲一杯的时间是3,2,7
+    const n = 10//10个人要喝咖啡
+    const a = 3//表示洗一个杯子时间3
+    const b = 5//一个杯子晾干需要时间5
+
+    class Nodes {
+      constructor() {
+        this.datas = []
+      }
+      push(val) {
+        this.datas.push(val)
+        this.datas.sort((a, b) => {
+          return a[0] + a[1] - (b[0] + b[1])
+        })
+      }
+      shift() {
+        let val = this.datas.shift()
+        this.datas.sort((a, b) => {
+          return a[0] + a[1] - (b[0] + b[1])
+        })
+        return val
+      }
+    }
+    // 先实现每个人咖啡冲完的时间数组
+    function makeCoffee(arr, n) {
+      const times = []
+      const nodes = new Nodes()
+      for (let i = 0; i < arr.length; i++) {
+        // 数组中放的结构是<start,spend>,而且确保里面的顺序是按start+spend来从小到大排的
+        nodes.push([0, arr[i]])
+      }
+      // console.log(nodes)
+      for (let i = 0; i < n; i++) {
+        let curMachine = nodes.shift()
+        times[i] = curMachine[0] + curMachine[1]
+        nodes.push([times[i], curMachine[1]])
+      }
+      return times
+    }
+    // times就是每个人跑完咖啡的时间，也是每个人等待要洗的时间点
+    let times = makeCoffee(arr, n)
+    console.log(times)
+
+    /* 这冲咖啡已经完成了，拿到了10个人分别的咖啡冲完的时间
+    接下来就到洗杯子环节了，洗杯子用的是暴力递归；
+     */
+
+    // proces表示index~n-1洗完最后达到的时间点，washtime是当前咖啡机在washtime这个时间点才可以用；理解时间点的含义
+    function process(times, a, b, index, washtime) {
+      // basecase，洗到最后一个咖啡机了，不用考虑后面；把当前的用机子洗和挥发两种情况下结束的时间点取小值
+      if (index == times.length - 1) {
+        // times[index]+b就是挥发的结束时间
+        // Math.max(washtime, times[index] + a 就是用机子洗的结束时间，max是因为要等到机子空闲而且当前杯子可以洗的时间
+        return Math.min(times[index] + b, Math.max(washtime, times[index]) + a)
+      }
+
+      // 普遍位置，先考虑用咖啡机洗的情况
+      let wash = Math.max(washtime, times[index]) + a//机子洗结束的时间
+      let next1 = process(times, a, b, index + 1, wash)//用机子洗之后的杯子结束的时间，wash更改，因为用机子洗的有新的空闲时间
+      let p1 = Math.max(wash, next1)//求最大值，看这个情况的之后结束时间；因为可能有一种情况是后面的都挥发居然比当前wash还小的情况
+
+      // 不使用咖啡机，当前这台直接liang
+      let liang = times[index] + b//直接liang的结束时间
+      let next2 = process(times, a, b, index + 1, washtime)//washtime不变，因为liang，并不占用咖啡机
+      let p2 = Math.max(liang, next2)
+
+      // 返回当前index取两种情况下的结束时间的早的那个就是结果
+      return Math.min(p1, p2)
+    }
+    // 表示求0~n-1，且最初咖啡机可以用的时间点就是0
+    console.log(process(times, a, b, 0, 0))
+
+
   </script>
 
 </body>

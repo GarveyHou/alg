@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr1 = [4, 13, 6, 14], arr2 = [28, 11, 20, 8]
+    // const arr1 = [30, 60, 5, 7], arr2 = [18, 20, 6, 8]
+    // const arr1 = [1, 2, 3, 4], arr2 = [5, 6, 7, 8]
+    const n = arr1.length
+
+    function getSum(arr) {
+      const a = [], b = []
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == 0) {
+          a.push(arr1[i])
+        } else {
+          b.push(arr2[i])
+        }
+      }
+      // console.log(a, b)
+      let sum = 0
+      for (let i = 0; i < a.length; i++) {
+        sum += a[i]
+      }
+      if (a.length >= 3) {
+        sum = Math.floor(sum * 0.6)
+      }
+
+      let deleteNum = Math.floor(b.length / 3)
+      // console.log(deleteNum)
+      // console.log(b)
+
+      // 下面两个sort有区别么？
+      b.sort((x, y) => {
+        return x - y
+      })
+      // b.sort()
+      // console.log(b)
+      for (let i = 0; i < deleteNum; i++) {
+        b.shift()
+      }
+
+      for (let i = 0; i < b.length; i++) {
+        sum += b[i]
+      }
+      return sum
+    }
+    // console.log(getSum([1, 1, 0, 1]))
+    let min = Number.MAX_SAFE_INTEGER
+    function process(index, choose) {
+      if (index == n) {
+        // console.log(choose)
+        min = Math.min(min, getSum(choose))
+        return
+      }
+      let curchoose1 = [...choose, 0]
+      process(index + 1, curchoose1)
+      let curchoose2 = [...choose, 1]
+      process(index + 1, curchoose2)
+    }
+    process(0, [])
+    console.log(min)
+
+    // function getMinCost() {
+    //   const shopA = [4, 13, 6, 14];
+    //   const shopB = [28, 11, 20, 8];
+    //   const buyA = [];
+    //   const buyB = [];
+    //   return proc(shopA, shopB, 0, buyA, buyB);
+    // }
+
+    // function proc(shopA, shopB, i, buyA, buyB) {
+    //   if (i === shopA.length) {
+    //     return costA(buyA) + costB(buyB);
+    //   }
+
+    //   const buyA1 = [...buyA, shopA[i]];
+    //   const cost1 = proc(shopA, shopB, i + 1, buyA1, buyB);
+    //   // buyB.push(shopB[i]);
+    //   const buyB1 = [...buyB, shopB[i]];
+    //   const cost2 = proc(shopA, shopB, i + 1, buyA, buyB1);
+
+    //   return Math.min(cost1, cost2);
+    // }
+
+    // function costA(buyA) {
+    //   if (!buyA.length) return 0
+    //   if (buyA.length < 3) {
+    //     return buyA.reduce((a, b) => a + b);
+    //   } else {
+    //     return Math.floor(buyA.reduce((a, b) => a + b) * 0.6);
+    //   }
+    // }
+
+    // function costB(buyB) {
+    //   if (!buyB.length) return 0;
+    //   const temp = [...buyB];
+    //   temp.sort().splice(0, Math.floor(temp.length / 3));
+    //   return temp.reduce((a, b) => a + b);
+    // }
+
+    // console.log(getMinCost())
+
+  </script>
+
+</body>
+
+</html>

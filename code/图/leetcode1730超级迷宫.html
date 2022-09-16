@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const grid =
+      [["X", "X", "X", "X", "X", "X"],
+      ["X", "*", "O", "O", "O", "X"],
+      ["X", "O", "O", "#", "O", "X"],
+      ["X", "X", "X", "X", "X", "X"]]
+    function getFood(grid) {
+      let n = grid.length, m = grid[0].length
+      const visited = new Array(n).fill('').map((item) => new Array(m).fill(0))
+      const queue = []
+      const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+      let startx = 0, starty = 0
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+          if (grid[i][j] == '*') {
+            startx = i
+            starty = j
+          }
+        }
+      }
+      // console.log(startx, starty)
+      // console.log(queue)
+      queue.push({
+        x: startx,
+        y: starty,
+        path: [[startx, starty]]
+      })
+      // console.log(queue)
+      visited[startx][starty] = 1
+      while (queue.length !== 0) {
+        let current = queue.shift()
+        // console.log(grid[current.x][current.y])
+        // console.log(current.path)
+        // console.log(current.x)
+        // console.log(current.y)
+        // console.log(current.path)
+        if (grid[current.x][current.y] == '#') {
+          return current.path.length - 1
+        }
+        for (var dir of dirs) {
+          var nx = current.x + dir[0]
+          var ny = current.y + dir[1]
+          if (nx < n &&
+            nx >= 0 &&
+            ny < m &&
+            ny >= 0 &&
+            grid[nx][ny] !== 'X' &&
+            visited[nx][ny] == 0) {
+            let curpath = []
+            for (let i = 0; i < current.path.length; i++) {
+              curpath.push([...current.path[i]])
+            }
+            curpath.push([nx, ny])
+            // console.log(curpath)
+            queue.push({
+              x: nx,
+              y: ny,
+              path: curpath
+            })
+            visited[nx][ny] = 1
+          }
+        }
+      }
+      return -1
+    };
+  </script>
+
+</body>
+
+</html>

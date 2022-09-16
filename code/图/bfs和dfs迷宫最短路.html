@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 链接 ： https://juejin.cn/post/7001005056606601252
+    // dfs写法
+    // 1表示障碍物
+    var matrix =
+      [[0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0],
+      [0, 0, 1, 0, 0, 1],
+      [1, 1, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0]]
+
+    var n = matrix.length
+    var m = matrix[0].length
+    // 此数组用来记录当前节点是否被访问过
+    var visited = new Array(n).fill('').map((item) => new Array(m).fill(0))
+
+    var res = {
+      path: null,
+      len: Number.MAX_SAFE_INTEGER
+    }
+    var dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]] // 当前节点可走的4个方向，分别对应右，左，上，下
+
+    // 其实就是暴力递归求最短路
+    var dfs = function (x, y, path) {
+      // 到达终点
+      if (x == n - 1 && y == m - 1) {
+        // console.log(path) // 打印当前路径
+        // 得到当前路径长度
+        var currentLen = path.split('-').length
+        // 如果当前路径小于结果路径，则取结果路径
+        if (currentLen < res.len) {
+          res.path = path
+          res.len = currentLen
+        }
+        return
+      }
+
+      for (var dir of dirs) {
+        var nx = x + dir[0]
+        var ny = y + dir[1]
+        // 分别判断当前节点是否是有效节点
+        if (nx < n && // 迷宫边界
+          nx >= 0 &&
+          ny < m &&
+          ny >= 0 &&
+          matrix[nx][ny] == 0 && // 是否通路0：通路1：障碍
+          visited[nx][ny] == false) {// 是否已访问过
+          // 当访问该节点时，标记已访问
+          visited[nx][ny] = true
+          // 进入递归，每次递归都表示一个完整路径
+          // 需要传入当前节点和已经访问过的路径
+          dfs(nx, ny, path + '-' + nx + ',' + ny)
+          // 每次路径完成时，针对该节点需要回溯原始状态
+          visited[nx][ny] = false;
+        }
+      }
+    }
+    dfs(0, 0, '0,0')
+    visited[0][0] = true
+    console.log(res)
+
+
+    // bfs解法
+    var matrix =
+      [[0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0],
+      [0, 0, 1, 0, 0, 1],
+      [1, 1, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0]]
+
+    var m = matrix.length
+    var n = matrix[0].length
+    // 此数组用来记录当前节点是否被访问过
+    function bfs() {
+      var visited = new Array(m).fill('').map((d) => new Array(n).fill(false))
+      var arr = [] // 队列
+      var dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]// 当前节点可走的4个方向，分别对应右，左，上，下
+
+      // 起点入队
+      arr.push({
+        x: 0,
+        y: 0,
+        path: '0,0'
+      })
+      visited[0][0] = true
+
+      while (arr.length) {
+        var current = arr.shift() // 当前方向上节点出队
+
+        if (current.x == m - 1 && current.y == n - 1) {
+          console.log(current.path)// 打印当前路径
+          break;
+        }
+        for (var dir of dirs) {
+          var nx = current.x + dir[0]
+          var ny = current.y + dir[1]
+
+          // 分别判断当前节点是否是有效节点
+          if (nx < m && // 迷宫边界
+            nx >= 0 &&
+            ny < n &&
+            ny >= 0 &&
+            matrix[nx][ny] == 0 && // 是否通路0：通路1：障碍
+            visited[nx][ny] == false) {// 是否已访问过
+
+            // 根据当前路径记录走过的路径
+            var _path = current.path + '-' + nx + ',' + ny + ''
+            // 节点入队
+            arr.push({
+              x: nx,
+              y: ny,
+              path: _path
+            })
+            // 标记已访问过
+            visited[nx][ny] = true
+          }
+        }
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
