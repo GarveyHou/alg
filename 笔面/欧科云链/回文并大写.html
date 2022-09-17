@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 第一题
+    const input = 'you got a message'
+    let arr = input.split(' ')
+    let arr1 = arr.slice(0, arr.length - 1)
+    console.log(arr1)
+    arr1.reverse()
+    let res = arr.concat(arr1)
+    res = res.map(item => {
+      let curarr = item.split('')
+      curarr[0] = curarr[0].toUpperCase()
+      return curarr.join('')
+    })
+    console.log(res)
+
+
+
+    // 第二题
+    // const input = 'abbcccdeff'
+    // let max = 0
+    // let res = ''
+    // let i = 0, j = 0
+    // while (j < input.length) {
+    //   j++
+    //   if (input[i] !== input[j]) {
+    //     if (j - i > max) {
+    //       max = j - i
+    //       res = input.substring(i, j)
+    //     }
+    //     i = j
+    //   }
+    // }
+    // console.log(res)
+
+
+    for (let i = 0; i < 5; i) {
+      console.log(i)
+      i++
+    }
+
+  </script>
+
+</body>
+
+</html>
