@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 讲了一个斐波那契类，严格递归，比如f(n) = f(n-1)+f(n-2)可以优化到O(log(n))级别的一种方法
+    // 就说斐波那契这个问题吧
+    // |f(3)-f(2)| = |f(2)-f(1)| * |一个二维矩阵|（几维只跟看最小是f(n-几）就是几维）
+    // |f(4)-f(3)| = |f(3)-f(5)| * |一个二维矩阵|
+
+    // 可以通过前一堆项枚举求出这个二维矩阵
+
+
+    /* 然后|f(n)-f(n-1)| = |f(2)-f(1)|*|二维矩阵|的(n-维)次方，这里是n-2
+    所以这里的问题就变成了求一个n维矩阵的n-2次方的问题
+
+
+    假设|a c|的n次方求法
+       |b d|
+
+     比如n等于75，变成二进制是1001011，t刚开始是一个n维单位矩阵，只要判断t的一次，2,4,8,16在75二进制对应的位置是不是1，如果是1的话就乘上t的该次方，否则t = t*t
+     其实这里就等于是res = 单位矩阵*t*t2*t8*t64
+
+     p=75
+     public static int[][] matrixPower(int[][] m, int p) {
+       int[][] res = new int[m.length][m[0].length];
+       for (int i = 0; i < res.length; i++) {
+         res[i][i] = 1;
+       }
+       int[][] tmp = m;
+       for (; p != 0; p >>= 1) {
+         if ((p & 1) != 0) {
+           res = muliMatrix(res, tmp);
+         }
+         tmp = muliMatrix(tmp, tmp);
+       }
+       return res;
+     }
+
+    */
+    function matrixPow(m, p) {
+      const res = new Array(m.length).fill('').map(d => new Array(m.length).fill(0))
+      // 设置n维单位矩阵
+      for (let i = 0; i < res.length; i++) {
+        res[i][i] = 1
+      }
+      let tmp = m
+
+      for (; p != 0; p >>= 1) {
+        if ((p & 1) !== 0) {
+          // 如果这个位是1的话，那就要乘以tmp
+          res = muliMatrix(res, tmp)
+        }
+        // tmp变成tmp*tmp继续下一步，
+        tmp = muliMatix(tmp, tmp)
+
+      }
+    }
+    /* public static int[][] muliMatrix(int[][] m1, int[][] m2) {
+    int[][] res = new int[m1.length][m2[0].length];
+    for (int i = 0; i < m1.length; i++) {
+      for (int j = 0; j < m2[0].length; j++) {
+        for (int k = 0; k < m2.length; k++) {
+          res[i][j] += m1[i][k] * m2[k][j];
+        }
+      }
+    }
+    return res;
+  } */
+
+
+
+  </script>
+
+</body>
+
+</html>

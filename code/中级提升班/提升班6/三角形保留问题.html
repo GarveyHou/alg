@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    /* 给一个n，表示有从1-n这么多条边，最多保留多少个，能让保留的边都构不成三角形
+    
+    思路：直接菲波那切数列看从有哪些是1-n的，这些就是要保留的
+    */
+    function main(n) {
+      const res = [1]
+      let pre = 1, cur = 2
+      while (cur < n) {
+        res.push(cur)
+        let temp = pre
+        pre = cur
+        cur = temp + cur
+      }
+      return res
+    }
+    console.log(main(17))
+
+
+  </script>
+
+</body>
+
+</html>

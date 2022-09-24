@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const line = 'A1 B1 3|B1 A1 1|B1 C1 4|A1 C1 5|C1 B1 9'
+    // const line = 'A B 1|B A 2'
+
+    let arr = line.split('|')
+    arr = arr.map(item => {
+      let row = item.split((' '))
+      row[2] = parseInt(row[2])
+      return row
+    })
+    // console.log(arr);
+
+    class Graph {
+      constructor() {
+        this.nodes = new Map()
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(val) {
+        this.val = val
+        this.in = 0
+        this.out = 0
+        this.nexts = []
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(weight, from, to) {
+        this.weight = weight
+        this.from = from
+        this.to = to
+      }
+    }
+
+
+    const graph = new Graph()
+
+    for (let i = 0; i < arr.length; i++) {
+      let from = arr[i][0]
+      let to = arr[i][1]
+      let weight = arr[i][2]
+
+      if (!graph.nodes.has(from)) {
+        graph.nodes.set(from, new Node(from))
+      }
+      if (!graph.nodes.has(to)) {
+        graph.nodes.set(to, new Node(to))
+      }
+
+      let fromNode = graph.nodes.get(from)
+      let toNode = graph.nodes.get(to)
+
+      let curEdge = new Edge(weight, fromNode, toNode)
+
+      fromNode.nexts.push(toNode)
+      fromNode.out++
+      toNode.in++
+      fromNode.edges.push(curEdge)
+      graph.edges.push(curEdge)
+    }
+    console.log(graph)
+
+    function dijkstra(node) {
+      //  存放node到每个点的最短距离的点，如果没有节点的key默认正无穷
+      const distanceMap = new Map();
+
+      // 设置A到自己的距离是0
+      distanceMap.set(node, 0)
+      // console.log(distanceMap);
+      // 存放已经不能再动的node
+      const selectedNodes = new Set();
+      // 取出distanceMap中最小距离的点且不在selectedNodes
+      let minNode = getMinNode(distanceMap, selectedNodes)
+      // console.log(minNode);
+      while (minNode !== null) {
+        // 当前找到最小距离的点的距离，为找其他点然后加而准备
+        let distance = distanceMap.get(minNode)
+        for (let edge of minNode.edges) {
+          // 找到这点的边去的地方
+          let toNode = edge.to
+          // 如果在distanceMap里面找不到这个点的key说明是正无穷，直接更新
+          if (distanceMap.get(toNode) == undefined) {
+            // console.log(distanceMap.get(toNode));
+            distanceMap.set(toNode, distance + edge.weight)
+            // console.log(distanceMap);
+          } else {
+            // 找到了这个key，那么就比较当前key对应的距离和当前节点的举例+这个edge的举例是不是小于这个原先的value
+            distanceMap.set(toNode, Math.min(distanceMap.get(toNode), distance + edge.weight))
+            // console.log(distanceMap);
+          }
+        }
+        // 没什么好说的，当前点要封死了，然后取下一个minNode
+        selectedNodes.add(minNode)
+        minNode = getMinNode(distanceMap, selectedNodes)
+      }
+      return distanceMap
+    }
+
+    function getMinNode(distanceMap, touchedNodes) {
+      let minNode = null;
+      let minDistance = Number.MAX_VALUE;
+      for (let entry of distanceMap.entries()) {
+        let node = entry[0]
+        let distance = entry[1]
+        if (!touchedNodes.has(node) && distance < minDistance) {
+          minNode = node
+          minDistance = distance
+        }
+      }
+      return minNode
+    }
+
+    let res = ''
+    let min = Number.MAX_SAFE_INTEGER
+    for (let value of graph.nodes.values()) {
+      console.log(value.val, dijkstra(value))
+      let lens = dijkstra(value).values()
+      let sum = 0
+      for (let len of lens) {
+        sum += len
+      }
+      if (sum < min) {
+        min = sum
+        res = value.val
+      }
+    }
+    console.log('结果:' + res);
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

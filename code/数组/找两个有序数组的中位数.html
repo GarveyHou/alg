@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+    /* 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+   
+   算法的时间复杂度应该为 O(log(m + n)) 。 */
+
+
+
+    const nums1 = [1, 2, 3], nums2 = [4, 5, 6]
+
+
+    var main = function (nums1, nums2) {
+
+      // 保存前一个和本个，用于偶数个求中位数的时候两个相加/2
+      let pre = 1, cur = -1
+      let m = nums1.length, n = nums2.length
+      // 总长度
+      let len = m + n
+      // 两个指针，一个指向nums1，一个指向nums2
+      let astart = 0, estart = 0
+
+      // 比如当前数据下，astart+estart 可以执行4次，分别和为0,1,2,3都可以进循环
+      // 每次循环的时候都是astart和estart前面是当前判断过的数，astart+estart就是已经判断过多少数，因为下标从0开始的
+      while (astart + estart <= len / 2) {
+        // 保存前一个
+        pre = cur
+
+        if (astart < m && (estart >= n || nums1[astart] < nums2[estart])) {
+          // cur就是当前出现的一个中位数位置之前的的数
+          cur = nums1[astart]
+          // 这个astart后面加的，所以astart加完都可以等于n的
+          astart++
+        } else {
+          // 同理
+          cur = nums2[estart++]
+        }
+      }
+      // 返回中位数
+      if ((m + n) % 2 == 0) {
+        return (cur + pre) / 2
+      } else {
+        return cur
+      }
+    };
+    console.log(main(nums1, nums2))
+  </script>
+
+
+</body>
+
+</html>

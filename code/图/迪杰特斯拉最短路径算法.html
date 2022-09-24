@@ -33,7 +33,7 @@
           // 找到这点的边去的地方
           var toNode = edge.to
           // 如果在distanceMap里面找不到这个点的key说明是正无穷，直接更新
-          if (!distanceMap.get(toNode)) {
+          if (distanceMap.get(toNode) == undefined) {
             distanceMap.set(toNode, distance + edge.weight)
           } else {
             // 找到了这个key，那么就比较当前key对应的距离和当前节点的举例+这个edge的举例是不是小于这个原先的value

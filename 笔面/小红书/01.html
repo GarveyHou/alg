@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const n = 5, k = 2
+    // const arr = [1, 5, 3, 4, 2]
+    // function process(i) {
+    //   if (i == n - 1) {
+    //     return 0
+    //   }
+    //   let min = Number.MAX_SAFE_INTEGER
+    //   for (let len = 1; len <= k; len++) {
+    //     if (i + len < n) {
+    //       let daijia = arr[i] > arr[i + len] ? 0 : arr[i + len] - arr[i]
+    //       min = Math.min(min, daijia + process(i + len))
+    //     }
+    //   }
+    //   return min
+    // }
+    // console.log(process(0))
+
+    // const n = 5, k = 2
+    // const arr = [1, 5, 3, 4, 2]
+    // function process1() {
+    //   const dp = new Array(n).fill(0)
+    //   for (let i = n - 2; i >= 0; i--) {
+    //     let min = Number.MAX_SAFE_INTEGER
+    //     for (let len = 1; len <= k; len++) {
+    //       if (i + len < n) {
+    //         let daijia = arr[i] > arr[i + len] ? 0 : arr[i + len] - arr[i]
+    //         min = Math.min(min, daijia + dp[i + len])
+    //       }
+    //     }
+    //     dp[i] = min
+    //   }
+    //   return dp[0]
+    // }
+    // console.log(process1())
+
+
+
+
+
+    const n = 6, k = 2
+    const arr = [1, 2, 1, 3, 2, 3]
+
+    let result = 0
+    for (let i = 0; i < n; i++) {
+      for (let j = i; j < n; j++) {
+        if (j + 1 - i < k) {
+          continue
+        }
+        if (isRes(arr.slice(i, j + 1))) {
+          result++
+        }
+      }
+    }
+    console.log(result)
+
+
+    function isRes(arr) {
+      const map = new Map()
+      arr.forEach(item => {
+        if (map.has(item)) {
+          map.set(item, map.get(item) + 1)
+        } else {
+          map.set(item, 1)
+        }
+      })
+      return Math.max(...map.values()) >= k
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

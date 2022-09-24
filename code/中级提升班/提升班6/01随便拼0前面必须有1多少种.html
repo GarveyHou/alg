@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 字符串只由'0'和'1'两种字符构成，
+    当字符串长度为1时，所有可能的字符串为"0"、"1"；
+    当字符串长度为2时，所有可能的字符串为"00"、"01"、"10"、"11"；
+    当字符串长度为3时，所有可能的字符串为"000"、"001"、"010"、"011"、"100"、
+    "101"、"110"、"111"
+    ...如果某一个字符串中，只要是出现'0'的位置，左边就靠着'1'，这样的字符串叫作达
+    标字符串。
+    给定一个正数N，返回所有长度为N的字符串中，达标字符串的数量。
+    比如，N = 3，返回3，因为只有"101"、"110"、"111"达标 */
+
+
+    /* 思路：我们认为设定F(i)是指前面有个1的情况下，后面i个有多少种合法；
+    需要求n=8就是求f(7),因为第一个只能是1;
+    对于f(7),7个字符中第一个可以填0或1
+    如果填0 ，第二个必须填1，俺就是f(5)
+    如果填1，那就符合我们的认为设定，f(6)、
+    
+    
+    所以斐波那契问题，f(n)=f(n-1)+f(n-2)搞定
+    初始值f(0) = 1,f(1) = 2
+    
+    */
+    function main(n) {
+      let pre = 1, cur = 2
+      let i = 2
+      while (i !== n - 1) {
+        let temp = pre
+        pre = cur
+        cur = temp + cur
+        i++
+      }
+      console.log(cur)
+    }
+    main(8)
+
+    const n = 8
+    // 暴力求解
+    function process(i) {
+      if (i == n) {
+        return 1
+      }
+      if (i == 0) {
+        return process(i + 1)
+      }
+    }
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>

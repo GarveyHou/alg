@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    // const n = 123
+    const n = 111
+    const length = n.toString().length
+    const str = n.toString()
+    // console.log(length)
+    // 且的01情况一共length-1个
+
+    // res存着length-1个切割点所有的0 1取值可能性数组
+    const res = []
+
+    // 暴力递归填充res
+    function process(i, chooses) {
+      // basecase所有可切点都ok了，直接返回到res
+      if (i == length - 1) {
+        res.push(chooses)
+        return
+      }
+      let curchooses1 = [...chooses, 1]
+      process(i + 1, curchooses1)
+      let curchooses2 = [...chooses, 0]
+      process(i + 1, curchooses2)
+    }
+    process(0, [])
+    // console.log(res)
+
+    // set保存不重复的和
+    const set = new Set()
+    // 判断每个01可能性
+    for (let i = 0; i < res.length; i++) {
+      // 当前切割情况下的和
+      let sum = 0
+      // 当前切割下的串分开后的数组，如['12',3]
+      const curNumArr = []
+      // 根据01切割来分割原串填充curnumarr
+      let pre = 0
+      res[i].forEach((item, index) => {
+        if (item == 1) {
+          curNumArr.push(str.substring(pre, index + 1))
+          pre = index + 1
+        }
+      })
+      // 把最后剩下的部分也填上
+      curNumArr.push(str.substring(pre))
+      // 求和
+      sum = curNumArr.reduce((pre, next) => {
+        return parseInt(pre) + parseInt(next)
+      }, 0)
+      // 入集合
+      set.add(sum)
+    }
+    // console.log(set)
+    // 返回结果
+    console.log(set.size)
+
+
+  </script>
+
+</body>
+
+</html>

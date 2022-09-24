@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 第一题
+    // const n = 54054
+    // // 求一个数的二进制的1的个数
+    // function f(n) {
+    //   let res = 0
+    //   while (n) {
+    //     res++
+    //     n = n & (n - 1)
+    //   }
+    //   return res
+    // }
+    // // console.log(f(9))
+    // // 保存最终结果
+    // const res = []
+    // for (let i = 1; i <= n; i++) {
+    //   if (n % i == 0) {
+    //     if (f(n / i) * (n / i) == n) {
+    //       res.push(n / i)
+    //     }
+    //   }
+    // }
+    // console.log(res.length)
+    // res.sort()
+    // let str = ''
+    // res.forEach(item => {
+    //   str += ' ' + item
+    // })
+    // console.log(str)
+
+
+
+
+    // 第二题
+    // const arr = '0125089??'.split('')
+    const arr = '?12?0?9??'.split('')
+    // console.log(arr)
+    // console.log(1 == '1')
+    const n = arr.length
+    const pos = []
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] == '?') {
+        pos.push(i)
+      }
+    }
+    // console.log(pos)
+    const m = pos.length
+    // console.log(m)
+    const res = []
+    // chooses 【】长度等于m，存的？出的数字
+    function process(i, chooses) {
+      // i遍历的是pos的index
+      if (i == m) {
+        // console.log(i)
+        // console.log(chooses)
+        let k = 0, l = 0
+        let str = ''
+        while (k < arr.length) {
+          if (arr[k] == '?') {
+            str += chooses[l]
+            l++
+          } else {
+            str += arr[k]
+          }
+          k++
+        }
+        // console.log(str)
+        if (parseInt(str) % 3 == 0) {
+          res.push(parseInt(str))
+        }
+        return
+      }
+      // process(i + 1, [])
+      // index就是pos的每个值，对应arr的？index
+      let index = pos[i]
+      // // 0位置是?
+      if (index == 0) {
+        // console.log(2)
+        for (let j = 1; j <= 9; j++) {
+          // console.log(arr[index + 1])
+          if (j == arr[index + 1]) {
+            continue
+          }
+          let curchooses = [...chooses, j]
+          process(i + 1, curchooses)
+        }
+      } else if (index == n - 1) {
+        for (let j = 0; j <= 9; j++) {
+          if (arr[index - 1] == '?') {
+            if (j == chooses[chooses.length - 1]) {
+              continue
+            }
+          } else if (j == arr[index - 1]) {
+            continue
+          }
+          let curchooses = [...chooses, j]
+          process(i + 1, curchooses)
+        }
+      } else {
+        for (let j = 0; j <= 9; j++) {
+          if (arr[index - 1] == '?') {
+            if (j == chooses[chooses.length - 1]) {
+              continue
+            }
+          } else if (j == arr[index - 1] || j == arr[index + 1]) {
+            continue
+          }
+          let curchooses = [...chooses, j]
+          process(i + 1, curchooses)
+        }
+      }
+    }
+    process(0, [])
+    console.log(Math.min(...res))
+
+
+
+    // process(0, '')
+    // function fn(chooses) {
+    //   let k = 0, l = 0
+    //   let str = ''
+    //   while (k < arr.length) {
+    //     if (arr[k] == '?') {
+    //       str += chooses[l]
+    //       l++
+    //     } else {
+    //       str += arr[k]
+    //     }
+    //     k++
+    //   }
+    //   return str
+    // }
+    // console.log(fn([8, 8, 8, 8, 8]))
+
+    // const res = []
+    // for (let i = 1; i <= n; i++) {
+    //   const divNum = n / i
+    //   if (!Number.isInteger(divNum)) {
+    //     continue
+    //   }
+    //   if (f(divNum) == i) {
+    //     res.push(divNum)
+    //   }
+    // }
+    // res.sort()
+    // console.log(res.length)
+    // console.log(res.join(' '))
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

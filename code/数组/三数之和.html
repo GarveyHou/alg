@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 三数之和，用了一手双指针
+    /* 思路：res数组不能重复，那么得把原数组排序，然后找第一个和第二个的时候往
+    下遍历的时候，除了第一个数可以拿来试。后面的如果和前面一个数重复，那就不要去试了；
+    第三个数取拿个不去遍历，而是用指针，从最后往前和第二个选的数匹配，看能不能拼出0-Nums[first]，也就是third指针往前直到二和三加起来不大于0的时候，看是因为两个指针相碰结束的还是相等结束的，相等就可以之后放入res
+     */
+    var threeSum = function (nums) {
+      const res = []
+      let n = nums.length
+      nums.sort((x, y) => {
+        return x - y
+      })
+      console.log(nums)
+      if (nums[0] > 0 || nums[n - 1] < 0) {
+        return res
+      }
+      for (let first = 0; first < n; first++) {
+        if (first > 0 && nums[first] == nums[first - 1]) {
+          continue
+        }
+        let third = n - 1
+        let target = -nums[first]
+        for (let second = first + 1; second < n; second++) {
+          if (second > first + 1 && nums[second] == nums[second - 1]) {
+            continue
+          }
+          while (second < third && nums[second] + nums[third] > target) {
+            --third
+          }
+          if (second == third) {
+            break
+          }
+          if (nums[second] + nums[third] == target) {
+            res.push([nums[first], nums[second], nums[third]])
+          }
+        }
+
+      }
+      return res
+    };
+
+  </script>
+
+</body>
+
+</html>

@@ -1,59 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <script>
-      class Graph {
-        constructor() {
-          // 两个都是键为数字，值为Node和Edge
-          // Map<value,node.value>
-          this.nodes = new Map()
-          // edges
-          this.edges = []
-        }
-      }
-      class Node {
-        constructor(value) {
-          // value为值；
-          // in为入度；
-          // out为出度；
-          // nexts为指出去的点集合；为Node
-          // edges为属于我的边有哪些，也是指出去的边，为Edge
-          this.value = value
-          this.in = 0
-          this.out = 0
-          this.nexts = []
-          this.edges = []
-        }
-      }
-      class Edge {
-        constructor(weight, from, to) {
-          // weight表示权重
-          // from表示从哪里来,为Node
-          // to表示去那里去，为Node
-          this.weight = weight
-          this.from = from
-          this.to = to
-        }
-      }
-      // 将不熟悉的图转成我们熟悉的图形式，arr的每一项如[5,2,3]表示有一条从2到3的有向边权重是5
-      function createGraph(arr) {
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
 
-        /*定义一个图结构，遍历arr数组的每一项,取出from，to和weight，然后先把from和to加入到graph的nodes
-      然后从nodes中get出对应的Node节点，new边出来，设置from和to的入度和nexts和edges，总图的edges也加这个边
-       */
-        var graph = new Graph()
-        for (var i = 0; i < arr.length; i++) {
-          var from = arr[i][0]
-          var to = arr[i][1]
-          var weight = arr[i][2]
+<body>
+  <script>
+    class Graph {
+      constructor() {
+        // 两个都是键为数字，值为Node和Edge
+        // Map<value,node.value>
+        this.nodes = new Map()
+        // edges
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(value) {
+        // value为值；
+        // in为入度；
+        // out为出度；
+        // nexts为指出去的点集合；为Node
+        // edges为属于我的边有哪些，也是指出去的边，为Edge
+        this.value = value
+        this.in = 0
+        this.out = 0
+        this.nexts = []
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(weight, from, to) {
+        // weight表示权重
+        // from表示从哪里来,为Node
+        // to表示去那里去，为Node
+        this.weight = weight
+        this.from = from
+        this.to = to
+      }
+    }
 
+    // 将不熟悉的图转成我们熟悉的图形式，arr的每一项如[5,2,3]表示有一条从2到3的有向边权重是5
+    function createGraph(arr) {
+
+      /*定义一个图结构，遍历arr数组的每一项,取出from，to和weight，然后先把from和to加入到graph的nodes
+    然后从nodes中get出对应的Node节点，new边出来，设置from和to的入度和nexts和edges，总图的edges也加这个边
+     */
+      var graph = new Graph()
+      for (var i = 0; i < arr.length; i++) {
+        var from = arr[i][0]
+        var to = arr[i][1]
+        var weight = arr[i][2]
+
+        if (!graph.nodes.has(from)) {
+          graph.nodes.set(from, new Node(from))
+        }
+
+        if (!graph.nodes.has(to)) {
+          graph.nodes.set(to, new Node(to))
+        }
+
+        var fromNode = graph.nodes.get(from)
+        var toNode = graph.nodes.get(to)
+
+        curEdge = new Edge(weight, fromNode, toNode)
+
+        fromNode.nexts.push(toNode)
+        fromNode.out++
+        toNode.in++
+        fromNode.edges.push(curEdge)
+        graph.edges.push(curEdge)
+      }
+    }
+
+    const graphArr = [[0, 2, -1, 6, -1],
+    [-1, 0, 1, 4, -1],
+    [-1, -1, 0, 5, 7],
+    [-1, -1, -1, 0, -1],
+    [10, -1, -1, -1, 0]]
+    // 另一种形式的图的表现形式转成我们熟悉的图，临接矩阵
+
+    function createGraph1(arr) {
+      const graph = new Graph()
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr[0].length; j++) {
+          if (i == j) {
+            continue
+          }
+          if (arr[i][j] == -1) {
+            continue
+          }
+          let from = i,
+            to = j,
+            weight = arr[i][j]
           if (!graph.nodes.has(from)) {
             graph.nodes.set(from, new Node(from))
           }
@@ -61,62 +104,23 @@
             graph.nodes.set(to, new Node(to))
           }
 
-          var fromNode = graph.nodes.get(from)
-          var toNode = graph.nodes.get(to)
-
-          curEdge = new Edge(weight, fromNode, toNode)
-
+          let fromNode = graph.nodes.get(from),
+            toNode = graph.nodes.get(to)
           fromNode.nexts.push(toNode)
           fromNode.out++
           toNode.in++
-          fromNode.edges.push(curEdge)
+          let curEdge = new Edge(fromNode, toNode, weight)
           graph.edges.push(curEdge)
+          fromNode.edges.push(curEdge)
         }
       }
+      return graph
+    }
 
-      const graphArr = [[0,2,-1,6,-1],
-                        [-1,0,1,4,-1],
-                        [-1,-1,0,5,7],
-                        [-1,-1,-1,0,-1],
-                        [10,-1,-1,-1,0]]
-      // 另一种形式的图的表现形式转成我们熟悉的图，临接矩阵
-
-      function createGraph1(arr){
-        const graph = new Graph()
-        for(let i=0;i<arr.length;i++){
-          for(let j=0;j<arr[0].length;j++){
-            if(i==j){
-              continue
-            }
-            if(arr[i][j]==-1){
-              continue
-            }
-            let from = i,
-                  to = j, 
-                  weight = arr[i][j]
-            if(!graph.nodes.has(from)){
-              graph.nodes.set(from,new Node(from))
-            }
-            if(!graph.nodes.has(to)){
-              graph.nodes.set(to,new Node(to))
-            }
-
-            let fromNode = graph.nodes.get(from),
-              toNode = graph.nodes.get(to)
-            fromNode.nexts.push(toNode)
-            fromNode.out++
-            toNode.in++
-            let curEdge = new Edge(fromNode,toNode,weight)
-            graph.edges.push(curEdge)
-            fromNode.edges.push(curEdge)
-          }
-        }
-        return graph
-      }
-
-      console.log(createGraph1(graphArr))
+    console.log(createGraph1(graphArr))
 
 
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>

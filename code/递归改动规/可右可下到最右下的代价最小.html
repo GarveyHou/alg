@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- leetcode64
+    给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+    说明：每次只能向下或者向右移动一步。
+  -->
+  <script>
+    const grid = [[1, 3, 1], [1, 5, 1], [4, 2, 1]]
+    let n = grid.length, m = grid[0].length
+    // const res = []
+    // const dirs = [[0, 1], [1, 0]]
+    // var process = function (i, j, count) {
+    //   if (i == n - 1 && j == m - 1) {
+    //     res.push(count)
+    //     return
+    //   }
+    //   for (let dir of dirs) {
+    //     let nx = i + dir[0]
+    //     let ny = j + dir[1]
+    //     if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
+    //       process(nx, ny, count + grid[nx][ny])
+    //     }
+    //   }
+    // }
+    // process(0, 0, grid[0][0])
+    // // console.log(res)
+    // console.log(Math.min(...res))
+
+
+    function process1(i, j) {
+      if (i < 0 || i >= n || j < 0 || j >= m) {
+        return -1
+      }
+      if (i == n - 1 && j == m - 1) {
+        return grid[i][j]
+      }
+      let p1 = process1(i + 1, j),
+        p2 = process1(i, j + 1)
+      if (p1 == -1) {
+        return grid[i][j] + p2
+      } else if (p2 == -1) {
+        return grid[i][j] + p1
+      } else {
+        return grid[i][j] + Math.min(p1, p2)
+      }
+    }
+
+    console.log(process1(0, 0))
+
+
+    // 假设都是1，用path来存的情况
+    // function process11(i, j) {
+    //   if (i < 0 || i >= n || j < 0 || j >= m) {
+    //     return -1
+    //   }
+    //   if (i == n - 1 && j == m - 1) {
+    //     return i + ',' + j
+    //   }
+    //   let p1 = process11(i + 1, j),
+    //     p2 = process11(i, j + 1)
+    //   if (p1 == -1) {
+    //     return i + ',' + j + '-' + p2
+    //   } else if (p2 == -1) {
+    //     return i + ',' + j + '-' + p1
+    //   } else {
+    //     if (p1.split('-').length < p2.split('-').length) {
+    //       return i + ',' + j + '-' + p1
+    //     } else {
+    //       return i + ',' + j + '-' + p2
+    //     }
+    //   }
+    // }
+    // console.log(process11(0, 0))
+
+
+
+
+
+
+
+
+    const dp = new Array(n + 1).fill('').map(d => new Array(m + 1).fill(0))
+    // console.log(dp);
+
+    function process2(i, j) {
+      if (dp[i][j] !== 0) {
+        return dp[i][j]
+      }
+      if (i < 0 || i >= n || j < 0 || j >= m) {
+        dp[i][j] = -1
+        return dp[i][j]
+      }
+      if (i == n - 1 && j == m - 1) {
+        dp[i][j] = grid[i][j]
+        return dp[i][j]
+      }
+      let p1 = process1(i + 1, j),
+        p2 = process1(i, j + 1)
+      if (p1 == -1) {
+        dp[i][j] = grid[i][j] + p2
+      } else if (p2 == -1) {
+        dp[i][j] = grid[i][j] + p1
+      } else {
+        dp[i][j] = grid[i][j] + Math.min(p1, p2)
+      }
+      return dp[i][j]
+    }
+    console.log(process2(0, 0));
+
+    // 动规版本
+    function process3() {
+      const dp = new Array(n + 1).fill('').map(d => new Array(m + 1).fill(0))
+      for (let i = 0; i <= m; i++) {
+        dp[n][i] = -1
+        dp[i][m] = -1
+      }
+      for (let i = n - 1; i >= 0; i--) {
+        for (let j = m - 1; j >= 0; j--) {
+          if (i == n - 1 && j == m - 1) {
+            dp[i][j] = grid[i][j]
+          } else {
+            let p1 = dp[i + 1][j],
+              p2 = dp[i][j + 1]
+            if (p1 == -1) {
+              dp[i][j] = grid[i][j] + p2
+            } else if (p2 == -1) {
+              dp[i][j] = grid[i][j] + p1
+            } else {
+              dp[i][j] = grid[i][j] + Math.min(p1, p2)
+            }
+          }
+        }
+      }
+      return dp[0][0]
+    }
+    console.log(process3())
+
+  </script>
+
+</body>
+
+</html>
