@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+
+    const n = 3, dis = 500
+    const arr = [1, 2]
+
+    let quanshu = Math.floor(dis / 400)
+    let res1 = 1, res2 = 1
+    arr.forEach(item => {
+      if (item > quanshu) {
+        res1++
+        res2++
+      } else if (item == quanshu) {
+        res2++
+      }
+    })
+    console.log(res1, res2)
+
+
+  </script>
+
+</body>
+
+</html>

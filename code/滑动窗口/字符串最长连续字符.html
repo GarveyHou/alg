@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const str = 'abc'
+    let max = 0
+    let i = 0, j = 0
+    // const arr = [1, 2, 3]
+    // console.log(arr[100])
+
+    while (j <= str.length) {
+      if (str[j] == str[i]) {
+        j++
+      } else {
+        max = Math.max(max, j - i)
+        i = j
+      }
+    }
+    console.log(max)
+  </script>
+
+
+</body>
+
+</html>

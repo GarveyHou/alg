@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const n = 5
+    // const arr = ['aabc', 'aaaa', 'aabb', 'aaabb', 'abcde']
+    // const res = []
+    // function process(str, i, cur) {
+    //   if (i == str.length) {
+    //     res.push(cur)
+    //   }
+    //   let set = new Set()
+    //   for (let j = i; j < str.length; j++) {
+    //     if (!set.has(str[j])) {
+    //       swap(str, i, j)
+    //       process(str, i + 1, cur + str[i])
+    //       swap(str, i, j)
+    //       set.add(str[j])
+    //     }
+    //   }
+    // }
+    // function swap(arr, x, y) {
+    //   let temp = arr[y]
+    //   arr[y] = arr[x]
+    //   arr[x] = temp
+    // }
+
+    // function process1(s) {
+    //   const result = []
+    //   if (s.length <= 1) {
+    //     return [s]
+    //   } else {
+    //     for (let i = 0; i < s.length; i++) {
+    //       let char = s[i]
+    //       let newStr = s.slice(0, i) + s.slice(i + 1, s.length)
+    //       let l = process1(newStr)
+    //       for (let j = 0; j < l.length; j++) {
+    //         let temp = char + l[j]
+    //         result.push(temp)
+    //       }
+    //     }
+    //   }
+    //   return result
+    // }
+    // console.log(process1('abcd'))
+
+    // function process(str) {
+    //   let len = 0
+    //   const map = new Map()
+    //   for (let i = 0; i < str.length; i++) {
+    //     if (!map.has(str[i])) {
+    //       map.set(str[i], 1)
+    //     } else {
+    //       len += 2
+    //       map.delete(str[i])
+    //     }
+    //   }
+    //   if (len < str.length) {
+    //     len++
+    //   }
+    //   console.log(len)
+    // }
+    // for (let i = 0; i < n; i++) {
+    //   process(arr[i])
+    // }
+
+
+    // function getMaxLen(s) {
+    //   let res = ''
+    //   for (let i = 0; i < s.length; i++) {
+    //     test(i, i)
+    //     test(i, i + 1)
+    //   }
+    //   function test(m, n) {
+    //     while (m >= 0 && n < s.length && s[m] === s[n]) {
+    //       m--
+    //       n++
+    //     }
+    //     if (n - m - 1 > res.length) {
+    //       res = s.slice(m + 1, n)
+    //     }
+    //   }
+    //   return res.length
+    // }
+
+    const n = 3, m = 3
+    const grid = [[0, 1, 0], [1, 1, 0], [1, 0, 0]]
+    const t = 2
+    const arr = [[1, 1, 2], [3, 1, 4]]
+
+
+    const dirs = [[1, 0], [0, 1], [0, -1], [-1, 0]]
+    for (let i = 0; i < arr.length; i++) {
+      let x = arr[i][0], y = arr[i][1], k = arr[i][2]
+      const res = process(x - 1, y - 1, k)
+      console.log(res[0] + 1, res[1] + 1)
+    }
+    function process(x, y, k) {
+      if (k == 0) {
+        return [x, y]
+      }
+      for (let dir of dirs) {
+        let nx = x + dir[0]
+        let ny = y + dir[1]
+        if (nx >= n || ny >= m || nx < 0 || ny < 0) {
+          continue
+        }
+        if (grid[nx][ny] == grid[x][y]) {
+          continue
+        }
+        if (grid[x][y] == 0) {
+          grid[x][y] = 1
+        } else {
+          grid[x][y] = 0
+        }
+        return process(nx, ny, k - 1)
+      }
+      return [x, y]
+    }
+
+
+  </script>
+
+</body>
+
+</html>

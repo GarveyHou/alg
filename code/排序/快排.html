@@ -22,35 +22,68 @@
     /* 3.0就是划分值变成随机的一个数 */
 
     // 快排coding
-    function quickSort(arr, l, r) {
-      // console.log(arr)
-      if (l < r) {
-        // 生成l-r上的一个随机数,并且和最后一个值交换
-        let random = Math.floor(Math.random() * (r + 1 - l) + l)
-        swap(arr, random, r)
-        let p = partition(arr, l, r)
-        quickSort(arr, l, p[0] - 1)
-        quickSort(arr, p[1] + 1, r)
-      }
-    }
-    // 交换arr上l和r位置的数
+    // function quickSort(arr, l, r) {
+    //   // console.log(arr)
+    //   if (l < r) {
+    //     // 生成l-r上的一个随机数,并且和最后一个值交换
+    //     let random = Math.floor(Math.random() * (r + 1 - l) + l)
+    //     swap(arr, random, r)
+    //     let p = partition(arr, l, r)
+    //     quickSort(arr, l, p[0] - 1)
+    //     quickSort(arr, p[1] + 1, r)
+    //   }
+    // }
+    // // 交换arr上l和r位置的数
     function swap(arr, l, r) {
       let temp = arr[l]
       arr[l] = arr[r]
       arr[r] = temp
     }
 
-    function partition(arr, l, r) {
-      // 左边界外
-      let less = l - 1
-      // 这里为什么r就可以，是因为最后一个数是划分值，不用理
-      // 右边界外
-      let more = r
+    // function partition(arr, l, r) {
+    //   // 左边界外
+    //   let less = l - 1
+    //   // 这里为什么r就可以，是因为最后一个数是划分值，不用理
+    //   // 右边界外
+    //   let more = r
 
+    //   while (l < more) {
+    //     if (arr[l] < arr[r]) {
+    //       less++
+    //       swap(arr, less, l)
+    //       l++
+    //     } else if (arr[l] > arr[r]) {
+    //       more--
+    //       swap(arr, more, l)
+    //     } else {
+    //       l++
+    //     }
+    //   }
+    //   swap(arr, more, r)
+    //   return [less + 1, more]
+    // }
+
+    let arr = [3, 5, 6, 3, 4, 5, 2, 6, 9, 0]
+    quicksort(arr, 0, 9)
+    console.log(arr)
+
+    function quicksort(arr, l, r) {
+      if (l < r) {
+        let random = Math.floor(Math.random() * (r - l + 1) + l)
+        swap(arr, r, random)
+        let p = partition(arr, l, r)
+        quicksort(arr, l, p[0] - 1)
+        quicksort(arr, p[1] + 1, r)
+      }
+    }
+
+    function partition(arr, l, r) {
+      let less = l - 1,
+        more = r
       while (l < more) {
         if (arr[l] < arr[r]) {
           less++
-          swap(arr, less, l)
+          swap(arr, l, less)
           l++
         } else if (arr[l] > arr[r]) {
           more--
@@ -62,10 +95,6 @@
       swap(arr, more, r)
       return [less + 1, more]
     }
-
-    let arr = [3, 5, 6, 3, 4, 5, 2, 6, 9, 0]
-    quickSort(arr, 0, 9)
-    console.log(arr)
   </script>
 </body>
 
