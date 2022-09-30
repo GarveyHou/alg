@@ -1,132 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <script>
-      /* 定义一个前缀树节点类 */
-      class TrieNode {
-        constructor() {
-          // 通过这个节点的个数，加前缀树的过程中这个点到达过多少次,也就是多少个以根到这个节点为前缀的
-          this.pass = 0
-          // 以这个节点为终点的个数
-          this.end = 0
-          // 指26个字母对应的路的有无，null则是没这条路，有则是有这条路，且指向下一个节点
-          // 如果nexts[0]不等于null，说明这个节点有a的路
-          this.nexts = Array(26).fill(null)
-        }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 定义一个前缀树节点类 */
+    class TrieNode {
+      constructor() {
+        // 通过这个节点的个数，加前缀树的过程中这个点到达过多少次,也就是多少个以根到这个节点为前缀的
+        this.pass = 0
+        // 以这个节点为终点的个数
+        this.end = 0
+        // 指26个字母对应的路的有无，null则是没这条路，有则是有这条路，且指向下一个节点
+        // 如果nexts[0]不等于null，说明这个节点有a的路
+        this.nexts = Array(26).fill(null)
       }
-      // const trieNode = new TrieNode()
-      // console.log(trieNode)
-      class Trie {
-        constructor() {
-          this.root = new TrieNode()
-        }
-        // 有个遍历方法，遍历比如abc，要把这个字符串加到树里面去
-        insert(word) {
-          const arr = word.split('')
-          // 第一次node在根上
-          let node = this.root
+    }
+    // const trieNode = new TrieNode()
+    // console.log(trieNode)
+    class Trie {
+      constructor() {
+        this.root = new TrieNode()
+      }
+      // 有个遍历方法，遍历比如abc，要把这个字符串加到树里面去
+      insert(word) {
+        const arr = word.split('')
+        // 第一次node在根上
+        let node = this.root
+        node.pass++
+        // 遍历字符串要把每个字符都加到树上面
+        for (let i = 0; i < arr.length; i++) {
+          // 第一次判断根节点有没有到第一个字符a的路径
+          let index = arr[i].charCodeAt() - 'a'.charCodeAt()
+          if (node.nexts[index] == null) {
+            node.nexts[index] = new TrieNode()
+          }
+          node = node.nexts[index]
           node.pass++
-          // 遍历字符串要把每个字符都加到树上面
-          for (let i = 0; i < arr.length; i++) {
-            // 第一次判断根节点有没有到第一个字符a的路径
-            let index = arr[i].charCodeAt() - 'a'.charCodeAt()
-            if (node.nexts[index] == null) {
-              node.nexts[index] = new TrieNode()
-            }
-            node = node.nexts[index]
-            node.pass++
-          }
-          // 最后一个路径下的节点的end++，表示到头了
-          node.end++
         }
+        // 最后一个路径下的节点的end++，表示到头了
+        node.end++
+      }
 
-        // 先写查询，查询word这个单词出现过几次，也就是word字符串有多少个,此时不是前缀
-        search(word) {
-          if (word == null) {
+      // 先写查询，查询word这个单词出现过几次，也就是word字符串有多少个,此时不是前缀
+      search(word) {
+        if (word == null) {
+          return 0
+        }
+        let node = this.root
+        const arr = word.split('')
+        let index = 0
+        for (let i = 0; i < arr.length; i++) {
+          index = arr[i].charCodeAt() - 'a'.charCodeAt()
+          // 指的是word找一半没得找了，那就是0个
+          if (node.nexts[index] == null) {
             return 0
           }
-          let node = this.root
+          //否则一直往下面找
+          node = node.nexts[index]
+        }
+        // 返回end个数就行了
+        return node.end
+      }
+
+      // 找前缀.返回pass就行了，和search一样
+      prefixNumber(word) {
+        if (word == null) {
+          return 0
+        }
+        let node = this.root
+        const arr = word.split('')
+        let index = 0
+        for (let i = 0; i < arr.length; i++) {
+          index = arr[i].charCodeAt() - 'a'.charCodeAt()
+          // 指的是word找一半没得找了，那就是0个
+          if (node.nexts[index] == null) {
+            return 0
+          }
+          //否则一直往下面找
+          node = node.nexts[index]
+        }
+        // 返回end个数就行了
+        return node.pass
+      }
+
+      // 删除：先search，加入过才删除
+      // 如果有这个字符串，就沿途pass值--，最后一个end值--
+      // 如果删的过程中pass值变成0了，直接把这个节点的父节点的这条路设置为null
+      delete(word) {
+        if (this.search(word) == 0) {
+          return
+        } else {
           const arr = word.split('')
+          let node = this.root
+          node.pass--
           let index = 0
           for (let i = 0; i < arr.length; i++) {
             index = arr[i].charCodeAt() - 'a'.charCodeAt()
-            // 指的是word找一半没得找了，那就是0个
-            if (node.nexts[index] == null) {
-              return 0
+            // 发现这条路删了之后变成pass=了，直接设置为空，返回，下面的也不用做了
+            if (--node.nexts[index].pass == 0) {
+              node.nexts[index] = null
+              return
             }
-            //否则一直往下面找
             node = node.nexts[index]
           }
-          // 返回end个数就行了
-          return node.end
-        }
-
-        // 找前缀.返回pass就行了，和search一样
-        prefixNumber(word) {
-          if (word == null) {
-            return 0
-          }
-          let node = this.root
-          const arr = word.split('')
-          let index = 0
-          for (let i = 0; i < arr.length; i++) {
-            index = arr[i].charCodeAt() - 'a'.charCodeAt()
-            // 指的是word找一半没得找了，那就是0个
-            if (node.nexts[index] == null) {
-              return 0
-            }
-            //否则一直往下面找
-            node = node.nexts[index]
-          }
-          // 返回end个数就行了
-          return node.pass
-        }
-
-        // 删除：先search，加入过才删除
-        // 如果有这个字符串，就沿途pass值--，最后一个end值--
-        // 如果删的过程中pass值变成0了，直接把这个节点的父节点的这条路设置为null
-        delete(word) {
-          if (this.search(word) == 0) {
-            return
-          } else {
-            const arr = word.split('')
-            let node = this.root
-            node.pass--
-            let index = 0
-            for (let i = 0; i < arr.length; i++) {
-              index = arr[i].charCodeAt() - 'a'.charCodeAt()
-              // 发现这条路删了之后变成pass=了，直接设置为空，返回，下面的也不用做了
-              if (--node.nexts[index].pass == 0) {
-                node.nexts[index] = null
-                return
-              }
-              node = node.nexts[index]
-            }
-            // 如果能走到这一步，node。end--
-            node.end--
-          }
+          // 如果能走到这一步，node。end--
+          node.end--
         }
       }
-      const trie = new Trie()
-      trie.insert('abc')
-      trie.insert('abc')
-      trie.insert('abc')
-      trie.insert('abc')
-      trie.insert('abcd')
-      console.log(trie.search('abc'))
-      console.log(trie.prefixNumber('abc'))
-      trie.delete('abc')
-      console.log(trie.search('abc'))
-      // console.log(trie.prefixNumber('abc'))
-      console.log(trie)
+    }
+    const trie = new Trie()
+    trie.insert('abc')
+    trie.insert('abc')
+    trie.insert('abc')
+    trie.insert('abc')
+    trie.insert('abcd')
+    console.log(trie.search('abc'))
+    console.log(trie.prefixNumber('abc'))
+    trie.delete('abc')
+    console.log(trie.search('abc'))
+    // console.log(trie.prefixNumber('abc'))
+    console.log(trie)
       // console.log('b'.charCodeAt() - 'a'.charCodeAt())
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>

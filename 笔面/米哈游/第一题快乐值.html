@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+
+
+
+    /* 快乐值的题 */
+    const arr = [112, 111, 114, 116, 123, 115]
+    const odd = [], even = []
+
+    arr.forEach(item => {
+      item % 2 == 0 ? even.push(item) : odd.push(item)
+    })
+    // console.log(odd)
+    // console.log(even)
+    let i = 1
+    if (odd.length < even.length) {
+      odd.forEach(item => {
+        even.splice(i, 0, item)
+        i = i + 2
+      })
+    } else {
+      even.forEach(item => {
+        odd.splice(i, 0, item)
+        i = i + 2
+      })
+    }
+    console.log(even, odd)
+
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

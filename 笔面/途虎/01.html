@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // let line = '[{"id":1},{"id":2,"pid":1},{"id":3,"pid":1},{"id":4,"pid":1},{"id":2,"pid":1}]'
+    // let arr1 = JSON.parse(line)
+    // function equal(obj1, obj2) {
+    //   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+    //     return false
+    //   }
+    //   for (let key in obj1) {
+    //     if (obj1[key] !== obj2[key]) {
+    //       return false
+    //     }
+    //   }
+    //   return true
+    // }
+    // let arr = []
+    // for (let i = 0; i < arr1.length; i++) {
+    //   let flag = true
+    //   for (let j = i + 1; j < arr1.length; j++) {
+    //     if (equal(arr1[i], arr1[j])) {
+    //       flag = false
+    //       break;
+    //     }
+    //   }
+    //   if (flag) {
+    //     arr.push(arr1[i])
+    //   }
+    // }
+    // let root = arr.filter(item => {
+    //   return Object.keys(item).length == 1
+    // })
+    // function getChild(parent) {
+    //   return parent.map(item => {
+    //     let childs = arr.filter(temp => temp.pid == item.id)
+    //     childs.sort((x, y) => {
+    //       return x.id - y.id
+    //     })
+    //     if (childs.length > 0) {
+    //       item.child = childs
+    //     }
+
+    //     getChild(childs)
+    //     return item
+    //   })
+    // }
+    // console.log(JSON.stringify(getChild(root)))
+
+    let order = 'cba', str = 'abcd'
+    // str = str.split('')
+    // for (let c of order) {
+    //   str.splice(str.indexOf(c), 1)
+    // }
+    // console.log(str.join('') + order)
+    // console.log(Math.floor(Math.random() * 2))
+
+    let indexs = []
+
+    for (let num of order) {
+      indexs.push(str.indexOf(num))
+    }
+    if (indexs[1] < indexs[0]) {
+
+    }
+    console.log(indexs)
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

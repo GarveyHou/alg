@@ -1,45 +1,96 @@
-。<!DOCTYPE html>
+。
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<body>
-  <script> 
-    const s = "abab", p = "ab"
 
-    var findSubstring = function (s, p) {
-      const arr1 = s.split(''),
-        len1 = arr1.length,
-        arr2 = p.split(''),
-        len2 = arr2.length
-      arr2.sort()
-      const res = []
-      const win = []
-      for(let i=0;i<len2;i++){
-        win.push(arr1[i])
+<body>
+  <script>
+    // const s = "abab", p = "ab"
+
+    // var findSubstring = function (s, p) {
+    //   const arr1 = s.split(''),
+    //     len1 = arr1.length,
+    //     arr2 = p.split(''),
+    //     len2 = arr2.length
+    //   arr2.sort()
+    //   const res = []
+    //   const win = []
+    //   for (let i = 0; i < len2; i++) {
+    //     win.push(arr1[i])
+    //   }
+    //   for (let i = 1; i < len1 - len2 + 1; i++) {
+    //     const win = []
+
+    //     win.sort()
+    //     for (var j = 0; j < len2; j++) {
+    //       if (win[j] !== arr2[j]) {
+    //         break;
+    //       }
+    //     }
+    //     if (j == len2) {
+    //       res.push(i)
+
+    //     }
+    //   }
+    //   return res
+    // }
+    // console.log(findSubstring(s, p))
+
+    const s = "cbaebabacd", p = "abc"
+
+    function main(s, p) {
+      const need = new Array(26).fill(0),
+        win = new Array(26).fill(0)
+      const n = s.length, m = p.length
+      for (let c of p) {
+        ++need[c.charCodeAt() - 'a'.charCodeAt()]
       }
-      for (let i = 1; i < len1-len2+1; i++) {
-        const win = []
-       
-        win.sort()
-        for(var j=0;j<len2;j++){
-          if(win[j]!==arr2[j]){
-            break;
+      // console.log(need)
+      const len = need.filter(item => {
+        return item !== 0
+      }).length
+      // console.log(len)
+      let i = 0,
+        j = 0
+      let valid = 0
+      const res = []
+      while (j < n) {
+        if (need[s[j].charCodeAt() - 'a'.charCodeAt()] !== 0) {
+          ++win[s[j].charCodeAt() - 'a'.charCodeAt()]
+          if (need[s[j].charCodeAt() - 'a'.charCodeAt()] == win[s[j].charCodeAt() - 'a'.charCodeAt()]) {
+            valid++
           }
         }
-        if(j==len2){
-          res.push(i)
+        console.log(win, valid)
 
+        if (j - i + 1 == p.length) {
+          // console.log(j, i)
+          // console.log(valid)
+          if (valid == len) {
+            res.push(i)
+          }
+          if (need[s[i].charCodeAt() - 'a'.charCodeAt()] !== 0) {
+            if (win[s[i].charCodeAt() - 'a'.charCodeAt()] == need[s[i].charCodeAt() - 'a'.charCodeAt()]) valid--
+            win[s[i].charCodeAt() - 'a'.charCodeAt()]--
+          }
+          i++
         }
+        j++
       }
       return res
     }
-    console.log(findSubstring(s,p))
+
+    console.log(main(s, p));
+
   </script>
 
-  
+
 </body>
+
 </html>

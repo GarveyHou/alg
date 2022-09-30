@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 米小游拿到了一个字符串，她想截取一个连续子串，使得该子串中包含至少k个连续的“mihoyo”。
+    第一行输入两个正整数n和k，用空格隔开。
+  第二行输入一个长度为n的、仅由小写字母组成的字符串。1≤k≤n≤200000
+    */
+    const n = 22, k = 2
+    const str = 'ppmihoyoyomihoyomihoyo'
+    let i = 0, j = 0
+
+    let pos = 0
+    let len = Number.MAX_SAFE_INTEGER
+    while (j <= n) {
+      while (isContain(i, j)) {
+        i++
+        if (j - i + 1 < len) {
+          len = j - 1
+          pos = i - 1
+        }
+      }
+      j++
+    }
+
+    console.log(pos, len)
+
+    console.log(isContain(0, 22))
+    function isContain(i, j) {
+      let s = str.substring(i, j)
+      // console.log(s)
+      let count = 0
+      while (s.indexOf('mihoyo') !== -1) {
+        count++
+        s = s.substring(s.indexOf('mihoyo') + 6)
+        // console.log(s)
+      }
+      return count >= k
+    }
+
+
+
+
+  </script>
+
+</body>
+
+</html>

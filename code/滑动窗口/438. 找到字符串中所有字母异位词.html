@@ -40,62 +40,65 @@
 
 
     /* 30.串联所有单词的子串 */
-    const s = "barfoothefoobarman", words = ["foo", "bar"]
-    var findSubstring = function (s, words) {
-      const arr1 = s.split(''),
-        n = arr1.length,
-        m = words.length,
-        len = words[0].length,
-        length = m * len
-      const map = new Map(),
-        res = []
-      // console.log(len, length)
+    // const s = "barfoothefoobarman", words = ["foo", "bar"]
+    // var findSubstring = function (s, words) {
+    //   const arr1 = s.split(''),
+    //     n = arr1.length,
+    //     m = words.length,
+    //     len = words[0].length,
+    //     length = m * len
+    //   const map = new Map(),
+    //     res = []
+    //   // console.log(len, length)
 
-      for (let i = 0; i < words.length; i++) {
-        let word = s.substring(i * len, i * len + len)
-        // console.log(word)
-        map.set(word, map.has(word) ? map.get(word) + 1 : 1)
-      }
+    //   for (let i = 0; i < words.length; i++) {
+    //     let word = s.substring(i * len, i * len + len)
+    //     // console.log(word)
+    //     map.set(word, map.has(word) ? map.get(word) + 1 : 1)
+    //   }
 
-      for (let word of words) {
-        map.set(word, map.has(word) ? map.get(word) - 1 : -1)
-        if (map.get(word) == 0) {
-          map.delete(word)
-        }
-      }
-      if (map.size == 0) {
-        res.push(0)
-      }
-      // let word = s.substring(length, length + len)
-      // map.set(word, map.has(word) ? map.get(word) + 1 : 1)
-      // let preword = s.substring(0, len)
-      // map.set(preword, map.has(preword) ? map.get(preword) - 1 : -1)
-
-
-      for (let i = length; i <= n; i += len) {
-        let word = s.substring(i, i + len)
-        // console.log(word)
-        map.set(word, map.has(word) ? map.get(word) + 1 : 1)
-        let preword = s.substring(i - length, i - length + len)
-        if (map.get(word) == 0) {
-          map.delete(word)
-        }
-        map.set(preword, map.has(preword) ? map.get(preword) - 1 : -1)
-        if (map.get(preword) == 0) {
-          map.delete(preword)
-        }
-
-        if (map.size == 0) {
-          res.push(i - len)
-        }
-        console.log(map)
-      }
-      // console.log(map)
-      return res
+    //   for (let word of words) {
+    //     map.set(word, map.has(word) ? map.get(word) - 1 : -1)
+    //     if (map.get(word) == 0) {
+    //       map.delete(word)
+    //     }
+    //   }
+    //   if (map.size == 0) {
+    //     res.push(0)
+    //   }
+    //   // let word = s.substring(length, length + len)
+    //   // map.set(word, map.has(word) ? map.get(word) + 1 : 1)
+    //   // let preword = s.substring(0, len)
+    //   // map.set(preword, map.has(preword) ? map.get(preword) - 1 : -1)
 
 
-    };
-    console.log(findSubstring(s, words))
+    //   for (let i = length; i <= n; i += len) {
+    //     let word = s.substring(i, i + len)
+    //     // console.log(word)
+    //     map.set(word, map.has(word) ? map.get(word) + 1 : 1)
+    //     let preword = s.substring(i - length, i - length + len)
+    //     if (map.get(word) == 0) {
+    //       map.delete(word)
+    //     }
+    //     map.set(preword, map.has(preword) ? map.get(preword) - 1 : -1)
+    //     if (map.get(preword) == 0) {
+    //       map.delete(preword)
+    //     }
+
+    //     if (map.size == 0) {
+    //       res.push(i - len)
+    //     }
+    //     console.log(map)
+    //   }
+    //   // console.log(map)
+    //   return res
+
+
+    // };
+    // console.log(findSubstring(s, words))
+
+
+
 
 
 

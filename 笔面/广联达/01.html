@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let n = 4, k = 3
+    let arr = [1, 4, 2, 3]
+    let res = 0
+    function process(i, cur) {
+      if (i == n) {
+        // console.log(cur)
+        if (cur % k == 0 && cur !== '') {
+          // console.log(cur)
+          res = ++res % 1000000007
+        }
+        return
+      }
+      process(i + 1, cur)
+      process(i + 1, cur + arr[i])
+    }
+    process(0, '')
+    console.log(res)
+
+
+  </script>
+
+</body>
+
+</html>
