@@ -37,7 +37,7 @@
       var p2 = rightInfo.maxDistance
       var p3 = leftInfo.height + 1 + rightInfo.height
       var maxDistance = Math.max(p3, Math.max(p1, p2))
-      var height = Math.max(leftInfo.height + 1 + rightInfo.height)
+      var height = Math.max(leftInfo.height, rightInfo.height) + 1
       return new Info(maxDistance, height)
 
     }

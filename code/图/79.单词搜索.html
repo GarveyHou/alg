@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const board = [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], word = 'ABCCED'
+
+    // 巨他妈叼，看vis这里的用处，直接实现了深搜带着当前的决策去做，但是不影响其他深搜
+    var exist = function (board, word) {
+      const dirs = [[0, 1], [1, 0], [-1, 0], [0, -1]]
+      const n = board.length, m = board[0].length
+      const length = word.length
+      const vis = new Array(n).fill('').map(d => new Array(m).fill(0))
+
+      // 当前已经到i，j点，需要决策word【len】这个字符
+      function process(i, j, len) {
+        // console.log(set)
+        if (len == length) {
+          return true
+        }
+        for (let dir of dirs) {
+          let nx = i + dir[0], ny = j + dir[1]
+          if (nx >= 0 && nx < n && ny >= 0 && ny < m && vis[nx][ny] == 0 && board[nx][ny] == word[len]) {
+            vis[nx][ny] = 1
+            if (process(nx, ny, len + 1)) {
+              return true
+            }
+            vis[nx][ny] = 0
+          }
+
+        }
+        return false
+      }
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+          if (board[i][j] == word[0]) {
+            vis[i][j] = 1
+            if (process(i, j, 1)) {
+              return true
+            }
+            vis[i][j] = 0
+          }
+        }
+      }
+      return false
+    };
+    console.log(exist(board, word))
+
+    // leetcode官解
+    var exist = function (board, word) {
+      const h = board.length, w = board[0].length;
+      const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+      const visited = new Array(h);
+      for (let i = 0; i < visited.length; ++i) {
+        visited[i] = new Array(w).fill(false);
+      }
+      const check = (i, j, s, k) => {
+        if (board[i][j] != s.charAt(k)) {
+          return false;
+        } else if (k == s.length - 1) {
+          return true;
+        }
+        visited[i][j] = true;
+        let result = false;
+        for (const [dx, dy] of directions) {
+          let newi = i + dx, newj = j + dy;
+          if (newi >= 0 && newi < h && newj >= 0 && newj < w) {
+            if (!visited[newi][newj]) {
+              const flag = check(newi, newj, s, k + 1);
+              if (flag) {
+                result = true;
+                break;
+              }
+            }
+          }
+        }
+        visited[i][j] = false;
+        return result;
+      }
+
+      for (let i = 0; i < h; i++) {
+        for (let j = 0; j < w; j++) {
+          const flag = check(i, j, word, 0);
+          if (flag) {
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+  </script>
+
+</body>
+
+</html>

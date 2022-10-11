@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 两种，dfs和bfs，无所谓出口，就是薅住一个点去搜把visit变成true，然后遍历的时候不遍历true，看能有多少个
+    var numIslands = function (grid) {
+      var m = grid.length
+      var n = grid[0].length
+      var res = 0
+      // // 此数组用来记录当前节点是否被访问过
+      var visited = new Array(m).fill('').map((d) => new Array(n).fill(false))
+      var dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+      for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+          if (grid[i][j] == '1' && visited[i][j] == false) {
+            res++
+            dfs(i, j)
+            // bfs(i,j)
+          }
+        }
+      }
+      return res
+      function bfs(x, y) {
+        var arr = [] // 队列
+        var dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]// 当前节点可走的4个方向，分别对应右，左，上，下
+        // 起点入队
+        arr.push({
+          x: x,
+          y: y,
+        })
+        visited[x][y] = true
+        while (arr.length) {
+          var current = arr.shift() // 当前方向上节点出队
+          for (var dir of dirs) {
+            var nx = current.x + dir[0]
+            var ny = current.y + dir[1]
+            // 分别判断当前节点是否是有效节点
+            if (nx < m && // 迷宫边界
+              nx >= 0 &&
+              ny < n &&
+              ny >= 0 &&
+              grid[nx][ny] == '1' && // 是否通路0：通路1：障碍
+              visited[nx][ny] == false) {// 是否已访问过
+              // 根据当前路径记录走过的路径
+              // var _path = current.path + '-' + nx + ',' + ny + ''
+              // 节点入队
+              arr.push({
+                x: nx,
+                y: ny,
+              })
+              // 标记已访问过
+              visited[nx][ny] = true
+            }
+          }
+        }
+      }
+      function dfs(x, y) {
+        // 到达终点
+        for (var dir of dirs) {
+          var nx = x + dir[0]
+          var ny = y + dir[1]
+          // 分别判断当前节点是否是有效节点
+          if (nx < m && // 迷宫边界
+            nx >= 0 &&
+            ny < n &&
+            ny >= 0 &&
+            grid[nx][ny] == '1' && // 是否通路0：通路1：障碍
+            visited[nx][ny] == false) {// 是否已访问过
+            // 当访问该节点时，标记已访问
+            visited[nx][ny] = true
+            // 进入递归，每次递归都表示一个完整路径
+            // 需要传入当前节点和已经访问过的路径
+            dfs(nx, ny)
+            // 每次路径完成时，针对该节点需要回溯原始状态
+          }
+        }
+      }
+    };
+  </script>
+
+</body>
+
+</html>

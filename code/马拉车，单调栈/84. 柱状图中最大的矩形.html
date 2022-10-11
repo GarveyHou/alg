@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 左哥版本，超时了不知道为什么
+    // var largestRectangleArea = function (arr) {
+    //   var fn3 = function () {
+    //     const stack = []
+    //     const map = new Map()
+    //     arr.forEach((item, index) => {
+    //       if (stack.length == 0) {
+    //         stack.push([index])
+    //       } else if (arr[stack[stack.length - 1]] < item) {
+    //         stack.push([index])
+    //       } else if (arr[stack[stack.length - 1][0]] == item) {
+    //         stack[stack.length - 1].push(index)
+    //       } else {
+    //         while (stack.length !== 0 && arr[stack[stack.length - 1][0]] > item) {
+    //           var cur = stack.pop()
+    //           cur.forEach((pos) => {
+    //             if (stack.length == 0) {
+    //               var left = null
+    //               map.set(pos, [left, index])
+    //             } else {
+    //               var left = stack[stack.length - 1][stack[stack.length - 1].length - 1]
+    //               map.set(pos, [left, index])
+    //             }
+    //           })
+    //         }
+    //         if (stack.length == 0) {
+    //           stack.push([index])
+    //         } else if (arr[stack[stack.length - 1][0]] == item) {
+    //           stack[stack.length - 1].push(index)
+    //         } else {
+    //           stack.push([index])
+    //         }
+    //       }
+    //     })
+    //     // 清算
+    //     while (stack.length !== 0) {
+    //       var cur = stack.pop()
+    //       cur.forEach(res => {
+    //         if (stack.length == 0) {
+    //           map.set(res, [null, null])
+    //         } else {
+    //           map.set(res, [stack[stack.length - 1][stack[stack.length - 1].length - 1], null])
+    //         }
+    //       })
+    //     }
+    //     return map
+    //   }
+    //   let map = fn3()
+    //   let res = 0
+    //   for (let i = 0; i < arr.length; i++) {
+    //     let cur = map.get(i)
+    //     let left = cur[0] == null ? 0 : cur[0] + 1
+    //     let right = cur[1] == null ? arr.length - 1 : cur[1] - 1
+    //     res = Math.max(res, (right - left + 1) * arr[i])
+    //   }
+    //   return res
+    // };
+
+    // leetcode官解版本，比较简单
+    // 和左哥的不同是，左边右边没办法一起得到结果，而是先左后右，而且是进栈的时候去更新left数组
+    const arr = [2, 1, 5, 6, 2, 3]
+    var largestRectangleArea = function (arr) {
+      const n = arr.length;
+      const left = new Array(n);
+      const right = new Array(n);
+
+      let stack = []
+      // 从左向右填left，即左边第一个小于本身的index
+      for (let i = 0; i < n; ++i) {
+        while (stack.length !== 0 && arr[stack[stack.length - 1]] >= arr[i]) {
+          stack.pop();
+        }
+        // 要进到栈直接更新一手就是栈弹到顶比自己小
+        left[i] = (stack.length == 0 ? -1 : stack[stack.length - 1]);
+        stack.push(i);
+      }
+
+
+      // 从右往左再来一遍
+      stack = []
+      for (let i = n - 1; i >= 0; --i) {
+        while (stack.length !== 0 && arr[stack[stack.length - 1]] >= arr[i]) {
+          stack.pop();
+        }
+        right[i] = (stack.length == 0 ? n : stack[stack.length - 1]);
+        stack.push(i);
+      }
+      console.log(left, right);
+
+      let ans = 0;
+      for (let i = 0; i < n; ++i) {
+        ans = Math.max(ans, (right[i] - left[i] - 1) * arr[i]);
+      }
+      return ans;
+    }
+    console.log(largestRectangleArea(arr));
+
+
+
+
+  </script>
+
+</body>
+
+</html>

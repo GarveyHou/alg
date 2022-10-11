@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [4, 6, 8, 5, 9, 1, 5, 4, 7, 9, 12, 6]
+    // var length
+    // arr的前len个元素，建立大顶堆，
+    function buildMaxHeap(arr, len) {
+      // 遍历非叶子节点，去调整堆
+      for (var i = Math.floor(len / 2); i >= 0; i--) {
+        heapify(arr, i, len);
+      }
+    }
+    // 堆调整
+    function heapify(arr, i, len) {
+      var left = 2 * i + 1,
+        right = 2 * i + 2,
+        largest = i;
+
+      if (left < len && arr[left] > arr[largest]) {
+        largest = left;
+      }
+
+      if (right < len && arr[right] > arr[largest]) {
+        largest = right;
+      }
+
+      if (largest != i) {
+        // 调完
+        swap(arr, i, largest);
+        // 继续看调完之后有没有使得largest错乱，所以largest也得重新调
+        heapify(arr, largest, len);
+      }
+    }
+    function swap(arr, i, j) {
+      var temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+
+    let n = arr.length
+    // i表示以arr的前i项，去做大顶堆；比如i==n就是所有项去大顶堆，最后把arr【0】和arr【n-1】交换，等于把最后一个确定下来了；
+    for (let i = n; i >= 1; i--) {
+      buildMaxHeap(arr, i);
+      swap(arr, 0, i - 1)
+    }
+
+
+    console.log(arr);
+
+
+  </script>
+
+</body>
+
+</html>

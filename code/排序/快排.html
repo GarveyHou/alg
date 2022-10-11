@@ -95,6 +95,25 @@
       swap(arr, more, r)
       return [less + 1, more]
     }
+
+
+    function patrition(arr, l, r) {
+      let less = l - 1, more = r
+      while (l < more) {
+        if (arr[l] < arr[r]) {
+          less++
+          swap(arr, l, less)
+          l++
+        } else if (arr[l] > arr[r]) {
+          more--
+          swap(arr, l, more)
+        } else {
+          l++
+        }
+      }
+      swap(arr, more, r)
+      return [less + 1, more]
+    }
   </script>
 </body>
 

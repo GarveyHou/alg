@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* head = [1, 2, 3, 4, 5], n = 2
+      输出：[1, 2, 3, 5] */
+    var removeNthFromEnd = function (head, n) {
+      // 算链表一共多少个节点
+      let temp = head
+      let length = 0
+      while (temp !== null) {
+        length++
+        temp = temp.next
+      }
+
+      // 如果刚好删的是倒数第length个也就是第一个，直接返回head.next
+      if (n == length) {
+        return head.next
+      }
+
+      // 删的是普遍位置，找到要删的点的前一个
+      let num = length - n
+      let curNum = 1
+      temp = head
+      while (curNum < num) {
+        curNum++
+        temp = temp.next
+      }
+
+      // 如果删的是倒数第一个，那么直接返回temp.next==null
+      if (n == 1) {
+        temp.next = null
+        return head
+      }
+
+      // 超级普遍位置，直接连到下一个去
+      temp.next = temp.next.next
+      return head
+    };
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 整数数组的一个 排列  就是将其所有成员以序列或线性顺序排列。
+
+例如，arr = [1,2,3] ，以下这些都可以视作 arr 的排列：[1,2,3]、[1,3,2]、[3,1,2]、[2,3,1] 。
+整数数组的 下一个排列 是指其整数的下一个字典序更大的排列。更正式地，如果数组的所有排列根据其字典顺序从小到大排列在一个容器中，那么数组的 下一个排列 就是在这个有序容器中排在它后面的那个排列。如果不存在下一个更大的排列，那么这个数组必须重排为字典序最小的排列（即，其元素按升序排列）。
+
+例如，arr = [1,2,3] 的下一个排列是 [1,3,2] 。
+类似地，arr = [2,3,1] 的下一个排列是 [3,1,2] 。
+而 arr = [3,2,1] 的下一个排列是 [1,2,3] ，因为 [3,2,1] 不存在一个字典序更大的排列。
+给你一个整数数组 nums ，找出 nums 的下一个排列。
+必须 原地 修改，只允许使用额外常数空间。 */
+    /* 思路：从后往前找第一个相邻是升序的，找不到直接返回sort之后的；找到的话，在找从相邻的后面那个到结尾，从后往前找第一个大于相邻第一个的数，这个数和相邻第一个交换，然然后从相邻第一个到数组结尾，从小到大排序（其实也就是反转，因为已经肯定是降序了） */
+    const nums = [3, 2, 1]
+    let n = nums.length
+    let i = 0, j = 0
+    // 从后往前找相邻升序的，两个中的第一个的下标
+    for (let k = n - 1; k >= 1; k--) {
+      if (nums[k] > nums[k - 1]) {
+        i = k - 1
+        break
+      }
+    }
+    // 从后往前找第一个比i大的
+    for (let k = n - 1; k > i; k--) {
+      if (nums[k] > nums[i]) {
+        j = k
+        break
+      }
+    }
+    // console.log(i, j); 
+    // 交换
+    swap(i, j)
+    // console.log(nums);
+    // j没变过，直接排序侯返回
+    if (j == 0) {
+      nums.sort((x, y) => {
+        return x - y
+      })
+    } else {
+      // j变过，i后面的reverse
+      let o = i + 1, p = n - 1
+      while (o <= p) {
+        swap(o, p)
+        o++
+        p--
+      }
+    }
+    function swap(i, j) {
+      if (i >= 0 && j >= 0) {
+        let temp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
+      }
+    }
+    return nums
+  </script>
+
+
+</body>
+
+</html>

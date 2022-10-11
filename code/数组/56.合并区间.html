@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+    // 输入：intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
+    //   输出：[[1, 6], [8, 10], [15, 18]]
+    //   解释：区间[1, 3] 和[2, 6] 重叠, 将它们合并为[1, 6].
+
+    //   来源：力扣（LeetCode）
+    //   链接：https://leetcode.cn/problems/merge-intervals
+    //   著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+    const arr = [[1, 4], [4, 5]]
+
+
+    /* 思路：首先区间按优先级前一个排序，前一个优先级相同按后面的来排；在每个前面相同的区间，只保留后面最大的那个区间；
+    然后用一个pre数组保留一个还没能结束的区间数组，初始里面放第一个区间，然后从1-最后，每次检查当前的区间和pre区间的后面的最大值，如果还大那么pre就可以出来处理放入res，否则也放入pre，遍历结束最后处理pre */
+    const n = arr.length
+
+    // 区间按两个优先级排序
+    arr.sort((x, y) => {
+      if (x[0] !== y[0]) {
+        return x[0] - y[0]
+      } else {
+        return x[1] - y[1]
+      }
+    })
+    // 排除那些无用区间，每个只有和后面一个的前面数组不相同才能放入newarr
+    let newarr = []
+    for (let i = 0; i < n - 1; i++) {
+      if (arr[i][0] !== arr[i + 1][0]) {
+        newarr.push(arr[i])
+      }
+    }
+    // 处理最后一个
+    newarr.push(arr[n - 1])
+
+    // 放结果
+    const res = []
+    // console.log(newarr);
+    // 处理放第一个进去
+    let pre = [newarr[0]]
+    // console.log(pre);
+    // 从1-结果判断能不能收集
+    for (let i = 1; i < newarr.length; i++) {
+      // 拿到pre里面的前面的最小值，和后面的最大值
+      let minX = Number.MAX_SAFE_INTEGER, maxY = 0
+      for (let k = 0; k < pre.length; k++) {
+        if (pre[k][0] < minX) {
+          minX = pre[k][0]
+        }
+        if (pre[k][1] > maxY) {
+          maxY = pre[k][1]
+        }
+      }
+
+      // 然后判断遍历的位置是否比前面最大值大，大的话pre直接收集
+      if (newarr[i][0] > maxY) {
+        res.push([minX, maxY])
+        // 收集完了，当前遍历的防入pre
+        pre = [newarr[i]]
+        // console.log(1);
+      } else {
+        // console.log(2);
+        // 否则不能收集继续加入pre，遍历下一个
+        pre.push(newarr[i])
+      }
+    }
+    // console.log(pre)
+
+    // 结束的时候pre还有，也给他收集一下
+    if (pre.length == 1) {
+      res.push(pre[0])
+    } else {
+      let minX = Number.MAX_SAFE_INTEGER, maxY = 0
+      for (let k = 0; k < pre.length; k++) {
+        if (pre[k][0] < minX) {
+          minX = pre[k][0]
+        }
+        if (pre[k][1] > maxY) {
+          maxY = pre[k][1]
+        }
+      }
+      res.push([minX, maxY])
+    }
+    console.log(res)
+
+
+
+
+  </script>
+
+</body>
+
+</html>

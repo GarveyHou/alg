@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 树节点的最大距离题目的超级变种
+    路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。路径和 是路径中各节点值的总和。
+    给你一个二叉树的根节点 root ，返回其 最大路径和 。
+    */
+
+    /* 难点：可以使负数的 */
+    class TreeNode {
+      constructor(val, left, right) {
+        this.val = (val === undefined ? 0 : val)
+        this.left = (left === undefined ? null : left)
+        this.right = (right === undefined ? null : right)
+      }
+    }
+
+
+    class Info {
+      constructor(maxLen, rootLen) {
+        // 最大的距离
+        this.maxLen = maxLen
+        // 包含根节点的只能直线最大距离，因为可能负数，所以可能只要根
+        this.rootLen = rootLen
+      }
+    }
+
+    var maxPathSum = function (root) {
+      var process = function (root) {
+        // 空没的说，给一些0的信息
+        if (root == null) {
+          return new Info(0, 0)
+        }
+        // 左右全空，为避免负数影响，直接返回当前点，而不是再去和0打交道
+        if (root.left == null && root.right == null) {
+          return new Info(root.val, root.val)
+        }
+        // 黑盒
+        let leftData = process(root.left)
+        let rightData = process(root.right)
+
+        // 解黑盒
+        let maxLen
+        if (root.left == null) {
+          // 左边是空，只处理右边
+          // 再分成包含根和不包含根来处理，包含根又要处理左边要不，右边要不的决策
+          maxLen = Math.max(rightData.maxLen, rightData.rootLen + root.val, root.val)
+        } else if (root.right == null) {
+          maxLen = Math.max(leftData.maxLen, leftData.rootLen + root.val, root.val)
+        } else {
+          maxLen = Math.max(leftData.maxLen, rightData.maxLen, leftData.rootLen + rightData.rootLen + root.val, leftData.rootLen + root.val, rightData.rootLen + root.val, root.val)
+        }
+
+        // 表示包含跟的直线最大距离，可能左边的加上根，右边的加上根，可能直接根因为两边全负数
+        let rootLen = Math.max(leftData.rootLen, rightData.rootLen, 0) + root.val
+
+        return new Info(maxLen, rootLen)
+      }
+      return process(root).maxLen
+    };
+
+    // leetcode官解
+    var maxPathSum = function (root) {
+      let max = Number.MIN_SAFE_INTEGER
+      var process = function (root) {
+        if (root == null) {
+          return 0
+        }
+        let leftLen = Math.max(0, process(root.left))
+        let rightLen = Math.max(0, process(root.right))
+        max = Math.max(max, leftLen + rightLen + root.val)
+        return Math.max(leftLen, rightLen) + root.val
+      }
+      process(root)
+      return max
+    };
+
+    let root = new TreeNode(-10)
+    let node1 = new TreeNode(9, null, null)
+    let node2 = new TreeNode(20)
+    let node3 = new TreeNode(15, null, null)
+    let node4 = new TreeNode(7, null, null)
+    root.left = node1
+    root.right = node2
+    node2.left = node3
+    node2.right = node4
+    console.log(root);
+    console.log(maxPathSum(root))
+
+
+
+
+  </script>
+
+</body>
+
+</html>

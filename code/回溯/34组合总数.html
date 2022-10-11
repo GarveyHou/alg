@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+    candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+    对于给定的输入，保证和为 target 的不同组合数少于 150 个。 */
+
+    const arr = [2, 3, 6, 7], target = 7
+
+    const res = []
+    function process(i, chooses, rest) {
+      if (rest == 0) {
+        res.push([...chooses])
+        return
+      }
+      if (i == candidates.length) {
+        return
+      }
+      let num = candidates[i]
+      process(i + 1, [...chooses], rest)
+
+      while (num <= rest) {
+        process(i + 1, [...chooses, candidates[i]], rest - num)
+        chooses.push(candidates[i])
+        num += candidates[i]
+      }
+    }
+    process(0, [], target)
+    console.log(res)
+
+
+  </script>
+
+</body>
+
+</html>

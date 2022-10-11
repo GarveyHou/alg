@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+    注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。  */
+    const s = 'leetcode', arr = ["leet", "code"]
+    /* 思路：暴力递归可解，进一个串，遍历所有的切分点，如果某个切分点的左边可以在arr中找到，那这个情况下，取决于把这种切分点的右边继续进process看是不是true；basecase就是这个串是空串直接返回true */
+    var wordBreak = function (s, arr) {
+      let n = s.length
+      let dp = new Array(n + 1).fill('').map(d => new Array(n + 1).fill(5))
+      var process = function (start, end) {
+        if (start > end) {
+          dp[start][end] = true
+          return dp[start][end]
+        }
+        if (dp[start][end] !== 5) {
+          return dp[start][end]
+        }
+        for (let i = 0; i <= end - start; i++) {
+          if (arr.indexOf(s.substring(start, start + i + 1)) !== -1) {
+            if (process(start + i + 1, end)) {
+              dp[start + i + 1][end] = true
+              return dp[start + i + 1][end]
+            }
+          }
+        }
+        dp[start][end] = false
+        return dp[start][end]
+      }
+      return process(0, n - 1)
+    };
+    console.log(wordBreak(s, arr))
+
+  </script>
+
+</body>
+
+</html>

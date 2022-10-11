@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const n = 100, q = 2
+    const ops = [[1, 30], [21, 40]]
+    // 0黑，1百
+    const arr = new Array(100).fill(0)
+    for (let i = 0; i < ops.length; i++) {
+      for (let j = ops[i][0] - 1; j <= ops[i][1] - 1; j++) {
+        if (arr[j] == 0) {
+          arr[j] = 1
+        } else {
+          arr[j] = 0
+        }
+      }
+      let curCount = 0
+      arr.forEach(item => {
+        if (item == 0) {
+          curCount++
+        }
+      })
+      console.log(curCount)
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 用归并排序来做 */
+
+    const merge = function (head1, head2) {
+      const pre = new ListNode(0)
+      let temp = pre
+      while (head1 !== null && head2 !== null) {
+        if (head1.val < head2.val) {
+          temp.next = head1
+          head1 = head1.next
+        } else {
+          temp.next = head2
+          head2 = head2.next
+        }
+        temp = temp.next
+      }
+      if (head1 !== null) {
+        temp.next = head1
+      } else {
+        temp.next = head2
+      }
+      return pre.next
+    }
+    // 包含头不包含尾的归并排序
+    var toSortList = function (head, tail) {
+      if (head == null) {
+        return null
+
+      }
+      // 因为不包含尾，所以此时等于只有一个点就是head
+      if (head.next == tail) {
+        head.next = null
+        return head
+      }
+      let mid, fast = head, slow = head
+      while (fast !== tail) {
+        slow = slow.next
+        fast = fast.next
+        // 把快指针的next。next分成两次做，害怕可能一次就到尾，导致出问题
+        if (fast !== tail) {
+          fast = fast.next
+        }
+      }
+      mid = slow
+
+      return merge(toSortList(head, mid), toSortList(mid, tail))
+    }
+
+
+
+    var sortList = function (head) {
+      return toSortList(head, null);
+    };
+
+    // 自下而上的优化空间复杂度到1的方法，就是遍历当前要合并两个几个点的新链表，比如1个2个4个，然后每次找1个和1个合并，然后再找1个和一个合并，然后整体合并下次找的点翻倍呗；挺复杂的不一定写的出来
+    var sortList = function (head) {
+      if (head === null) {
+        return head;
+      }
+      let length = 0;
+      let node = head;
+      while (node !== null) {
+        length++;
+        node = node.next;
+      }
+      const dummyHead = new ListNode(0, head);
+      for (let subLength = 1; subLength < length; subLength <<= 1) {
+        let prev = dummyHead, curr = dummyHead.next;
+        while (curr !== null) {
+          let head1 = curr;
+          for (let i = 1; i < subLength && curr.next !== null; i++) {
+            curr = curr.next;
+          }
+          let head2 = curr.next;
+          curr.next = null;
+          curr = head2;
+          for (let i = 1; i < subLength && curr != null && curr.next !== null; i++) {
+            curr = curr.next;
+          }
+          let next = null;
+          if (curr !== null) {
+            next = curr.next;
+            curr.next = null;
+          }
+          const merged = merge(head1, head2);
+          prev.next = merged;
+          while (prev.next !== null) {
+            prev = prev.next;
+          }
+          curr = next;
+        }
+      }
+      return dummyHead.next;
+    };
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积 */
+    const matrix =
+      [["1", "0", "1", "0", "0"],
+      ["1", "0", "1", "1", "1"],
+      ["1", "1", "1", "1", "1"],
+      ["1", "0", "0", "1", "0"]]
+
+    /* 思路：找到每个点在自己的行以这个点结尾的1的长度grid，如[i][j]
+    然后去遍历高度，假设高度从0-i,也就是以i行为最下面一行，往上的高度都遍历一遍，去算宽度，宽度就是grid[i][j]到grid[k][j]的最小值*/
+
+    var maximalRectangle = function (matrix) {
+      const n = matrix.length, m = matrix[0].length
+      const grid = new Array(n).fill('').map(d => new Array(m).fill(0))
+      for (let i = 0; i < n; i++) {
+        let num = 0
+        for (let j = 0; j < m; j++) {
+          if (matrix[i][j] == 1) {
+            num++
+            grid[i][j] = num
+          } else {
+            num = 0
+            grid[i][j] = num
+          }
+        }
+      }
+      console.log(grid);
+      let max = 0
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+          let curMinWidth = grid[i][j]
+          max = Math.max(max, curMinWidth)
+          for (let k = i - 1; k >= 0; k--) {
+            curMinWidth = Math.min(curMinWidth, grid[k][j])
+            max = Math.max(max, curMinWidth * (i - k + 1))
+          }
+        }
+      }
+      return max
+    };
+    console.log(maximalRectangle(matrix))
+
+
+    // 第二种思路，直接单调栈，和84一毛一样。就是遍历每一行假设每一行是那么数轴的x轴，然后把那个柱形图假设出来去调用84的函数
+    /* public int maximalRectangle(char[][] matrix) {
+          if (matrix.length == 0) {
+              return 0;
+          }
+          int[] heights = new int[matrix[0].length];
+          int maxArea = 0;
+          for (int row = 0; row < matrix.length; row++) {
+              //遍历每一列，更新高度
+              for (int col = 0; col < matrix[0].length; col++) {
+                  if (matrix[row][col] == '1') {
+                      heights[col] += 1;
+                  } else {
+                      heights[col] = 0;
+                  }
+              }
+              //调用上一题的解法，更新函数
+              maxArea = Math.max(maxArea, largestRectangleArea(heights));
+          }
+          return maxArea;
+      }
+    */
+
+
+  </script>
+
+</body>
+
+</html>

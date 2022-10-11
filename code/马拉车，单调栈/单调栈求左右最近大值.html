@@ -10,6 +10,13 @@
 
 <body>
   <script>
+    // 42. 接雨水（困难）	暴力解法、优化、双指针、单调栈
+    //   2	739. 每日温度（中等）	暴力解法 + 单调栈
+    //   3	496. 下一个更大元素 I（简单）	暴力解法、单调栈
+    //   4	316. 去除重复字母（困难）	栈 + 哨兵技巧（Java、C++、Python）
+    //   5	901. 股票价格跨度（中等）	「力扣」第 901 题：股票价格跨度（单调栈）
+    //   6	402. 移掉K位数字
+    //   7	581. 最短无序连续子数组
     /* 给定一个数组，求出每个数字左右两边比自己大的最近的数，如果没有则返回无；
     // 无重复值
     一个栈，遍历数组，栈要时刻保持底>顶
@@ -21,7 +28,10 @@
     下标压一起，其他都不变，就是栈里放的是数组，如果相等，【1,2】 4，比如放入的和栈顶都是4，把下标放一起作为栈的一个数据；当要结算的时候，这两个一起结算（只是左边的是下面压的最后一个位置的那个数）
     */
     // const arr = [5, 4, 3, 2, 6, 1, 2, 0, 7]
+    const fal = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     const arr = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+
+    // 接雨水的朴素解法
     var trap = function (height) {
       const n = height.length;
       if (n == 0) {
@@ -80,7 +90,7 @@
       }
       return map
     }
-    console.log(fn())
+    // console.log(fn())
     // console.log(map)
 
 
@@ -118,7 +128,7 @@
       }
       return map
     }
-    console.log(fn1())
+    // console.log(fn1())
 
 
 
@@ -131,14 +141,14 @@
           stack.push([index])
         } else if (arr[stack[stack.length - 1]] > item) {
           stack.push([index])
-        } else if (arr[stack[stack.length - 1]] == item) {
+        } else if (arr[stack[stack.length - 1][0]] == item) {
           stack[stack.length - 1].push(index)
         } else {
           while (stack.length !== 0 && arr[stack[stack.length - 1][0]] < item) {
             var cur = stack.pop()
             cur.forEach((pos) => {
               if (stack.length == 0) {
-                var left = index
+                var left = null
                 map.set(pos, [left, index])
               } else {
                 var left = stack[stack.length - 1][stack[stack.length - 1].length - 1]
@@ -146,10 +156,13 @@
               }
             })
           }
-
-
-          //1231231
-          stack.push([index])
+          if (stack.length == 0) {
+            stack.push([index])
+          } else if (arr[stack[stack.length - 1][0]] == item) {
+            stack[stack.length - 1].push(index)
+          } else {
+            stack.push([index])
+          }
         }
       })
       // 清算
@@ -157,9 +170,9 @@
         var cur = stack.pop()
         cur.forEach(res => {
           if (stack.length == 0) {
-            map.set(res, [res, res])
+            map.set(res, [null, null])
           } else {
-            map.set(res, [stack[stack.length - 1][stack[stack.length - 1].length - 1], res])
+            map.set(res, [stack[stack.length - 1][stack[stack.length - 1].length - 1], null])
           }
         })
       }
@@ -168,13 +181,62 @@
 
     // console.log(fn2())
     let map = fn2()
-    // console.log(map)
-    let ans = 0
-    for (let i = 0; i < arr.length; i++) {
-      let cur = map.get(i)
-      ans += Math.min(arr[cur[0]], arr[cur[1]]) - arr[i]
+    console.log(map)
+    // let ans = 0
+    // for (let i = 0; i < arr.length; i++) {
+    //   let cur = map.get(i)
+    //   ans += Math.min(arr[cur[0]], arr[cur[1]]) - arr[i]
+    // }
+    // console.log(ans)
+
+
+    // 有重复值的，找左右两边第一个比当前index的value小的下标
+    var fn3 = function () {
+      const stack = []
+      const map = new Map()
+      arr.forEach((item, index) => {
+        if (stack.length == 0) {
+          stack.push([index])
+        } else if (arr[stack[stack.length - 1]] < item) {
+          stack.push([index])
+        } else if (arr[stack[stack.length - 1][0]] == item) {
+          stack[stack.length - 1].push(index)
+        } else {
+          while (stack.length !== 0 && arr[stack[stack.length - 1][0]] > item) {
+            var cur = stack.pop()
+            cur.forEach((pos) => {
+              if (stack.length == 0) {
+                var left = null
+                map.set(pos, [left, index])
+              } else {
+                var left = stack[stack.length - 1][stack[stack.length - 1].length - 1]
+                map.set(pos, [left, index])
+              }
+            })
+          }
+          if (stack.length == 0) {
+            stack.push([index])
+          } else if (arr[stack[stack.length - 1][0]] == item) {
+            stack[stack.length - 1].push(index)
+          } else {
+            stack.push([index])
+          }
+        }
+      })
+      // 清算
+      while (stack.length !== 0) {
+        var cur = stack.pop()
+        cur.forEach(res => {
+          if (stack.length == 0) {
+            map.set(res, [null, null])
+          } else {
+            map.set(res, [stack[stack.length - 1][stack[stack.length - 1].length - 1], null])
+          }
+        })
+      }
+      return map
     }
-    console.log(ans)
+    console.log(fn3());
 
 
 

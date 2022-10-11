@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [3, 2, 2, 5, 5], n = 5
+    let len = arr.length
+    let res = 0
+    let curPos = -1
+
+    // while (curPos !== len - 1) {
+    let temp = n
+    let i = curPos
+    while (temp > 0 && i < len - 1) {
+      temp -= arr[i + 1]
+      i++
+    }
+    curPos = i
+    res += 2 * (i + 1)
+    console.log(i);
+    // }
+    temp = n
+    i = curPos
+    while (temp > 0 && i < len - 1) {
+      temp -= arr[i + 1]
+      i++
+    }
+    curPos = i
+    res += 2 * (i + 1)
+    console.log(i);
+
+
+    // console.log(curPos);
+    // console.log(res)
+
+
+
+  </script>
+
+</body>
+
+</html>

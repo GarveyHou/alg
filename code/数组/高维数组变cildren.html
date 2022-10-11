@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 把数组变成对象，里面还是数组放入children
+    const obj = { a: 1, b: 2, c: { d: 3, e: 4 }, f: 5 }
+
+    function dfs(obj) {
+      const newObj = {}
+      for (let k in obj) {
+        if (typeof obj[k] == 'object') {
+          newObj.children = dfs(obj[k])
+        } else {
+          newObj[k] = obj[k]
+        }
+      }
+      return newObj
+    }
+    console.log(dfs(obj))
+
+    function printObj(obj) {
+      for (let k in obj) {
+        if (typeof obj[k] == 'object') {
+          printObj(obj[k])
+        } else {
+          console.log(k, obj[k]);
+        }
+      }
+    }
+    printObj(obj)
+
+
+
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 0,1,2三种数，排序 */
+
+    /* 思路：双指针法，p0用来交换0，p1交换1；p0往后动的时候把p1也带上+1，如果某一次出现p0<p1,换完p0，还得再把p1和i再换一次 */
+    const nums = [2, 0, 2, 1, 1, 0]
+    let p0 = 0, p1 = 0
+    let n = nums.length
+    for (let i = 0; i < n; i++) {
+      if (nums[i] == 1) {
+        swap(i, p1)
+        p1++
+      } else if (nums[i] == 0) {
+        swap(i, p0)
+        if (p0 < p1) {
+          swap(i, p1)
+        }
+        p0++
+        p1++
+      }
+    }
+    function swap(i, j) {
+      let temp = nums[i]
+      nums[i] = nums[j]
+      nums[j] = temp
+    }
+    console.log(nums)
+  </script>
+
+</body>
+
+</html>

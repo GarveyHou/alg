@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    let n = 3
+    const res = []
+    var process = function (set, chooses) {
+      if (chooses.length == n - 1) {
+        res.push(chooses)
+        // console.log(chooses)
+        return
+      }
+      for (let val of set) {
+        for (let j = 0; j < n; j++) {
+          if (!set.has(j) && j !== val) {
+            process(new Set([...set, j]), [...chooses, val + '-' + j])
+          }
+        }
+      }
+    }
+    process(new Set([0]), [])
+    res.forEach(item => {
+      item.sort()
+    })
+    res.sort()
+    console.log('------');
+    let i = 1
+    while (i < res.length) {
+      if (JSON.stringify(res[i]) == JSON.stringify(res[i - 1])) {
+        // console.log(JSON.stringify(res[i]) == JSON.stringify(res[i - 1]));
+        // console.log(res[i])
+        res.splice(i, 1)
+      } else {
+        i++
+      }
+    }
+    console.log(res);
+    // console.log(n - 1)
+    // for (let i = 0; i < n - 1; i++) {
+    //   let from = Number(res[0][i].split('-')[0]) + 1
+    //   let to = Number(res[0][i].split('-')[1]) + 1
+    //   console.log(from + ' ' + to)
+    // }
+
+
+
+
+  </script>
+
+</body>
+
+</html>
