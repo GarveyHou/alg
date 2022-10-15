@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var maxPoints = function (points) {
+      const n = points.length;
+      // 点小于2，肯定共线
+      if (n <= 2) {
+        return n;
+      }
+      // 结果
+      let ret = 0;
+
+      // 枚举每个点作为必须连的点，找其他和这个点共线的最多的情况
+      for (let i = 0; i < n; i++) {
+        // 因为只需要找后面的点和这个点的最多共线情况，如果当前结果都大于后面所有点共线情况了，直接返回结果，不可能比这个结果大了；如果结果的共线点已经过半了，那更不可能找到比这个结果大的情况了
+        if (ret >= n - i || ret > n / 2) {
+          break;
+        }
+        // 装后面每个点和这个点的每个斜率的个数
+        const map = new Map();
+        // 遍历后面点
+        for (let j = i + 1; j < n; j++) {
+          let x = points[i][0] - points[j][0];
+          let y = points[i][1] - points[j][1];
+          // 一个行或者一个列，做处理，把另一个变成1，来表示这种情况情况
+          if (x === 0) {
+            y = 1;
+          } else if (y === 0) {
+            x = 1;
+          } else {
+            // 否则如果有负，只能x负，全负给他变全正
+            if (y < 0) {
+              x = -x;
+              y = -y;
+            }
+            // 拿到公约数约到最简
+            const gcdXY = gcd(Math.abs(x), Math.abs(y));
+            x /= gcdXY;
+            y /= gcdXY;
+          }
+          // 表示此次斜率
+          const key = x + '-' + y;
+          map.set(key, (map.get(key) || 0) + 1);
+        }
+        // 得到斜率次数最多的情况更新返回值
+        let maxn = 0;
+        for (const num of map.values()) {
+          maxn = Math.max(maxn, num + 1);
+        }
+        ret = Math.max(ret, maxn);
+      }
+      return ret;
+    };
+
+    // 求最大公约数，化简分数的，返回ab的最大公约数
+    const gcd = (a, b) => {
+      return b != 0 ? gcd(b, a % b) : a;
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Graph {
+      constructor() {
+        // 两个都是键为数字，值为Node和Edge
+        this.nodes = new Map()
+        this.edges = []
+      }
+    }
+    class Node {
+      constructor(value) {
+        // value为值；
+        // in为入度；
+        // out为出度；
+        // nexts为指出去的点集合；为Node
+        // edges为属于我的边有哪些，也是指出去的边，为Edge
+        this.value = value
+        this.in = 0
+        this.out = 0
+        this.nexts = []
+        this.edges = []
+      }
+    }
+    class Edge {
+      constructor(from, to) {
+        // weight表示权重
+        // from表示从哪里来,为Node
+        // to表示去那里去，为Node
+        this.from = from
+        this.to = to
+      }
+    }
+
+    function createGraph(arr) {
+      var graph = new Graph()
+      for (var i = 0; i < arr.length; i++) {
+        var from = arr[i][0]
+        var to = arr[i][1]
+        if (!graph.nodes.has(from)) {
+          graph.nodes.set(from, new Node(from))
+        }
+
+        if (!graph.nodes.has(to)) {
+          graph.nodes.set(to, new Node(to))
+        }
+
+        var fromNode = graph.nodes.get(from)
+        var toNode = graph.nodes.get(to)
+
+        curEdge = new Edge(fromNode, toNode)
+
+        fromNode.nexts.push(toNode)
+        fromNode.out++
+        toNode.in++
+        fromNode.edges.push(curEdge)
+        graph.edges.push(curEdge)
+      }
+      return graph
+    }
+    function tuopuSort(graph) {
+      // 结果数组，就是拓扑顺序的节点
+      var result = []
+      // map key：某一个node，value：剩余的入度
+      var map = new Map()
+      // 剩余入度为0的点就进入zeroInQueue
+      var zeroInQueue = []
+      // 遍历所有node，初始化inMap并设置第一个zeroInQueue的点
+      for (var node of graph.nodes.values()) {
+        map.set(node, node.in)
+        if (node.in == 0) {
+          zeroInQueue.push(node)
+        }
+      }
+      // 队列为空为结束条件
+      // 队列弹出一个，放入结果数组，并遍历该node的nexts节点，将他们的入度inMap -1，然后如果入度变成了0，进队列
+      while (zeroInQueue.length !== 0) {
+        var cur = zeroInQueue.shift()
+        result.push(cur)
+        for (let next of cur.nexts) {
+          map.set(next, map.get(next) - 1)
+          if (map.get(next) == 0) {
+            zeroInQueue.push(next)
+          }
+        }
+      }
+      return result
+    }
+    var canFinish = function (num, pre) {
+      var graph = createGraph(pre)
+      // console.log(graph)
+      let result = tuopuSort(graph)
+      // console.log(result)
+
+      return result.length == num ? true : false
+    };
+    const pre = [[1, 0]]
+    console.log(canFinish(2, pre)); 
+  </script>
+
+</body>
+
+</html>

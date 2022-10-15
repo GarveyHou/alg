@@ -17,3 +17,9 @@
 // console.log(null == undefined)
 // let mi = new Function()
 // console.log(mi.__proto__.__proto__ == Object.prototype)
+
+let map = new Map()
+map.set(1, 2)
+
+map.set(5, 6)
+console.log(map.keys().next())
