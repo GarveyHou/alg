@@ -46,14 +46,15 @@
       arr[j] = temp;
     }
 
-    let n = arr.length
+
     // i表示以arr的前i项，去做大顶堆；比如i==n就是所有项去大顶堆，最后把arr【0】和arr【n-1】交换，等于把最后一个确定下来了；
-    for (let i = n; i >= 1; i--) {
-      buildMaxHeap(arr, i);
-      swap(arr, 0, i - 1)
+    let n = arr.length
+    buildMaxHeap(arr, n);
+    for (let i = n - 1; i >= 0; --i) {
+      swap(arr, 0, i);
+      --n;
+      heapify(arr, 0, n);
     }
-
-
     console.log(arr);
 
 
